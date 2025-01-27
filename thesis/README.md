@@ -1,2 +1,2 @@
-# thesis
-Our Computer Engineering Master Thesis
+# Thesis
+Computer Engineering Master Thesis
