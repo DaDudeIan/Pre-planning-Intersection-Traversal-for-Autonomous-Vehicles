@@ -1,0 +1,39 @@
+- acronym: DOF
+  definition: Degrees of Freedom
+- acronym: RMSE
+  definition: Root Mean Squared Error
+- acronym: CPU
+  definition: Central Processing Unit
+  plural: Central Processing Units
+- acronym: ID
+  definition: Identifier
+  plural: Identifiers
+- acronym: YAML
+  definition: YAML Ain't Markup Language
+- acronym: UI
+  definition: User Interface
+- acronym: GUI
+  definition: Graphical User Interface
+- acronym: UX
+  definition: User Experience
+- acronym: RNG
+  definition: Random Number Generator
+- acronym: PRNG
+  definition: Pseudo-Random Number Generator
+- acronym: JSON
+  definition: JavaScript Object Notation
+- acronym: API
+  definition: Application Programming Interface
+- acronym: PNG
+  definition: Portable Network Graphics
+- acronym: TOML
+  definition: Tom's Obvious Minimal Language
+- acronym: CNN
+  definition: Convolutional Neural Network
+- acronym: GNN
+  definition: Graph Neural Network
+- acronym: MLP
+  definition: Multilayer Perceptron
+- acronym: ROS2
+  definition: Robot Operating System 2
+

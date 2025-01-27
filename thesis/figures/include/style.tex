@@ -1,0 +1,79 @@
+\definecolor{cyellow}{rgb}{1,0.8,0.4}
+\definecolor{corange}{rgb}{1,0.4,0}
+\definecolor{cred}{rgb}{1,0.2,0.4}
+\definecolor{cpurple}{rgb}{0.6,0.4,1}
+\definecolor{cblue}{rgb}{0,0.6,1}
+\definecolor{cgreen}{rgb}{0.2,0.8156862745098039,0.6431372549019608}
+
+\definecolor{cpyellow}{rgb}{1,0.9,0.6}
+\definecolor{cporange}{rgb}{1,0.6,0.2}
+\definecolor{cpred}{rgb}{1,0.4,0.6}
+\definecolor{cppurple}{rgb}{0.8,0.6,1}
+\definecolor{cpblue}{rgb}{0.2,0.8,1}
+\definecolor{cpgreen}{rgb}{0.4,0.9,0.8}
+\definecolor{cpgrey}{rgb}{0.85,0.85,0.85}
+
+\definecolor{cb_magenta_7}{HTML}{fcc5c0}
+\definecolor{cb_magenta_6}{HTML}{fa9fb5}
+\definecolor{cb_magenta_5}{HTML}{f768a1}
+\definecolor{cb_magenta_4}{HTML}{dd3497}
+\definecolor{cb_magenta_3}{HTML}{ae017e}
+\definecolor{cb_magenta_2}{HTML}{7a0177}
+\definecolor{cb_magenta_1}{HTML}{49006a}
+
+\definecolor{cb_blue_7}{HTML}{d0d1e6}
+\definecolor{cb_blue_6}{HTML}{a6bddb}
+\definecolor{cb_blue_5}{HTML}{74a9cf}
+\definecolor{cb_blue_4}{HTML}{3690c0}
+\definecolor{cb_blue_3}{HTML}{0570b0}
+\definecolor{cb_blue_2}{HTML}{045a8d}
+\definecolor{cb_blue_1}{HTML}{023858}
+
+\definecolor{cb_red_7}{HTML}{fed976}
+\definecolor{cb_red_6}{HTML}{feb24c}
+\definecolor{cb_red_5}{HTML}{fd8d3c}
+\definecolor{cb_red_4}{HTML}{fc8d59}
+\definecolor{cb_red_3}{HTML}{fc4e2a}
+\definecolor{cb_red_2}{HTML}{bd0026}
+\definecolor{cb_red_1}{HTML}{800026}
+
+\definecolor{cb_green_7}{HTML}{d9f0a3}
+% spellchecker:disable-line
+\definecolor{cb_green_6}{HTML}{addd8e}
+\definecolor{cb_green_5}{HTML}{78c679}
+\definecolor{cb_green_4}{HTML}{41ab5d}
+\definecolor{cb_green_3}{HTML}{238443}
+\definecolor{cb_green_2}{HTML}{006837}
+\definecolor{cb_green_1}{HTML}{004529}
+
+\tikzset{
+node distance=10 * \scale and 10 * \scale,
+line/.style={draw=ctpText, line cap=round, line width=0.35 * \scale, rounded corners=1 * \scale},
+rrt line/.style={line, rounded corners=0.1 * \scale},
+no rounding/.style={rounded corners=0},
+csnake/.style={line, rounded corners=0, snake=brace, raise snake=2 * \scale, segment amplitude=3 * \scale},
+none/.style={draw=none, fill=none, line width=0pt},
+variable node/.style={circle, line, draw=\variablecolor, fill=\variablecolor!10, minimum size=8 * \scale},
+factor node/.style={rectangle, line, draw=\factorcolor, fill=\factorcolor!10, minimum size=5 * \scale, rounded corners=1 * \scale},
+arrow/.style={->, line, >=Latex[round]},
+variable message/.style={arrow, draw=\variablecolor},
+factor message/.style={arrow, <-, draw=\factorcolor},
+dot/.style={circle, draw=none, fill=ctpText, minimum size=1 * \scale, inner sep=0},
+collider/.style={rrt line, draw=ctpMaroon, fill=none},
+collider dot/.style={dot, collider, draw=ctpYellow, minimum size=2 * \scale},
+environment/.style={draw=ctpLavender, fill=ctpLavender!25},
+valid collider dot/.style={collider dot, draw=ctpGreen},
+node at every point/.style={
+    decoration={
+        show path construction,
+        moveto code={\node at (\tikzinputsegmentfirst) [#1] {};},
+        lineto code={\node at (\tikzinputsegmentlast) [#1] {};},
+        curveto code={\node at (\tikzinputsegmentlast) [#1] {};}
+    },
+    postaction=decorate
+},
+}
+
+\def\scale{1mm}
+\def\factorcolor{ctpLavender}
+\def\variablecolor{ctpGreen}

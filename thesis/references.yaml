@@ -1,0 +1,11 @@
+vdm:
+  type: book
+  title: Validated Designs for Object-oriented Systems
+  author:
+  - Larsen, Peter Gorm
+  - Fitzgerald, John
+  - Mukherjee, Nico
+  - Verhoef, Marcel
+  date: 2005
+  publisher: Springer
+  # page-range: 1–13

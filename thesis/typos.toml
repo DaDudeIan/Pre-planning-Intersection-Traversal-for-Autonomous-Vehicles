@@ -1,0 +1,2 @@
+[files]
+extend-exclude = ["figures/include/style.tex", "template.typ"]

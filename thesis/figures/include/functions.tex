@@ -1,0 +1,145 @@
+\tikzstyle{equal below of} = [below=of #1.south]
+\tikzstyle{equal right of} = [right=of #1.east]
+\tikzstyle{equal left of} = [left=of #1.west]
+\tikzstyle{equal above of} = [above=of #1.north]
+
+% \def\bbx min (#1,#2,#3) max (#4,#5,#6) color #7 alpha #8; {
+% 	%draw the bottom of the cube
+%     \draw[cube,fill=#7,fill opacity=#8] (#1,#2,#3) -- (#1,#5,#3) -- (#4,#5,#3) -- (#4,#2,#3) -- cycle;
+% 	%draw the back-right of the cube
+% 	\draw[cube,fill=#7,fill opacity=#8] (#1,#2,#3) -- (#1,#5,#3) -- (#1,#5,#6) -- (#1,#2,#6) -- cycle;
+% 	%draw the back-left of the cube
+% 	\draw[cube,fill=#7,fill opacity=#8] (#1,#2,#3) -- (#4,#2,#3) -- (#4,#2,#6) -- (#1,#2,#6) -- cycle;
+% 	%draw the front-right of the cube
+% 	\draw[cube,fill=#7,fill opacity=#8] (#4,#2,#3) -- (#4,#5,#3) -- (#4,#5,#6) -- (#4,#2,#6) -- cycle;
+% 	%draw the front-left of the cube
+%     \draw[cube,fill=#7,fill opacity=#8] (#1,#5,#3) -- (#4,#5,#3) -- (#4,#5,#6) -- (#1,#5,#6) -- cycle;
+% 	%draw the top of the cube
+% 	\draw[cube,fill=#7,fill opacity=#8] (#1,#2,#6) -- (#1,#5,#6) -- (#4,#5,#6) -- (#4,#2,#6) -- cycle;
+% }
+\def\bbx[#1] min (#2,#3,#4) max (#5,#6,#7); {
+%draw the bottom of the cube
+\draw[cube,#1] (#2,#3,#4) -- (#2,#6,#4) -- (#5,#6,#4) -- (#5,#3,#4) -- cycle;
+%draw the back-right of the cube
+\draw[cube,#1] (#2,#3,#4) -- (#2,#6,#4) -- (#2,#6,#7) -- (#2,#3,#7) -- cycle;
+%draw the back-left of the cube
+\draw[cube,#1] (#2,#3,#4) -- (#5,#3,#4) -- (#5,#3,#7) -- (#2,#3,#7) -- cycle;
+%draw the front-right of the cube
+\draw[cube,#1] (#5,#3,#4) -- (#5,#6,#4) -- (#5,#6,#7) -- (#5,#3,#7) -- cycle;
+%draw the front-left of the cube
+\draw[cube,#1] (#2,#6,#4) -- (#5,#6,#4) -- (#5,#6,#7) -- (#2,#6,#7) -- cycle;
+%draw the top of the cube
+\draw[cube,#1] (#2,#3,#7) -- (#2,#6,#7) -- (#5,#6,#7) -- (#5,#3,#7) -- cycle;
+}
+
+\def\voxel[#1] center (#2,#3,#4) resolution #5; {
+		\bbx[#1,fill opacity=0.35,draw opacity=1,line width=0.25,draw=black] min (#2-#5/2, #3-#5/2, #4-#5/2) max (#2+#5/2, #3+#5/2, #4+#5/2);
+	}
+
+\def\volumetricbox at (#1,#2) with dimensions (#3,#4,#5) color #6 alpha #7; {
+		\def\bposx{#1}
+		\def\bposy{#2}
+		\def\bwidth{#3};
+		\def\bheigth{#4};
+		\def\bdepth{#5}
+
+		\draw[draw=black] (\bposx,\bposy) -- ++(\bdepth,\bdepth) -- ++(0,\bheigth);
+		\draw[draw=black] (\bposx+\bdepth,\bposy+\bdepth) -- ++(\bwidth,0);
+
+		\draw[draw=black,fill opacity=#7,fill=#6] (\bposx,\bposy) rectangle +(\bwidth,\bheigth);
+
+		\draw[draw=black,fill opacity=#7,fill=#6] (\bposx+\bwidth,\bposy) -- (\bposx+\bwidth+\bdepth,\bposy+\bdepth) -- (\bposx+\bwidth+\bdepth,\bposy+\bheigth+\bdepth) -- (\bposx+\bwidth,\bposy+\bheigth);
+
+		\draw[draw=black,fill opacity=#7,fill=#6] (\bposx+\bwidth,\bposy+\bheigth) -- (\bposx+\bwidth+\bdepth,\bposy+\bheigth+\bdepth) -- (\bposx+\bdepth,\bposy+\bheigth+\bdepth) -- (\bposx,\bposy+\bheigth);
+	}
+
+
+\def\centerarc[#1](#2)(#3:#4:#5)% Syntax: [draw options] (center) (initial angle:final angle:radius)
+{ \draw[#1] ($(#2)+({#5*cos(#3)},{#5*sin(#3)})$) arc (#3:#4:#5); }
+
+
+
+%%
+\NewDocumentCommand\Cycle{O{} m m m O{} m}{%
+% [opt arg cycle]{Node}{Angle}{Node size}[opt arg arch node]{cycle size}
+\draw[#1](#2.{#3+asin(#6/(#4*1.41))}) arc (180+#3-45:180+#3-45-270:#6/2) #5;
+}
+%%
+
+\makeatletter
+\def\vectornormalised#1#2{%
+	\begingroup
+	\coordinate (tempa) at (#1);
+	\coordinate (tempb) at (#2);
+	\pgfpointdiff{\pgfpointanchor{tempa}{center}}%
+	{\pgfpointanchor{tempb}{center}}%
+	\pgfpointnormalised{}
+	\pgf@xa=28.45274\pgf@x%
+	\pgf@ya=28.45274\pgf@y%
+	\draw[red,->] (#1)-- +(\the\pgf@xa,\the\pgf@ya) coordinate (tempc);
+	\endgroup
+}
+
+\tikzset{norm/.style={to path={%
+					\pgfextra{\vectornormalised{\tikztostart}{\tikztotarget}} (tempc) -- (\tikztotarget) \tikztonodes
+				}}}
+\makeatother
+
+
+
+\def\lineP{
+	\draw[line] (0, 0) -- ++(0, \s);
+}
+
+\def\linePointsEven{
+	\foreach \i in {1, ..., \pointAmount} {
+		\coordinate (cp\i) at (0, \i * \s / \pointAmount - \o);
+		\node at (cp\i) [dot, fill=ctpLavender] {};
+	}
+}
+
+\def\linePointsRandom{
+	\foreach \i in {1, ..., \pointAmount} {
+		% \pgfmathsetmacro{\rando}{4 * (rand - 0.5)}
+		% \coordinate (cp\i) at (0, \i * \s / \pointAmount + \rando - 0.8 * \o);
+		\pgfmathsetmacro{\rando}{0.5 * (rand - 0.5)}
+		\coordinate (cp\i) at (0, \i * \s / \pointAmount + \o * \rando - 0.8 * \o);
+		\node at (cp\i) [dot, fill=ctpLavender] {};
+	}
+}
+
+\def\lineRobots{
+	\foreach \i in {1, ..., \pointAmount} {
+		\node at (cp\i) [robot] {};
+	}
+}
+
+\def\circleP{
+	\def\hs{\s / 2.4}
+	\def\radius{\s / 2}
+	\draw[line] (0, \radius) circle (\radius);
+}
+
+\def\circlePointsEven{
+	\pgfmathsetmacro{\a}{360 / \pointAmount}
+	\foreach \i in {1, ..., \pointAmount} {
+		\draw[none] (0, \radius) -- ++(\i * \a:\radius) coordinate (cp\i);
+		\node at (cp\i) [dot, fill=ctpLavender] {};
+	}
+}
+
+% similar to linePointsRandom but where its the angle that is random
+\def\circlePointsRandom{
+	\pgfmathsetmacro{\a}{360 / \pointAmount}
+	\foreach \i in {1, ..., \pointAmount} {
+		\pgfmathsetmacro{\rando}{(rand - 0.5) / 2}
+		\draw[none] (0, \radius) -- ++(\i * \a + \a * \rando:\radius) coordinate (cp\i);
+		\node at (cp\i) [dot, fill=ctpLavender] {};
+	}
+}
+
+\def\circleRobots{
+	\foreach \i in {1, ..., \pointAmount} {
+		\node at (cp\i) [robot] {};
+	}
+}
