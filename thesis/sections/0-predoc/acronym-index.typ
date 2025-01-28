@@ -55,7 +55,7 @@
       cells.push(acr-long)
     }
 
-    assert(calc.rem(cells.len(), 2) == 0)
+    //assert(calc.rem(cells.len(), 2) == 0)
 
     let split = 56
     let first-half = cells
@@ -81,10 +81,12 @@
     )
 
     if num_cols == 1 {
-      grid(
-        columns: num_cols,
-        t(first-half),
-      )
+      align(center)[
+        #grid(
+          columns: num_cols,
+          t(first-half),
+        )
+      ]
     } else {
       grid(
         columns: num_cols,

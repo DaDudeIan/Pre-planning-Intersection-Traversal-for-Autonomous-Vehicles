@@ -4,10 +4,8 @@
   definition: Root Mean Squared Error
 - acronym: CPU
   definition: Central Processing Unit
-  plural: Central Processing Units
 - acronym: ID
   definition: Identifier
-  plural: Identifiers
 - acronym: YAML
   definition: YAML Ain't Markup Language
 - acronym: UI
@@ -36,4 +34,3 @@
   definition: Multilayer Perceptron
 - acronym: ROS2
   definition: Robot Operating System 2
-

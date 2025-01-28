@@ -466,7 +466,7 @@
     v(40pt, weak: true)
 
     // Start two column mode and configure paragraph properties.
-    set par(justify: true, first-line-indent: 1em, spacing: 1.25em)
+    set par(justify: true, first-line-indent: 1em, spacing: 1em)
 
     // Print TOC if print-toc is true
     if print-toc {

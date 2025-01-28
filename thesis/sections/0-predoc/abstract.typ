@@ -1,4 +1,4 @@
 #import "../../lib/mod.typ": *
 = Abstract <c0:abstract>
 
-hello
+hello #acr("ROS2")

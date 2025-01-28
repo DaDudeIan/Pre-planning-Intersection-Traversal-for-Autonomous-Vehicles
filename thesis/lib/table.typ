@@ -2,7 +2,7 @@
 #import "@preview/funarray:0.4.0": *
 #import "marker.typ"
 
-#let term-table(colors: (catppuccin.latte.lavender, ), ..rows) = {
+#let term-table(colors: (catppuccin.latte.sapphire.darken(10%), ), ..rows) = {
   // insert a marker.arrow.single as a third column between the terms and their definitions
 
   let colors = cycle(colors, rows.pos().len())
@@ -38,7 +38,7 @@
   alignment: auto,
   stroke: none,
   header-color: (
-    fill: catppuccin.latte.lavender,
+    fill: catppuccin.latte.sapphire.darken(10%),
     text: white
   ),
   even-color: catppuccin.latte.mantle,
@@ -103,6 +103,7 @@
   }
 
   let c = (header, ..content.pos()).slice(if header == auto {1} else {0}, content.pos().len() + 1)
+  let flat_c = c.flatten() // dirty fix doesn't allow plurals
 
   cut-block(
     table(
@@ -111,7 +112,7 @@
       stroke: stroke,
       fill: f,
       gutter: -1pt,
-      //..c
+      ..flat_c
       // header,
       // ..content
     )
