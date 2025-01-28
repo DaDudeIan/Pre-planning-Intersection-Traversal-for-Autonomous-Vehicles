@@ -1,2 +1,4 @@
 #import "../../lib/mod.typ": *
-= Abstract <abstract>
+= Abstract <c0:abstract>
+
+hello

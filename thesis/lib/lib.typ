@@ -22,7 +22,7 @@
 // #show: word-count
 
 #let theme = catppuccin.latte
-#let accent = theme.lavender
+#let accent = theme.sapphire.darken(10%)
 // #let colors = (
 // )
 

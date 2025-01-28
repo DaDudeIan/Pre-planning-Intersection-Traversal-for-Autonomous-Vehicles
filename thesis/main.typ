@@ -38,7 +38,7 @@
   let t = it.body.fields().values().at(0)
 
   let size = 1em
-  let color = black
+  let color = accent.darken(40%)
   let weight = "medium"
 
   if it.level == 1 {
@@ -65,12 +65,14 @@
         [],
         text(color, size: size, weight: weight, [
           #box(
+
             width: 8mm,
             it.body.fields().values().at(0).at(0)
           )
           #it.body.fields().values().at(0).slice(2).join("")
         ]),
-        block(fill: color, height: 0.5pt, width: 100%),
+        //block(fill: color, height: 0.5pt, width: 100%),
+        line(stroke: (paint: accent, thickness: 1pt, dash: "dotted"), length: 100%),
         text(color, size: 1em, weight: weight, it.page),
       )
     )
@@ -84,7 +86,8 @@
         align: (center, left + bottom, center + bottom, right + bottom),
         [],
         text(color, size: size, weight: weight, it.body),
-        block(fill: color, height: 0.5pt, width: 100%),
+        //block(fill: color, height: 0.5pt, width: 100%),
+        line(stroke: (paint: accent, thickness: 1pt, dash: "dotted"), length: 100%),
         text(color, size: 1em, weight: weight, it.page),
       )
     )
@@ -106,8 +109,8 @@
   size: 18pt,
 )[
   #pagebreak(weak: true)
-  #let subdued = theme.text.lighten(50%)
-  #set text(font: "JetBrainsMono NFM")
+  #let subdued = accent.lighten(50%)
+  #set text(font: "Roboto Mono")
 
   #grid(
     columns: (1fr, 1fr),
@@ -194,7 +197,8 @@
     ]
 
     #show heading.where(level: 1) : it => text(
-      black,
+      accent,
+      font: "Roboto Mono",
     )[
       #pagebreak(weak: true)
       #set par(justify: false)
@@ -326,7 +330,6 @@
 #include "sections/4-results/mod.typ"
 #include "sections/5-discussion/mod.typ"
 #include "sections/6-conclusion/mod.typ"
-
 
 #heading([References], level: 1, numbering: none)<references>
 #bibliography(
