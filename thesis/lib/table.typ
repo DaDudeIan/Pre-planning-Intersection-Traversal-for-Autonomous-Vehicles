@@ -102,8 +102,21 @@
     fill
   }
 
-  let c = (header, ..content.pos()).slice(if header == auto {1} else {0}, content.pos().len() + 1)
-  let flat_c = c.flatten() // dirty fix doesn't allow plurals
+  let filtered_content = content.pos()
+  let new_content = ()
+  let abbreviation = ""
+  let description = ""
+  for (i, entry) in filtered_content.enumerate() {
+    if (calc.even(i)) {
+      abbreviation = entry
+      continue
+    }
+    description = entry.at(0)
+    new_content.push((abbreviation, description))
+  }
+
+  let c = (header, ..new_content)//.slice(if header == auto {1} else {0}, new_content.len() + 1)
+  let flat_c = c.flatten() 
 
   cut-block(
     table(
