@@ -4,6 +4,6 @@
 The introduction to the thesis will be structured as follows...
 
 #include "motivation.typ"
-#include "problem-definition.typ"
+#include "problem-statement.typ"
 
 

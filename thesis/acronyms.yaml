@@ -22,15 +22,27 @@
   definition: JavaScript Object Notation
 - acronym: API
   definition: Application Programming Interface
+  plural: Application Programming Interfaces
 - acronym: PNG
   definition: Portable Network Graphics
 - acronym: TOML
   definition: Tom's Obvious Minimal Language
 - acronym: CNN
   definition: Convolutional Neural Network
+  plural: Convolutional Neural Networks
 - acronym: GNN
   definition: Graph Neural Network
 - acronym: MLP
   definition: Multilayer Perceptron
+  plural: Multilayer Perceptrons
 - acronym: ROS2
   definition: Robot Operating System 2
+- acronym: AV
+  definition: Autonomous Vehicle
+  plural: Autonomous Vehicles
+- acronym: DL
+  definition: Deep Learning
+- acronym: CV
+  definition: Computer Vision
+- acronym: AIM
+  definition: Autonomous Intersection Management

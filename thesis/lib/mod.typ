@@ -23,5 +23,6 @@
 #import "marker.typ"
 #import "aos-soa.typ": aos, soa
 #import "seq.typ": fib
+#import "@preview/nth:1.0.1": *
 
 #let cursor = line(length: 100%, stroke: 1em + red)

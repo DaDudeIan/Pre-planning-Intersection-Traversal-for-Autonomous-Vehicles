@@ -1,2 +1,2 @@
 #import "../../lib/mod.typ": *
-== section 1 <sec:sec1>
+== Section 1 <sec:sec1>

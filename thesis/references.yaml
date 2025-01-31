@@ -1,11 +1,60 @@
-vdm:
-  type: book
-  title: Validated Designs for Object-oriented Systems
+aim_dist:
+  type: misc
+  title: A Distributed Approach to Autonomous Intersection Management via Multi-Agent Reinforcement Learning
   author:
-  - Larsen, Peter Gorm
-  - Fitzgerald, John
-  - Mukherjee, Nico
-  - Verhoef, Marcel
-  date: 2005
-  publisher: Springer
-  # page-range: 1–13
+  - Cederle, Matteo
+  - Fabris, Marco
+  - Susto, Gian Antonio
+  date: 2024
+  url: https://arxiv.org/abs/2405.08655
+  serial-number:
+    arxiv: '2405.08655'
+car2x:
+  type: misc
+  title: 'Technical milestone in road safety: experts praise Volkswagen''s Car2X technology'
+  date: 2023
+  url: https://www.volkswagen-newsroom.com/en/press-releases/technical-milestone-in-road-safety-experts-praise-volkswagens-car2x-technology-5914
+aim_survey:
+  type: article
+  title: 'Autonomous and Semiautonomous Intersection Management: A Survey'
+  author:
+  - Zhong, Zijia
+  - Nejad, Mark
+  - Lee, Earl E
+  date: 2021
+  page-range: 53-70
+  serial-number:
+    doi: 10.1109/MITS.2020.3014074
+  parent:
+    type: periodical
+    title: IEEE Intelligent Transportation Systems Magazine
+    issue: 2
+    volume: 13
+aim:
+  type: article
+  title: A multiagent approach to autonomous intersection management
+  author:
+  - Dresner, Kurt
+  - Stone, Peter
+  date: 2008
+  page-range: 591-656
+  parent:
+    type: periodical
+    title: Journal of artificial intelligence research
+    volume: 31
+aim_heuristic:
+  type: article
+  title: 'Autonomous Intersection Management: A Heuristic Approach'
+  author:
+  - Chouhan, Aaditya Prakash
+  - Banda, Gourinath
+  date: 2018
+  page-range: 53287-53295
+  serial-number:
+    doi: 10.1109/ACCESS.2018.2871337
+  parent:
+    type: periodical
+    title: IEEE Access
+    issue: ''
+    volume: 6
+
