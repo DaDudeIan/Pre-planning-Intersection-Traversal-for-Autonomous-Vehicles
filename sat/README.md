@@ -33,6 +33,6 @@ yields
 
 ## Requirements
 Required python libraries are:
-```python
+```
 pip install hashlib, hmac, base64, urllib, requests, yaml, PIL
 ```
