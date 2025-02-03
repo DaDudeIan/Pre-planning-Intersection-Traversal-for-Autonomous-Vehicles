@@ -6,5 +6,6 @@
 This section outlines the theory relevant to the thesis. It begins with...
 
 // #include "related-works.typ"
-#include "technical-introduction.typ"
 
+#include "background.typ"
+#include "related_work.typ"

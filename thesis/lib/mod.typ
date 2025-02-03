@@ -17,7 +17,6 @@
 #import "dict.typ": *
 #import "binary.typ": binary, popcount, hamming-distance
 #import "equation.typ"
-#import "nouns.typ": *
 #import "@preview/cetz:0.2.2"
 #import "@preview/funarray:0.4.0": *
 #import "marker.typ"

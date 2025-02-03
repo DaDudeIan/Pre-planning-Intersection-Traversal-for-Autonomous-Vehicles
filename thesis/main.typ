@@ -153,7 +153,7 @@
         inset: 0pt,
         pad(
           rest: -1mm,
-          image("figures/img/placeholder.png")
+          image("figures/img/pray4this.png")
         )
       )
     )
@@ -324,7 +324,6 @@
 )
 
 #include "sections/1-introduction/mod.typ"
-#include "sections/related-works.typ"
 #include "sections/2-background/mod.typ"
 #include "sections/3-methodology/mod.typ"
 #include "sections/4-results/mod.typ"

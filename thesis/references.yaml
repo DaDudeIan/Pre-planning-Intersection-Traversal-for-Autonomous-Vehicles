@@ -57,4 +57,17 @@ aim_heuristic:
     title: IEEE Access
     issue: ''
     volume: 6
+aim_multi:
+  type: article
+  title: 'Autonomous intersection management: Multi-intersection optimization'
+  author:
+  - Hausknecht, Matthew
+  - Au, Tsz-Chiu
+  - Stone, Peter
+  date: 2011
+  page-range: 4581-4586
+  parent:
+    type: proceedings
+    title: 2011 IEEE/RSJ International Conference on Intelligent Robots and Systems
+    organization: IEEE
 

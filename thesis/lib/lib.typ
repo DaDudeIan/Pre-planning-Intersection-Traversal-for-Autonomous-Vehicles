@@ -973,6 +973,8 @@
   )
 )
 
+#let etal = [_et al._]
+
 
 #let configs = (
   config: source-link("https://github.com/AU-Master-Thesis/gbp-rs/blob/main/config/simulations/Environment%20Obstacles%20Experiment/config.toml", "config.toml"),
