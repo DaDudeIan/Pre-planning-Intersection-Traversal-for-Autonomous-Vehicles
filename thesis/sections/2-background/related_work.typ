@@ -14,3 +14,5 @@
 // Multi-agent RL, Cooperative learning
 // Simulation (sim-to-real)
 // 
+
+== On-board vs Cloud Computing <c3s3.3:edge-cloud> // Maybe discussion (theoretical) 

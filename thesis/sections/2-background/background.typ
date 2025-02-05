@@ -24,17 +24,20 @@
 
 === Computer Vision <c2s2.2.1:cv>
 // Classic CV tasks: object detection, segmentation
-// Conv and CNNs, Vision Transformers ViT (Attention), Swin, U-Net
-// Bird's Eye View (BEV) models
-// Liquid NN
+// Conv and CNNs, Vision Transformers ViT (Attention), Swin, U-Net, (conditional) GANs
+// Bird's Eye View (BEV) models, Liquid NN, graph NNs
 // Lane Detection
 // specific papers: DiffusionDrive
+// 
+// Fast inference is not a critical goal, but accuracy is.
 
 === Datasets <c2s2.2.2:datasets>
 // Existing datasets for AVs: waymo, nuScenes, Argoverse
 // lane-level datasets: ONCE, OpenLane, 
 // Road extraction: DeepGlobe, SpaceNet
 // Trajectory prediction: INTERACTION, ApolloScape
+// 
+// Training: introduce occlusions
 
 == Satellite Imagery <c2s2.3:si>
 // Google Maps Static API, Azure Maps, Sentinel, OpenStreetMap
