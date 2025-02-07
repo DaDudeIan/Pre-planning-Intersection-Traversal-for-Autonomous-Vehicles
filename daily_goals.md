@@ -6,17 +6,33 @@
 
 Introduction: Research Questions, Motivation (Maybe)
 
-Methodology: Satellite imagery (API)
-
 ### Noon
 
-Methodology: Dataset creation, Loss function
+Methodology: Satellite imagery (API)
+
+Code: Dataset creation
 
 ### Afternoon
 
-Methodology: Loss function (cont.)
+Methodology: Loss function
 
 ### Additional notes
 
+Didn't do dataset creation and loss function. Too absorbed in writing other sections. Will do next.
 
 ---
+
+## 10/02/2025
+### Morning
+
+Code: Dataset creation
+
+### Noon
+
+Methodology/code: Loss function
+
+### Afternoon
+
+Methodology/code: Loss function (cont.)
+
+### Additional notes

@@ -1,3 +1,6 @@
 #import "../../../lib/mod.typ": *
-== Section 1 <c4s1:sec1>
 
+#include "sat.typ"
+#include "loss.typ"
+#include "data.typ"
+#include "model.typ"

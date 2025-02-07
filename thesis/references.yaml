@@ -57,17 +57,39 @@ aim_heuristic:
     title: IEEE Access
     issue: ''
     volume: 6
-aim_multi:
+navlab_paper:
   type: article
-  title: 'Autonomous intersection management: Multi-intersection optimization'
+  title: Vision and navigation for the Carnegie-Mellon Navlab
   author:
-  - Hausknecht, Matthew
-  - Au, Tsz-Chiu
-  - Stone, Peter
-  date: 2011
-  page-range: 4581-4586
+  - Thorpe, C.
+  - Hebert, M.H.
+  - Kanade, T.
+  - Shafer, S.A.
+  date: 1988
+  page-range: 362-373
+  serial-number:
+    doi: 10.1109/34.3900
   parent:
-    type: proceedings
-    title: 2011 IEEE/RSJ International Conference on Intelligent Robots and Systems
-    organization: IEEE
+    type: periodical
+    title: IEEE Transactions on Pattern Analysis and Machine Intelligence
+    issue: 3
+    volume: 10
+navlab_site:
+  type: misc
+  title: The Carnegie Mellon University Autonomous Land Vehicle Project
+  author: University, Carnegie Mellon
+  date: 2025
+  url: https://www.cs.cmu.edu/afs/cs/project/alv/www/index.html
+billington_2018:
+  type: misc
+  title: 'The Prometheus project: The story behind one of AV''s greatest developments'
+  author: Billington, James
+  date: 2018-08
+  publisher: ADAS & Autonomous Vehicle International
+  url: https://www.autonomousvehicleinternational.com/features/the-prometheus-project.html
+url_sign:
+  type: misc
+  title: Use a Digital Signature
+  date: 2025
+  url: https://developers.google.com/maps/documentation/maps-static/digital-signature
 

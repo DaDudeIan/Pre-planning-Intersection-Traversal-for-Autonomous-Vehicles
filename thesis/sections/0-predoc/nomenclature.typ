@@ -4,5 +4,8 @@
 #par(first-line-indent: 0pt)[Some terminology and type setting used in this thesis may not be familiar to the reader, and are explained here for clarity.]
 
 #term-table(
-  [Hello], [World]
+  [`monospace`], [Inline monospace text is used for code function names, variables, or parameters.],
+  [`a.b`], [In inline monospace text, a period `.` is used to denote a method or property of an object. Can also be used outside of monospace text.],
+  [`listing:<int>`], [A reference to a specific listing, where `<int>` represents a line number.],
+  [`listing:<int>-<int>`], [Reference to a range of lines within a listing.]
 )

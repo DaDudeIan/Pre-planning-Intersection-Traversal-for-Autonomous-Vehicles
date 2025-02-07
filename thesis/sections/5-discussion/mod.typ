@@ -9,3 +9,8 @@ In this section...
 // Notable shortcomings of project: requires latest satellite images to be completely useful. (like contruction zones, etc)
 
 == Future Work <c6:future-work>
+
+
+
+
+// other considered languages: C/C++, Fortran

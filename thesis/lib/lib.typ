@@ -4,7 +4,7 @@
 #import "colors.typ"
 #import "catppuccin.typ": *
 // #import "template.typ": *
-#import "@preview/codelst:2.0.1": sourcecode, codelst, sourcefile
+#import "@preview/codelst:2.0.2": sourcecode, codelst, sourcefile
 
 #import "@preview/tablex:0.0.6": *
 #import "@preview/drafting:0.2.0": *
@@ -638,9 +638,9 @@
         algorithm-counter.step()
 
         blocked(
-          title: text(theme.mauve.lighten(20%), title_prefix) + text(weight: "regular", caption),
+          title: text(theme.sapphire.lighten(20%), title_prefix) + text(weight: "regular", caption),
           h(ind) + content,
-        color: theme.mauve.lighten(90%),
+        color: theme.sapphire.lighten(90%),
           // content + linebreak() +
           // repr(content.fields())
         )
