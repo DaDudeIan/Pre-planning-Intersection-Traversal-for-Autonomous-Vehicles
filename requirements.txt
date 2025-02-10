@@ -1,0 +1,10 @@
+ipykernel==6.29.5
+pillow==11.1.0
+pyyaml==6.0.2
+requests==2.32.3
+opencv-python==4.11.0.86
+matplotlib==3.10.0
+scipy==1.15.1
+ipython==8.32.0
+joblib
+numba

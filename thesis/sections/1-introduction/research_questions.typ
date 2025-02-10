@@ -17,6 +17,7 @@
   + How does a waypoint-based approach compare to a pixel-subset-based approach in terms of accuracy and efficiency in path planning for autonomous vehicles at intersections?
   + Which type of deep learning model produces the most optimal results for pre-planned intersection traversal?
   + Is it possible to design a loss function that effectively captures the similarity between generated and optimal paths for autonomous vehicles without it only allowing for exact paths?
-  // + 
+  + Is it possible to create a dataset that allows for the training of a model, such that the data is not too stringent to a singular path?
+  //+ What strategies can be employed to ensure robust localization of autonomous vehicles while following generated paths?  
 ]
 

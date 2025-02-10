@@ -36,3 +36,12 @@ Methodology/code: Loss function
 Methodology/code: Loss function (cont.)
 
 ### Additional notes
+
+Cold maps created. Still figuring out parameters for best threshold and exponents.
+
+---
+
+## 11/02/2025
+### Morning
+
+Write about yesterday's progress in methodology
