@@ -20,7 +20,7 @@ Methodology: Loss function
 
 Didn't do dataset creation and loss function. Too absorbed in writing other sections. Will do next.
 
----
+
 
 ## 10/02/2025
 ### Morning
@@ -39,9 +39,20 @@ Methodology/code: Loss function (cont.)
 
 Cold maps created. Still figuring out parameters for best threshold and exponents.
 
----
+
 
 ## 11/02/2025
-### Morning
+### All day
 
 Write about yesterday's progress in methodology
+
+### Additional notes
+
+Found optimal threshold and exponent visually.
+
+
+## 12/02/2025
+### All day
+
+Work on related work
+
