@@ -135,7 +135,14 @@ caption: [Python function to rotate an image by a specified angle (`rotate_image
   image("../../../figures/img/map.png", width: 100%)
 }
 
-#figure(
+#std-block(breakable: false)[
+  #v(-1em)
+  #box(
+    fill: theme.sapphire,
+    outset: 0em,
+    inset: 0em,
+  )
+  #figure(
   grid(
   columns: (4fr, 6fr),
   column-gutter: 1em,
@@ -143,7 +150,7 @@ caption: [Python function to rotate an image by a specified angle (`rotate_image
   
   std-block(breakable: false)[
     #box(
-      fill: theme.sapphire,
+      fill: theme.sapphire.darken(80%),
       outset: 0em,
       inset: 0em,
     )
@@ -153,5 +160,7 @@ caption: [Python function to rotate an image by a specified angle (`rotate_image
 ),
 caption: [Example of a signed URL and satellite image retrieved using the Google Maps Static API.]
 ) <fig.sat_example>
+]
+
 
 

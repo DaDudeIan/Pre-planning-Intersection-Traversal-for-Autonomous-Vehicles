@@ -653,7 +653,7 @@
 
 
 #let H(n) = [Hypothesis #boxed(color: theme.lavender)[*H-#n*]]
-#let RQ(n) = [Research Question #boxed(color: theme.lavender)[*RQ-#n*]]
+#let RQ(n) = [Research Question #boxed(color: theme.teal)[*RQ-#n*]]
 #let O(n) = [Objective #boxed(color: theme.lavender)[*O-#n*]]
 
 #let scen = (
