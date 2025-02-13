@@ -92,4 +92,244 @@ url_sign:
   title: Use a Digital Signature
   date: 2025
   url: https://developers.google.com/maps/documentation/maps-static/digital-signature
+dijkstra1959-cg:
+  type: article
+  title: A note on two problems in connexion with graphs
+  author: Dijkstra, E W
+  date: 1959-12
+  page-range: 269-271
+  parent:
+    type: periodical
+    title: Numer. Math. (Heidelb.)
+    publisher: Springer Nature
+    issue: 1
+    volume: 1
+a-star:
+  type: article
+  title: A Formal Basis for the Heuristic Determination of Minimum Cost Paths
+  author:
+  - Hart, Peter E.
+  - Nilsson, Nils J.
+  - Raphael, Bertram
+  date: 1968
+  page-range: 100-107
+  serial-number:
+    doi: 10.1109/TSSC.1968.300136
+  parent:
+    type: periodical
+    title: IEEE Transactions on Systems Science and Cybernetics
+    issue: 2
+    volume: 4
+d-star:
+  type: article
+  title: Optimal and efficient path planning for partially-known environments
+  author: Stentz, A.
+  date: 1994
+  page-range: 3310-3317
+  serial-number:
+    doi: 10.1109/ROBOT.1994.351061
+  parent:
+    type: proceedings
+    title: Proceedings of the 1994 IEEE International Conference on Robotics and Automation
+    issue: ''
+    volume: 0
+focused-d-star:
+  type: article
+  title: The Focussed D* Algorithm for Real-Time Replanning
+  author:
+    name: Stentz
+    given-name: Anthony
+    prefix: (Tony)
+  date: 1995-08
+  page-range: 1652-1659
+  parent:
+    type: proceedings
+    title: Proceedings of 14th International Joint Conference on Artificial Intelligence (IJCAI '95)
+d-star-lite:
+  type: article
+  title: Fast replanning for navigation in unknown terrain
+  author:
+  - Koenig, S.
+  - Likhachev, M.
+  date: 2005
+  page-range: 354-363
+  serial-number:
+    doi: 10.1109/TRO.2004.838026
+  parent:
+    type: periodical
+    title: IEEE Transactions on Robotics
+    issue: 3
+    volume: 21
+apf:
+  type: chapter
+  title: Real-Time Obstacle Avoidance for Manipulators and Mobile Robots
+  author: Khatib, Oussama
+  date: 1990
+  editor:
+  - Cox, Ingemar J.
+  - Wilfong, Gordon T.
+  page-range: 396-404
+  url: https://doi.org/10.1007/978-1-4613-8997-2_29
+  serial-number:
+    doi: 10.1007/978-1-4613-8997-2_29
+    isbn: 978-1-4613-8997-2
+  parent:
+    type: book
+    title: Autonomous Robot Vehicles
+    publisher:
+      name: Springer New York
+      location: New York, NY
+apf-boo:
+  type: article
+  title: Potential field methods and their inherent limitations for mobile robot navigation
+  author:
+  - Koren, Y.
+  - Borenstein, J.
+  date: 1991
+  page-range: 1398-1404
+  serial-number:
+    doi: 10.1109/ROBOT.1991.131810
+  parent:
+    type: proceedings
+    title: Proceedings. 1991 IEEE International Conference on Robotics and Automation
+    issue: ''
+    volume: 0
+apf-swarm1:
+  type: article
+  title: Swarm aggregations using artificial potentials and sliding-mode control
+  author: Gazi, V.
+  date: 2005
+  page-range: 1208-1214
+  serial-number:
+    doi: 10.1109/TRO.2005.853487
+  parent:
+    type: periodical
+    title: IEEE Transactions on Robotics
+    issue: 6
+    volume: 21
+apf-swarm2:
+  type: article
+  title: Virtual leaders, artificial potentials and coordinated control of groups
+  author:
+  - Leonard, N.E.
+  - Fiorelli, E.
+  date: 2001
+  page-range: 2968-2973
+  serial-number:
+    doi: 10.1109/CDC.2001.980728
+  parent:
+    type: proceedings
+    title: Proceedings of the 40th IEEE Conference on Decision and Control (Cat. No.01CH37228)
+    issue: ''
+    volume: 3
+rrt:
+  type: article
+  title: 'Rapidly-exploring random trees : a new tool for path planning'
+  author: LaValle, Steven M.
+  date: 1998
+  url: https://api.semanticscholar.org/CorpusID:14744621
+  parent:
+    type: periodical
+    title: The annual research report
+rrt-star:
+  type: misc
+  title: Sampling-based Algorithms for Optimal Motion Planning
+  author:
+  - Karaman, Sertac
+  - Frazzoli, Emilio
+  date: 2011
+  url: https://arxiv.org/abs/1105.1186
+  serial-number:
+    arxiv: '1105.1186'
+rrt-auv1:
+  type: article
+  title: Mutual Information-Based Multi-AUV Path Planning for Scalar Field Sampling Using Multidimensional RRT*
+  author:
+  - Cui, Rongxin
+  - Li, Yang
+  - Yan, Weisheng
+  date: 2016
+  page-range: 993-1004
+  serial-number:
+    doi: 10.1109/TSMC.2015.2500027
+  parent:
+    type: periodical
+    title: 'IEEE Transactions on Systems, Man, and Cybernetics: Systems'
+    issue: 7
+    volume: 46
+rrt-auv2:
+  type: article
+  title: Navigation in the Presence of Obstacles for an Agile Autonomous Underwater Vehicle
+  author:
+  - Xanthidis, Marios
+  - Karapetyan, Nare
+  - Damron, Hunter
+  - Rahman, Sharmin
+  - Johnson, James
+  - O’Connell, Allison
+  - O’Kane, Jason M.
+  - Rekleitis, Ioannis
+  date: 2020
+  page-range: 892-899
+  serial-number:
+    doi: 10.1109/ICRA40945.2020.9197558
+  parent:
+    type: proceedings
+    title: 2020 IEEE International Conference on Robotics and Automation (ICRA)
+    issue: ''
+    volume: 0
+rrt-auv3:
+  type: misc
+  title: A Collision Avoidance System for Autonomous Underwater Vehicles
+  author: TAN, CHIEW SEON
+  date: 2024
+  url: https://pearl.plymouth.ac.uk/secam-theses/302/
+ga:
+  type: article
+  title: Genetic Algorithm Based Approach for Autonomous Mobile Robot Path Planning
+  author:
+  - Lamini, Chaymaa
+  - Benhlima, Said
+  - Elbekri, Ali
+  date: 2018
+  page-range: 180-189
+  url: https://www.sciencedirect.com/science/article/pii/S187705091830125X
+  serial-number:
+    doi: https://doi.org/10.1016/j.procs.2018.01.113
+    issn: 1877-0509
+  note: PROCEEDINGS OF THE FIRST INTERNATIONAL CONFERENCE ON INTELLIGENT COMPUTING IN DATA SCIENCES, ICDS2017
+  parent:
+    type: periodical
+    title: Procedia Computer Science
+    volume: 127
+fuzzy_sets:
+  type: article
+  title: Fuzzy sets
+  author: Zadeh, L.A.
+  date: 1965
+  page-range: 338-353
+  url: https://www.sciencedirect.com/science/article/pii/S001999586590241X
+  serial-number:
+    doi: https://doi.org/10.1016/S0019-9958(65)90241-X
+    issn: 0019-9958
+  parent:
+    type: periodical
+    title: Information and Control
+    issue: 3
+    volume: 8
+fuzzy_algs:
+  type: article
+  title: Fuzzy algorithms
+  author: Zadeh, L.A.
+  date: 1968
+  page-range: 94-102
+  url: https://www.sciencedirect.com/science/article/pii/S0019995868902118
+  serial-number:
+    doi: https://doi.org/10.1016/S0019-9958(68)90211-8
+    issn: 0019-9958
+  parent:
+    type: periodical
+    title: Information and Control
+    issue: 2
+    volume: 12
 

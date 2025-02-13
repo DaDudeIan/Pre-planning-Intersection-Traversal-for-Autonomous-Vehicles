@@ -48,3 +48,17 @@
   definition: Autonomous Intersection Management
 - acronym: BEV
   definition: Bird's Eye View
+- acronym: APF
+  definition: Artificial Potential Field
+- acronym: RRT
+  definition: Rapidly-exploring Random Tree
+- acronym: AUV
+  definition: Autonomous Underwater Vehicle
+- acronym: GA
+  definition: Genetic Algorithm
+- acronym: FL
+  definition: Fuzzy Logic
+- acronym: NN
+  definition: Neural Network
+- acronym: RL
+  definition: Reinforcement Learning

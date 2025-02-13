@@ -20,5 +20,3 @@
   + Is it possible to create a dataset that allows for the training of a model, such that the data is not too stringent to a singular path?
   //+ What strategies can be employed to ensure robust localization of autonomous vehicles while following generated paths?  
 ]
-
-#RQ(4)

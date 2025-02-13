@@ -54,5 +54,18 @@ Found optimal threshold and exponent visually.
 ## 12/02/2025
 ### All day
 
-Work on related work
+Look into structuring dataset
 
+## 13/02/2025
+### All day
+
+Related work
+
+## 14/02/2025
+### Morning
+
+Dataset creation
+
+### Noon
+
+Meeting
