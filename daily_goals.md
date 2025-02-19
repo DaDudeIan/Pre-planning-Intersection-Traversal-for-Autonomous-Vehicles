@@ -69,3 +69,10 @@ Dataset creation
 ### Noon
 
 Meeting
+
+## 17/02/2025
+### Morning
+
+Write corrections from meeting:
+- Rephrase research Questions
+- Look at optimizing cold map generation code

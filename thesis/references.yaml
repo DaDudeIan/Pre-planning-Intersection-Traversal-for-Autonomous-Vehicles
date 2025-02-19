@@ -332,4 +332,9 @@ fuzzy_algs:
     title: Information and Control
     issue: 2
     volume: 12
+waymo:
+  type: misc
+  author: Francisco, ABC7 San
+  date: 2024-08
+  url: https://abc7news.com/post/wrong-waymo-driverless-car-goes-oncoming-traffic-tempe-arizona/15238556/
 

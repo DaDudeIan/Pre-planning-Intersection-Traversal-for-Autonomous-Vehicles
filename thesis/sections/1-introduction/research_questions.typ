@@ -11,12 +11,15 @@
 
 // potential if all goes well: How do we ensure that the vehicle follows the path correctly? (localization)
 
+
+The following research questions have been formulated to address key challenges in #acr("AV") path planning at intersections. The questions are designed to explore the effectiveness of different approaches and models in generating accurate and efficient paths for autonomous vehicles. The research questions are as follows:
+
 #[
   #set par(first-line-indent: 0em)
   #set enum(numbering: req-enum.with(prefix: "RQ-", color: theme.teal))
-  + How does a waypoint-based approach compare to a pixel-subset-based approach in terms of accuracy and efficiency in path planning for autonomous vehicles at intersections?
-  + Which type of deep learning model produces the most optimal results for pre-planned intersection traversal?
-  + Is it possible to design a loss function that effectively captures the similarity between generated and optimal paths for autonomous vehicles without it only allowing for exact paths?
+  + How can pixel-subset–based deep learning approaches be optimized to improve accuracy and efficiency in path planning for autonomous vehicles at intersections?
+  + How do #acrpl("CNN"), #acrpl("FCN"), #acrpl("ViT") and diffusion-based models compare in terms of achieving effective performance for pre-planned intersection traversal?
+  + Is it possible to design a loss function that effectively captures the similarity between generated and desired paths for autonomous vehicles without forcing exact matches?
   + Is it possible to create a dataset that allows for the training of a model, such that the data is not too stringent to a singular path?
   //+ What strategies can be employed to ensure robust localization of autonomous vehicles while following generated paths?  
 ]

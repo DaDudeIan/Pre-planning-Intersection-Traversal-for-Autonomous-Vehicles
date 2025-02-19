@@ -62,3 +62,7 @@
   definition: Neural Network
 - acronym: RL
   definition: Reinforcement Learning
+- acronym: FCN
+  definition: Fully Convolutional Network
+- acronym: ViT
+  definition: Vision Transformer

@@ -26,9 +26,34 @@ def process_rows(start: int, end: int, binary: np.ndarray) -> np.ndarray:
                 result[i - start, j] = (i, j)
     return result
 
+def process_rows2(start: int, end: int, binary: np.ndarray) -> np.ndarray:
+    occupied = []
+    for i in range(binary.shape[0]):
+        for j in range(binary.shape[1]):
+            if binary[i, j] != 0:
+                occupied.append((i, j))
+
+    h, w = binary.shape
+    result = np.zeros((end - start, w, 2), dtype=int)
+    pid = mp.current_process().pid
+    print(f"Process {pid} is processing rows {start} to {end}")
+    for i in tqdm(range(start, end)):
+        for j in range(binary.shape[1]):
+            if binary[i, j] == 0:
+                min_dist = float('inf')
+                nearest_coord = (i, j)
+                for x, y in occupied:
+                    d = hypot(i - x, j - y)
+                    if d < min_dist:
+                        min_dist = d
+                        nearest_coord = (x, y)
+                result[i - start, j] = nearest_coord
+            else:
+                result[i - start, j] = (i, j)
+    return result
 
 
-def get_nearest_coords(image_path: str) -> np.ndarray:
+def get_nearest_coords(image_path: str, fun = process_rows) -> np.ndarray:
     if not image_path:
         raise ValueError("Please provide a valid image path.")
     
@@ -50,7 +75,7 @@ def get_nearest_coords(image_path: str) -> np.ndarray:
 
     # Use a Pool to process rows in parallel
     with mp.Pool(num_processes) as pool:
-        results = pool.starmap(process_rows, tasks)
+        results = pool.starmap(fun, tasks)
 
     # Concatenate the results from each process
     nearest_coords = np.concatenate(results, axis=0)
@@ -59,9 +84,7 @@ def get_nearest_coords(image_path: str) -> np.ndarray:
 
 
 
-def coords_to_coldmap(coords, threshold: float = 20, exponent: float = 0.5):
-    print("Creating coldmap...")
-    
+def coords_to_coldmap(coords, threshold: float = 10, exponent: float = 0.75, normalize: int = 255):
     rows, cols = coords.shape[0], coords.shape[1]
     
     # Compute the Euclidean distances.
@@ -78,11 +101,14 @@ def coords_to_coldmap(coords, threshold: float = 20, exponent: float = 0.5):
     # Only update those pixels: apply the transformation for distances above the threshold.
     transformed[mask] = threshold + (distances[mask] - threshold) ** exponent
     
-    # Normalize the transformed values to the 0–255 range.
-    transformed_normalized = 255 * (transformed - transformed.min()) / (transformed.max() - transformed.min())
+    # Normalize the transformed values to the 0–normalize range.
+    transformed_normalized = normalize * (transformed - transformed.min()) / (transformed.max() - transformed.min())
     
-    print("Coldmap created.")
-    return transformed_normalized.astype(np.uint8)
+    return_type = np.uint8 if normalize == 255 else np.float32
+    
+    print("Coldmap generated.")
+    
+    return transformed_normalized.astype(return_type)
 
 
 def save_coldmap(coldmap: np.ndarray, output_path: str):
