@@ -5,15 +5,15 @@ The creation of a proper dataset is crucial for making sure the model learns the
 - It should be large enough to capture the complexity of the task. Size can be artificially increased through data augmentation.
 - It should be diverse enough to capture the variety of scenarios that can occur at an intersection.
 - It should allow for some leniency when it comes to generating paths, as the model should not be too stringent to a singular path.
-- For the purposes of this project, its creation should seek to answer #RQ(4) by providing a dataset that allows for the training of a model that can generate paths that are not too stringent to a singular path. 
+- For the purposes of this project, its creation should seek to answer #RQ(dataset_rq) by providing a dataset that allows for the training of a model that can generate paths that are not too stringent to a singular path. 
 
 === Cold maps <c4:cold_maps>
 
-The deduced method for training the model, as detailed in @c4:loss, revolves around the use of a cold map. A cold map representation of the desired path was chosen for a small simplification in the loss function. It penalizes points that are further from the desired path, and does not do this for points that are on the path. Creating this cold map was done in several steps. First, a grid of the same size as the input image is created. The input image is the path drawn in white on a black background, as shown in centre @fig.dataset_example. This means that the only occupied pixels are those taken up by the path. In this grid, the coordinates of the closest non-zero pixel is found by iterating over the entire input image containing the path. The complexity of this operation will be covered in the following sections. Next, the distance between the current pixel and the closest non-zero pixel is calculated. This distance is then compared to a threshold value to determine its value. If it is further away, the resulting penalty from the loss function should be higher. Different values for the threshold and the exponent of the distance calculation were tested to find the best combination. Lastly, the cold map is saved in a structured folder format for later use in training. Later, the created data is put through augmentation to inflate the size of the dataset and increase its diversity.
+The deduced method for training the model, as detailed in @c4:loss, includes the use of a cold map. A cold map representation of the desired path was chosen for a small simplification in the loss function. It penalizes points that are further from the desired path, and does not do this for points that are on the path. Creating this cold map was done in several steps. First, a grid of the same size as the input image is created. The input image is the path drawn in white on a black background, as shown in centre @fig.dataset_example. This means that the only occupied pixels are those taken up by the path. In this grid, the coordinates of the closest non-zero pixel is found by iterating over the entire input image containing the path. The complexity of this operation will be covered in the following sections. Next, the distance between the current pixel and the closest non-zero pixel is calculated. This distance is then compared to a threshold value to determine its value. If it is further away, the resulting penalty from the loss function should be higher. Different values for the threshold and the exponent of the distance calculation were tested to find the best combination. Lastly, the cold map is saved in a structured folder format for later use in training. Later, the created data is put through augmentation to inflate the size of the dataset and increase its diversity.
 
 ==== Finding the distance to the desired path <c4:cold_maps.dist>
 
-The algorithm for finding the distance to the closest point on the desire path is shown in @code.distance_grid. 
+The algorithm for finding the distance to the closest point on the desired path is shown in @code.distance_grid. 
 
 #listing([
   ```python
@@ -70,7 +70,7 @@ where $c$ = `coords`, $c_(i j 0)$ = `coords[i, j][0]`, $t$ is the threshold valu
 
 #listing([
   ```python
-def coords_to_coldmap(coords, threshold: float, exponent: float, normalize: int = 255):
+def coords_to_coldmap(coords, threshold: float, exponent: float, normalize: int = 1):
   rows, cols = coords.shape[0], coords.shape[1]
 
   distances = np.zeros((rows, cols), dtype=np.float32)
@@ -94,7 +94,7 @@ caption: [Non-parallelized code for finding the nearest point on the path.]
 
 
 
-To figure out the optimal values for the threshold and exponent, a grid search was performed. The grid search was done by iterating over a range of values for both the threshold and the exponent. The resulting cold maps were then evaluated by a human to determine which combination of values resulted in the most visually appealing cold map. For a $400 times 400$ image, the optimal values were found to be $t=20$ and $e=0.5$. The grid of results can be seen in figure @fig.coldmaps_comp. In testing, the value of $e=1$ was excluded as it had no effect on the gradient produced in the cold map, meaning all values of $t$ produced the same map.
+To figure out the optimal values for the threshold and exponent, a grid search was performed. The grid search was done by iterating over a range of values for both the threshold and the exponent. The resulting cold maps were then evaluated by a human to determine which combination of values resulted in the most visually appealing cold map. For a $400 times 400$ image, the optimal values were found to be $t=20$ and $e=1.25$. The grid of results can be seen in figure @fig.coldmaps_comp. In testing, the value of $e=1$ was excluded as it had no effect on the gradient produced in the cold map, meaning all values of $t$ produced the same map.
 
 // #std-block(breakable: false)[
 //   #v(-1em)
@@ -157,13 +157,28 @@ To figure out the optimal values for the threshold and exponent, a grid search w
   )
 ]
 
+While pretty, these coldmaps can be difficult to understand. Therefore, @fig.dataset_3d shows the 3D plots of the generated cold maps with exponent values $e in {0.50, 0.75, 1.25}$. While the 2D plots with $e < 1$ seem to the eye to be the plots that more greatly penalizes larger distances, the 3D plots reveal that while the points that are further away are more penalized, the gradient is not as steep as the 2D plots would suggest. While heavily penalized, the slope does a poor job of pointing the gradient in the right direction. Then if a point is close, it will experience rapid change that forces it closer to the true path. This is not the desired effect of this loss function, as it should be more lenient to points that are close to the true path. Thus, when $e > 1$, the slope is much more gentle closer to the true path, and steeper further away, which is the desired effect. So, despite the opposite being the intuitive point to take away from glancing at the 2D plots, the 3D plots reveal that the exponent value $e$ should be greater than 1, and thus the value of $e=1.25$ was chosen for the cold maps and defined as the default for the function in @code.coldmap.
+
+#std-block(breakable: false)[
+  #v(-1em)
+  #box(
+    fill: theme.sapphire,
+    outset: 0em,
+    inset: 0em,
+  )
+  #figure(
+  image("../../../figures/img/dataset_example/coldmaps_comp_3d_2.png"),
+caption: [3D plots of cold maps along with their 2D counterparts.]
+) <fig.dataset_3d>
+]
+
 
 Finally, a comparison between the retrieved satellite image of an intersection, the optimal path through it, and the cold map generated by the process described above are shown in @fig.dataset_example. This highlights the importance of the cold map in the training process as opposed to the single line path. The cold map allows for a more lenient path to be generated, as the model is not penalized for deviating slightly from the path. 
 
 
 #let fig1 = { image("../../../figures/img/dataset_example/map.png") }
 #let fig2 = { image("../../../figures/img/dataset_example/map_path_thin.png") }
-#let fig3 = { image("../../../figures/img/dataset_example/cold_map.png") }
+#let fig3 = { image("../../../figures/img/dataset_example/cold_map_new.png") }
 
 #std-block(breakable: false)[
   #v(-1em)
@@ -180,7 +195,7 @@ Finally, a comparison between the retrieved satellite image of an intersection, 
   fig1,fig2,fig3
   
 ),
-caption: [Example of satellite image, next to the desired path through with. To the far right, the generated cold map is shown with threshold $t=20$ and exponent $e=0.5$. Notice how it is only the points very close to the path that are very cold, while the rest of the map is warmer the further away it is.]
+caption: [Example of satellite image, next to the desired path through with. To the far right, the generated cold map is shown with threshold $t=20$ and exponent $e=1.25$. Notice how it is only the points very close to the path that are very cold, while the rest of the map is warmer the further away it is.]
 ) <fig.dataset_example>
 ]
 

@@ -244,6 +244,8 @@
 #let st = swatch(catppuccin.latte.text)
 #let stl = swatch(catppuccin.latte.teal)
 
+#let ball(c) = swatch(rgb(c))
+
 #let nameref(label, name, supplement: none) = {
   show link : it => text(accent, it)
   link(label, [#ref(label, supplement: supplement). #name])
@@ -981,3 +983,7 @@
   environment: source-link("https://github.com/AU-Master-Thesis/gbp-rs/blob/main/config/simulations/Environment%20Obstacles%20Experiment/environment.yaml", "environment.yaml"),
   formation: source-link("https://github.com/AU-Master-Thesis/gbp-rs/blob/main/config/simulations/Environment%20Obstacles%20Experiment/formation.yaml", "formation.yaml")
 )
+
+#let model_rq = 1
+#let loss_rq = 2
+#let dataset_rq = 3

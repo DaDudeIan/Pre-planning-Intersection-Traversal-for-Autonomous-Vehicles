@@ -2,6 +2,7 @@
 
 
 ## 07/02/2025
+
 ### Morning
 
 Introduction: Research Questions, Motivation (Maybe)
@@ -23,6 +24,7 @@ Didn't do dataset creation and loss function. Too absorbed in writing other sect
 
 
 ## 10/02/2025
+
 ### Morning
 
 Code: Dataset creation
@@ -42,6 +44,7 @@ Cold maps created. Still figuring out parameters for best threshold and exponent
 
 
 ## 11/02/2025
+
 ### All day
 
 Write about yesterday's progress in methodology
@@ -52,16 +55,19 @@ Found optimal threshold and exponent visually.
 
 
 ## 12/02/2025
+
 ### All day
 
 Look into structuring dataset
 
 ## 13/02/2025
+
 ### All day
 
 Related work
 
 ## 14/02/2025
+
 ### Morning
 
 Dataset creation
@@ -71,8 +77,40 @@ Dataset creation
 Meeting
 
 ## 17/02/2025
+
 ### Morning
 
 Write corrections from meeting:
+
 - Rephrase research Questions
 - Look at optimizing cold map generation code
+
+## 24/02/2025
+
+### All day
+
+Document cold map loss function
+
+## 25/02/2025
+
+### All day
+
+Document BCE loss function
+
+## 27/02/2025
+
+### All day
+
+Look into topology analysis
+
+## 28/02/2025
+
+### All day
+
+Write about topology analysis
+
+## 03/03/2025
+
+### All day
+
+Look into topology analysis

@@ -66,3 +66,5 @@
   definition: Fully Convolutional Network
 - acronym: ViT
   definition: Vision Transformer
+- acronym: BCE
+  definition: Binary Cross-Entropy

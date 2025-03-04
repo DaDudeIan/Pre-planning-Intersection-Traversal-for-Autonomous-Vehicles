@@ -7,6 +7,7 @@ In this section...
 
 == Shortcomings <c6:shortcomings>
 // Notable shortcomings of project: requires latest satellite images to be completely useful. (like contruction zones, etc)
+// comment on branching loss not working well with thick line (comp9)
 
 == Future Work <c6:future-work>
 

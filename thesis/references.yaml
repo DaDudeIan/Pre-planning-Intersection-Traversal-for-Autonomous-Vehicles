@@ -337,4 +337,66 @@ waymo:
   author: Francisco, ABC7 San
   date: 2024-08
   url: https://abc7news.com/post/wrong-waymo-driverless-car-goes-oncoming-traffic-tempe-arizona/15238556/
+dice_loss:
+  type: chapter
+  title: Generalised Dice Overlap as a Deep Learning Loss Function for Highly Unbalanced Segmentations
+  author:
+  - Sudre, Carole H.
+  - Li, Wenqi
+  - Vercauteren, Tom
+  - Ourselin, Sebastien
+  - Jorge Cardoso, M.
+  date: 2017
+  page-range: 240-248
+  url: http://dx.doi.org/10.1007/978-3-319-67558-9_28
+  serial-number:
+    doi: 10.1007/978-3-319-67558-9_28
+    isbn: '9783319675589'
+    issn: 1611-3349
+  parent:
+    type: book
+    title: Deep Learning in Medical Image Analysis and Multimodal Learning for Clinical Decision Support
+    publisher: Springer International Publishing
+focal_loss:
+  type: misc
+  title: Focal Loss for Dense Object Detection
+  author:
+  - Lin, Tsung-Yi
+  - Goyal, Priya
+  - Girshick, Ross
+  - He, Kaiming
+  - Dollár, Piotr
+  date: 2018
+  url: https://arxiv.org/abs/1708.02002
+  serial-number:
+    arxiv: '1708.02002'
+topo1:
+  type: misc
+  title: Topology-Preserving Deep Image Segmentation
+  author:
+  - Hu, Xiaoling
+  - Fuxin, Li
+  - Samaras, Dimitris
+  - Chen, Chao
+  date: 2019
+  serial-number:
+    arxiv: '1906.05404'
+topoloss:
+  type: article
+  title: 'TopoNets: High performing vision and language models with brain-like topography'
+  author:
+  - Deb, Mayukh
+  - Deb, Mainak
+  - Murty, Apurva Ratan
+  date: 2025
+  url: https://openreview.net/forum?id=THqWPzL00e
+  parent:
+    type: proceedings
+    title: The Thirteenth International Conference on Learning Representations
+betti:
+  type: misc
+  date: 2025
+  publisher: Wolfram Research, Inc.
+  url: https://mathworld.wolfram.com/BettiNumber.html
+  note: Accessible online at Wolfram Research
 
