@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import torch
 from math import hypot  # for Euclidean distance
 import multiprocessing as mp
 from tqdm import tqdm
@@ -158,9 +159,18 @@ def coords_to_coldmap(coords, threshold: float = 20, exponent: float = 1.25, nor
     return transformed_normalized.astype(return_type)
 
 
-def save_coldmap(coldmap: np.ndarray, output_path: str):
+def save_coldmap_png(coldmap: np.ndarray, output_path: str):
     cv2.imwrite(output_path, coldmap)
     print(f"Coldmap saved to {output_path}")
+    
+def save_coldmap_torch(coldmap: np.ndarray, output_path: str):
+    torch.save(coldmap, output_path)
+    print(f"Coldmap saved to {output_path}")
+    
+def save_coldmap_npy(coldmap: np.ndarray, output_path: str):
+    np.save(f"{output_path}.npy", coldmap)
+    print(f"Coldmap saved to {output_path}.npy")
+    
     
     
     
@@ -171,7 +181,7 @@ def main():
     output_path = "dataset/intersection_001/paths/path_3/cold_map.png"
     coords = get_nearest_coords(input_path)
     coldmap = coords_to_coldmap(coords, threshold=20, exponent=0.5)
-    save_coldmap(coldmap, output_path)
+    save_coldmap_png(coldmap, output_path)
     
 if __name__ == "__main__":
     import time

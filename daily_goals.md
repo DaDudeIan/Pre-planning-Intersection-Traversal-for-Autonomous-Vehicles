@@ -114,3 +114,22 @@ Write about topology analysis
 ### All day
 
 Look into topology analysis
+
+
+## 04/03/2025
+
+### All day
+
+Write about topology analysis
+
+## 06/03/2025
+
+### All day
+
+Work on dataset (1-17)
+
+## 07/03/2025
+
+### All day
+
+Work on dataset (18-)
