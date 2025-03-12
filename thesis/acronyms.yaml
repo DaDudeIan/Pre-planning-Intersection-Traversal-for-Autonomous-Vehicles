@@ -20,6 +20,8 @@
   definition: Pseudo-Random Number Generator
 - acronym: JSON
   definition: JavaScript Object Notation
+- acronym: PNG
+  definition: Portable Network Graphics
 - acronym: API
   definition: Application Programming Interface
   plural: Application Programming Interfaces

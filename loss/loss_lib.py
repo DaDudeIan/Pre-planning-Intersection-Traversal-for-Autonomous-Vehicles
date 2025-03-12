@@ -6,12 +6,13 @@ import numpy as np
 import gudhi as gd
 
 class CmapLoss(nn.Module):
-    def __init__(self, weight: float = 1.0):
+    def __init__(self, weight: float = 1.0, reduction: str = 'mean'):
         super(CmapLoss, self).__init__()
         self.weight = weight
+        self.reduction = reduction
         
     def forward(self, cmap_gt: torch.Tensor, path_pred: torch.Tensor):
-        loss = cmap_loss_torch(cmap_gt, path_pred)
+        loss = cmap_loss_torch(cmap_gt, path_pred, self.reduction)
         return self.weight * loss
 
 def cmap_loss(cmap_gt: np.ndarray, path_pred: np.ndarray) -> torch.Tensor:
@@ -32,7 +33,7 @@ def cmap_loss(cmap_gt: np.ndarray, path_pred: np.ndarray) -> torch.Tensor:
     
     return torch.dot(cmap_f, path_f)
 
-def cmap_loss_torch(cmap_gt: torch.Tensor, path_pred: torch.Tensor):
+def cmap_loss_torch(cmap_gt: torch.Tensor, path_pred: torch.Tensor, reduction: str = 'mean') -> torch.Tensor:
     """
     Compute the dot product loss between a ground truth cold map and a predicted path.
     Args:
@@ -46,7 +47,7 @@ def cmap_loss_torch(cmap_gt: torch.Tensor, path_pred: torch.Tensor):
     
     loss = torch.dot(cmap_f, path_f)
     
-    return loss
+    return loss if reduction != 'mean' else loss / len(cmap_f)
 
 class BCELoss(nn.Module):
     """

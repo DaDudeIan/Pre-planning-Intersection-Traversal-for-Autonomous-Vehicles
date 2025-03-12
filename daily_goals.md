@@ -133,3 +133,15 @@ Work on dataset (1-17)
 ### All day
 
 Work on dataset (18-)
+
+## 10/03/2025
+
+### All day
+
+Dataloader
+
+## 11/03/2025
+
+### All day
+
+Change cmap loss to mean

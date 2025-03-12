@@ -203,3 +203,180 @@ caption: [Example of satellite image, next to the desired path through with. To 
 
 
 === Dataset Structure <c3:dataset_structure>
+
+To maintain an ease-of-use principal for this project, the dataset was structured in a way that allows for easy loading of the data. This includes building the dataset in a logical way, and creating a class that can load the dataset gracefully. This is especially important as the paths in a dataset can vary in number, so custom loading is necessary. Thus, the dataset is structured like shown in the listing below
+
+#listing(line-numbering: none, [
+  ```text
+dataset/
+├── intersection_001/
+│   ├── satellite.png
+│   ├── paths/
+│   │   ├── path_1/
+│   │   │   ├── path_line.png
+│   │   │   ├── path_line_ee.json
+│   │   │   ├── cold_map.npy
+│   │   ├── path_2/
+│   │   │   ├── path_line.png
+│   │   │   ├── path_line_ee.json
+│   │   │   ├── cold_map.npy
+│   │   ├── path_3/
+│   │   │   ├── path_line.png
+│   │   │   ├── path_line_ee.json
+│   │   │   ├── cold_map.npy
+│ ...
+  ```
+],
+  caption: [Folder structure of the dataset. Each `intersection_XXX` folder contains a satellite image of an intersection and a `paths` folder containing the paths through the intersection. Each path folder contains the path line, the path's entry and exit points, and the cold map for the path in a `.npy` format.],
+) <listing.dataset_structure>
+
+Each `intersection_XXX` folder contains a satellite image saved as a PNG. Accompanying this image, is the `paths` folder, which contains a folder for each path through the intersection. Each path folder contains the path line image, currently saved as a PNG as well, a JSON file containing the entry and exit points of the path in relation to the image, not the global coordinates, and the corresponding cold map saved as a `.npy` file.
+
+==== Dataset class <c3:dataset_structure:dataset_class>
+
+#text("UPDATE TEXT TO REFLECT CHANGES", fill: red, weight: "black")
+
+#let init = {text("__init__", font: "JetBrainsMono NFM")}
+#let len = {text("__len__", font: "JetBrainsMono NFM")}
+#let getitem = {text("__getitem__", font: "JetBrainsMono NFM")}
+
+To be able to easily load a satellite image and its corresponding paths, entry/exit points, and cold maps, a `IntersectionDataset` class was created, built on top of the PyTorch `Dataset` class. To implement this class, three functions must be created, namely `__init__`, `__len__`, and `__getitem__`. 
+
+#std-block(breakable: true)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text("__init__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is the function called when the class is instantiated. It initializes the dataset with the root directory of the dataset, a transform function, and a path transform function. The root directory is the directory where the dataset is stored, the transform function is a function that can be applied to the satellite image, and the path transform function is a function that can be applied to the path line. These transforms are simply `ToTensor` functions provided by PyTorch. The `__init__` function also creates a list of all the intersections in the dataset by listing all directories in the root directory. The code for the `__init__` function can be seen in @listing:dataset_structure_init below.
+  \ #v(-1cm) \
+    #listing([
+    ```python
+def __init__(self, root_dir, transform = None, path_transform = None):
+  self.root_dir = root_dir
+  self.transform = transform
+  self.path_transform = path_transform
+  
+  self.path_dirs = glob.glob('dataset/*/paths/*')
+    ```
+  ],
+    caption: [Code snippet of the #init function for the dataset.],
+  ) <listing:dataset_structure_init>
+]
+
+#std-block(breakable: true)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text("__len__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is another function required by the PyTorch `Dataset` class. It returns the length of the dataset. Thanks to the initialization of the dataset in the `__init__` function, the length of the dataset is simply the number of intersections in the dataset. The code for the `__len__` function can be seen in @listing:dataset_structure_len below.
+  \ #v(-1cm) \
+    #listing([
+    ```python
+def __len__(self):
+  return len(self.path_dirs)
+    ```
+  ],
+    caption: [Code snippet of the #len function for the dataset.],
+  ) <listing:dataset_structure_len>
+]
+
+#std-block(breakable: true)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text("__getitem__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is one of the most crucial functions of the dataset class. The signature of the function is simply `__getitem__(self, idx)`, where `idx` is the index of the intersection to be loaded. First, the function retrieves the directory of the intersection at the given index. Then, it loads the satellite image from the intersection directory and applies the transform function to it. It then loads the paths from the intersection directory and applies the path transform function to them. These transforms are simply `ToTensor` as provided by PyTorch. 
+
+  Then, for each of the `path_X` directories in the `paths` directory, the function loads the path line image, the entry/exit data, and the cold map. The path line image is loaded and transformed, the entry/exit data is loaded from a JSON file, and the cold map is loaded from a `.npy` file. All of this data is then stored in a dictionary and returned as the sample. The code for the `__getitem__` function can be seen in @listing:dataset_structure_getitem below.
+  \ #v(-1cm) \
+    #listing([
+    ```python
+def __getitem__(self, idx):
+  path_dir = self.path_dirs[idx]
+  
+  # Load satellite image (../../satellite.png)
+  satellite_path = os.path.join(os.path.dirname(os.path.dirname(path_dir)), 'satellite.png')
+  satellite_img = Image.open(satellite_path).convert('RGB')
+  
+  if self.transform:
+    satellite_img = self.transform(satellite_img)
+      
+  # load path line image (./path_line.png)
+  path_line_path = os.path.join(path_dir, 'path_line.png')
+  path_line_img = Image.open(path_line_path).convert('L')
+  
+  if self.path_transform:
+    path_line_img = self.path_transform(path_line_img)[0]
+      
+  # load E/E json file (./path_line_ee.json)
+  json_path = os.path.join(path_dir, 'path_line_ee.json')
+  with open(json_path) as f:
+    ee_data = json.load(f)
+      
+  # load cold map npy (./cold_map.npy)
+  cold_map_path = os.path.join(path_dir, 'cold_map.npy')
+  cold_map = np.load(cold_map_path)
+  
+  # return sample
+  sample = {
+    'satellite': satellite_img,
+    'path_line': path_line_img,
+    'ee_data': ee_data,
+    'cold_map': cold_map
+  }
+  return sample
+    ```
+  ],
+    caption: [Code snippet of the #getitem function for the dataset.],
+  ) <listing:dataset_structure_getitem>
+]
+
+The dataset is then simply instantiated as such:
+#listing([
+  ```python
+dataset = IntersectionDataset(root_dir=dataset_dir,
+                              transform=ToTensor(),
+                              path_transform=ToTensor()) 
+  ```
+], caption: [Instantiation of the dataset.])
+
+and creating the dataloader is as simple as:
+#listing([
+  ```python
+dataloader = DataLoader(dataset, 
+                        batch_size=b, 
+                        shuffle=True, 
+                        num_workers=num_workers, 
+                        collate_fn=custom_collate_fn)
+  ```
+], caption: [Creating a dataloader for the dataset.])
+
+Arguments passed to the `DataLoader` initializer are the dataset, the batch size, whether the dataset should be shuffled, the number of workers to use for loading the data, and a the ability to give it a custom collate function. `num_workers` is found using the `multiprocessing` library as it easily finds the number of available computation cores, and the collate function is the function that is used to combine the data into a batch. The default collate function for the `DataLoader` class is `default_collate`, which simply stacks the data into a tensor. For this dataset, however, a custom collate function is needed as the number of paths in each intersection can vary. This is not handled by the default collate function, as it expects the data to be of the same size. This custom collate function can be seen in the listing below:
+
+#listing([
+  ```python
+def custom_collate_fn(batch):
+  satellite_batch = torch.stack([item["satellite"] for item in batch])
+  paths_batch = [item["paths"] for item in batch]
+  return {"satellite": satellite_batch, "paths": paths_batch}
+  ```
+], caption: [Custom collate function for the dataset.])
+
+The `custom_collate_fn` essentially stacks the satellite images into a tensor, and the paths into a list of lists. This allows for the graceful handling of the dataset by the `DataLoader`. This is highlighted in @fig.dataloader_example, where an example batch from the `DataLoader` is shown. The batch contains two intersections, each with two and three paths, respectively.
+
+#let fig1 = { image("../../../figures/img/dataset_example/loader_1.png") }
+
+#std-block(breakable: false)[
+  #v(-1em)
+  #box(
+    fill: theme.sapphire,
+    outset: 0em,
+    inset: 0em,
+  )
+  #figure( fig1,
+  caption: [Example batch from the `DataLoader` with `batch_size = 2`.]
+) <fig.dataloader_example>
+]

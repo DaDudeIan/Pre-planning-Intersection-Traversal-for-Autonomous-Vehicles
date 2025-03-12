@@ -2,7 +2,7 @@
 
 This dataset is structured as follows:
 
-```
+```text
 dataset/
 ├── intersection_001/
 │   ├── satellite.png
@@ -19,5 +19,6 @@ dataset/
 │   │   │   ├── path_line.png
 │   │   │   ├── path_line_ee.json
 │   │   │   ├── cold_map.npy
+│ ...
 
 ```
