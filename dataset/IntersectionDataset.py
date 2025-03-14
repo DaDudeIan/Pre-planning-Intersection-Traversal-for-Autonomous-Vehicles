@@ -78,7 +78,7 @@ class IntersectionDataset(Dataset):
         self.transform = transform
         self.path_transform = path_transform
         
-        self.path_dirs = glob.glob('dataset/*/paths/*')
+        self.path_dirs = glob.glob(f'{root_dir}/*/paths/*')
         
     def __len__(self):
         return len(self.path_dirs)
@@ -98,7 +98,7 @@ class IntersectionDataset(Dataset):
         path_line_img = Image.open(path_line_path).convert('L')
         
         if self.path_transform:
-            path_line_img = self.path_transform(path_line_img)[0]
+            path_line_img = self.path_transform(path_line_img)
             
         # load E/E json file (./path_line_ee.json)
         json_path = os.path.join(path_dir, 'path_line_ee.json')

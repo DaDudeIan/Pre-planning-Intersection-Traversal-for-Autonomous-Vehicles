@@ -1,2 +1,5 @@
 # ignore GIMP files
 *.xcf
+
+# ignore checkpoint files
+*.pth

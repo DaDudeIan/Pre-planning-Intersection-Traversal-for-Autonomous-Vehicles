@@ -145,3 +145,15 @@ Dataloader
 ### All day
 
 Change cmap loss to mean
+
+## 13/03/2025
+
+### All day
+
+Create U-net model and train
+
+## 14/03/2025
+
+### All day
+
+Expand dataset greatly. Split into very separate train and test sets.

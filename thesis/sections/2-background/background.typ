@@ -16,7 +16,7 @@
 == Deep Learning <c2s2.2:dl>
 // Fundamentals
 // - MLP, backpropagation, gradient descent
-// - Activation functions, optimizers, loss functions, regularization.
+// - Activation functions, optimizers, loss functions, regularization, scheduler
 // Types: Reinforcement Learning, Supervised Learning, Unsupervised Learning, transfer learning, self-supervised learning
 // point of first contact with AI as lead-in to CNNs
 // Recurrent Neural Networks and LSTMs (sequential decision-making), 
