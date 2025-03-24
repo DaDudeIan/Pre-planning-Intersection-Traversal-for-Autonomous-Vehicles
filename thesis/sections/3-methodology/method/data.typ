@@ -201,40 +201,218 @@ caption: [Example of satellite image, next to the desired path through with. To 
 
 === Data Augmentation <c3:data_augmentation>
 
+#let colouration(t, s) = box(text(t, fill: gradient.linear(angle: 0deg, (fuchsia, 0%), (red, 25%), (blue, 50%), (green, 75%), (yellow, 100%)), size: s))
+
+#let pat = pattern(size: (5pt, 6pt))[
+  #place(dx: 1pt, dy: -2pt, line(start: (0%, 100%), end: (100%, 0%), stroke: 4pt + black))
+]
+
+#let distortion(t, s) = box(text(t, fill: pat, size: s))
+
+Creating large datasets is a very time consuming tasks, scaling directly with the complexity and workflows structured around its creation. For the dataset created during this project, the workflow was as follows: Find a suitable intersection for the dataset. Copy the coordinates for the center of the intersection. Use the found coordinates in the satellite script described in @c4:sat.impl to download satellite images. Through trial and error, rotate the downloaded satellite image to align entry with bottom of the image.
+
+Once a bunch of satellite images were downloaded, a small python script was used to automatically distribute each intersection image to their own folder and within each folder, create the structure shown in @listing:dataset_structure. #acr("GIMP") was chosen as the software to draw the paths through the intersections. First, another small script distributed a `.xcf` file to each intersection folder. `.xcf` is the file format for #acr("GIMP") projects. This base `.xcf` was defined to be 400x400 pixels and contained a black background and three empty layers named "left", "right", and "ahead". This massively simplified the process of creating the paths by not having to create a new project every time a new intersection was to be processed.
+
+For each of the paths drawn in #acr("GIMP"), they were saved individually as a `.png` file. Yet another small script then used these images of the path to create the corresponding #acr("JSON") files containing the entry and exit coordinates of the path as well as generate the cold map. The cold map generated is stored as a `.npy` files, as the values of the cold map are simply between 0 and 1, meaning it does not make sense to store as a #acr("PNG") as there is not high enough values to be discernible to the human eye. The small scripts mentioned can be seen in #text("Appendix X", fill: red).
+
+As described, this is a very time consuming process, and despite many hours of work being put into it, the training dataset only consisted of 112 intersections, some of which have very similar satellite images. To enlarge this dataset dramatically, the dataset underwent augmentation. Augmentation can be done in many ways with different methods. A variety of augmentations were chosen for this dataset, including: colouration, distortion, cropping, and zooming. The reason for choosing these will be discussed in their respective sections.
+
+#colouration("COLOURATION", 14pt) is the augmentation regarding the colours making up the image. In this project, this is achieved by adjusting the saturation and hue of the HSV colour space for an image. HSV stands for Hue, Saturation, and Value. Changing the hue of an image is changing the colour tone, meaning that a red image can be turned into a blue image. Changing the saturation is changing the intensity of the colours in an image, resulting in a more vibrant or dull image. Changing the value is changing the brightness of the image, meaning that a dark image can be turned much brighter and vice versa. HSV is generally more intuitive than the RGB colour space, as it is more closely related to how humans perceive colour. 
+
+Concretely, the colouration augmentation was done by randomly changing the hue and saturation of the image. This was done to help the models focus on structural features rather than specific colour cues, i.e. become better at generalizing. Colour augmentations also help the model become more robust to changes in lighting conditions. This is especially prominent when using satellite images from all kinds of areas. Some satellite images appear to have a very low image saturation, while others are more vibrant and sharp. Therefore, teaching the model to understand these different conditions is crucial. So, these colouration augmentations help make the models more adept at generalizing to different conditions.
+
+The code for the hue and saturation augmentation functions can be seen in @listing:hue_a and @listing:sat_a, respectively. The hue augmentation function randomly changes the hue of the image by a value between the lower and upper bounds. The values are the defaults from the official documentation of the function. The saturation augmentation function randomly changes the saturation of the image by a value between 6, 8, and 10. These values were chosen as they were found to be the most visually appealing and interesting when testing the augmentations. Finally, a greyscale augmentation is also implemented, which is simply a call of the `saturation_aug` function with the value 0. This is done to further enhance the models understanding of the structural features of the image.
+
+#let hue_a = std-block(breakable: false)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Hue augmentation]] \
+  The hue augmentation was done by randomly changing the hue of the image. The hue was changed by a value between -0.5 and 0.5. The image was then converted to a tensor and the hue was adjusted using the `adjust_hue` function from the `torchvision.transforms.functional` module. The resulting image was then converted back to a #acr("PNG") image for easier handling.
+  #listing(line-numbering: none,
+    ```python
+    def hue_aug(image, 
+        lower = -0.5, upper = 0.5):
+      v = random.uniform(lower, upper)
+      img = T.ToTensor()(image)
+      img = F.adjust_hue(img, v)
+      
+      return T.ToPILImage()(img)
+    ```,
+    caption: [Hue augmentation function.] 
+  ) <listing:hue_a>
+]
+
+
+#let sat_a = std-block(breakable: false)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Saturation augmentation]] \
+  The saturation augmentation was done by randomly changing the saturation of the image. The saturation was changed by a value between 6, 8, and 10. The image was then converted to a tensor and the saturation was adjusted using the `adjust_saturation` function from the `torchvision.transforms.functional` module. The resulting image was then converted back to a #acr("PNG") image for easier handling.
+  #listing(line-numbering: none,
+    ```python
+    def saturation_aug(image, 
+        val = [6, 8, 10]):
+      v = random.choice(val)
+      img = T.ToTensor()(image)
+      img = F.adjust_saturation(img, v)
+      
+      return T.ToPILImage()(img)
+    ```,
+    caption: [Saturation augmentation function.]
+  ) <listing:sat_a>
+]
+
+#grid(
+  columns: (1fr, 1fr),
+  hue_a, sat_a
+)
+
+Examples of the colouration augmentations can be seen in @fig:colouration. Each column shows an intersection and its augmented variations. The top row is the original image, the second row is the greyscale augmented image, the third row is the hue adjusted image, and the fourth row is the saturation adjusted image. The greyscale images highlights the structural features of the image. By adjusting the hue, the dominant tones of the image are altered, resulting in dominant parts like vegetation appears as a variety of colours, such as blue or even purple. Adjusting saturation then makes the colours more vibrant or muted, creating anything from intensely vivid scenes to nearly colourless landscapes as also highlighted by the greyscale image.
+
+Seeing these colour augmentation examples, it is clear to see that a large amount of diversity has been introduced to the dataset. Rather than training on a dataset where the colours might be very similar, hence not capturing the real world, the models are trained on a dataset that encapsulates real world colour variations. Furthermore, this motivates the model to focus on structural features rather than specific colour cues, which is crucial for generalization.
+
+#let fig = { image("../../../figures/img/dataset_example/augmentation/augmented.png") }
+
+#std-block(breakable: false)[
+  #v(-1em)
+  #box(
+    fill: theme.sapphire,
+    outset: 0em,
+    inset: 0em,
+  )
+  #figure(
+  fig,
+caption: [Example of the colouration augmentations. The top row is the original image, second row is the greyscale augmented image, third row is the hue adjusted image, and fourth row is the saturation adjusted image.]
+) <fig:colouration>
+]
+
+#distortion("DISTORTION", 14pt)
+
+#let hue_a = std-block(breakable: false)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Noise augmentation]] \
+  The noise augmentation was done by generating random noise and adding it to the image. The noise was generated using a normal distribution with a mean of 0 and a standard deviation between 0.1 and 0.5. The noise was then added to the image and the resulting image was clamped to a value between 0 and 1. The resulting image was then converted back to a #acr("PNG") image for easier handling.
+  #listing(line-numbering: none,
+    ```python
+def noise_aug(image, mean = 0, std_l = 0.1, std_u = 0.5):
+  img = T.ToTensor()(image)
+  std = random.uniform(std_l, std_u)
+  noise = randn(img.size()) * std + mean
+  img = img + noise
+  img = torch.clamp(img, 0, 1)
+  
+  return T.ToPILImage()(img)
+    ```,
+    caption: [Noise augmentation function.] 
+  ) <listing:noise_a>
+]
+
+
+#let sat_a = std-block(breakable: false)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Blur augmentation]] \
+  The blur augmentation was done by applying a Gaussian blur to the image. Through testing, the kernel sizes of 5, 7, and 9 were chosen, as well as the sigma values of 1.5, 2, and 2.5. After randomly selecting the combination of kernel size and sigma, the image is converted to a tensor and the blur is applied. The resulting image is then converted back to a #acr("PNG") image for easier handling.
+  #listing(line-numbering: none,
+    ```python
+def blur_aug(image, 
+    kernel_size = [5, 7, 9], 
+    sigma = [1.5, 2, 2.5]):
+  kernel_size = choice(kernel_size)
+  sigma = choice(sigma)
+  img = T.ToTensor()(image)
+  img = F.gaussian_blur(img, kernel_size, sigma)
+  
+  return T.ToPILImage()(img)
+    ```,
+    caption: [Blur augmentation function.]
+  ) <listing:blur>
+]
+
+#grid(
+  columns: (1fr, 1fr),
+  hue_a, sat_a
+)
+
+
+#let sat_image = { image("../../../figures/img/dataset_example/augmentation/sat_image.png") }
+#let noise_aug = { image("../../../figures/img/dataset_example/augmentation/noise_aug.png") }
+#let blur_aug = { image("../../../figures/img/dataset_example/augmentation/blur_aug.png") }
+
+#std-block(breakable: false)[
+  #v(-1em)
+  #box(
+    fill: theme.sapphire,
+    outset: 0em,
+    inset: 0em,
+  )
+  #figure(
+  grid(
+    columns: (1fr, 3fr),
+    column-gutter: 1mm,
+    align: (horizon, center),
+    grid.cell(rowspan: 2, sat_image),
+    noise_aug, blur_aug
+  ),
+caption: [Example of the distortion augmentations. The far left image is the original image, the top row is the noise augmented images, and the bottom row is the blur augmented images.]
+) <fig:distortion>
+]
 
 === Dataset Structure <c3:dataset_structure>
 
-To maintain an ease-of-use principal for this project, the dataset was structured in a way that allows for easy loading of the data. This includes building the dataset in a logical way, and creating a class that can load the dataset gracefully. This is especially important as the paths in a dataset can vary in number, so custom loading is necessary. Thus, the dataset is structured like shown in the listing below
+#text("UPDATE TO INCLUDE CLASS_LABELS", fill: red, weight: "black")
+
+To maintain an ease-of-use principle for this project, the dataset was structured in a way that allows for easy loading of the data. This includes building the dataset in a logical way, and creating a class that can load the dataset gracefully. This is especially important as the paths in a dataset can vary in number, so custom loading is necessary. Thus, the dataset is structured like shown in the listing below
 
 #listing(line-numbering: none, [
   ```text
 dataset/
-├── intersection_001/
-│   ├── satellite.png
-│   ├── paths/
-│   │   ├── path_1/
-│   │   │   ├── path_line.png
-│   │   │   ├── path_line_ee.json
-│   │   │   ├── cold_map.npy
-│   │   ├── path_2/
-│   │   │   ├── path_line.png
-│   │   │   ├── path_line_ee.json
-│   │   │   ├── cold_map.npy
-│   │   ├── path_3/
-│   │   │   ├── path_line.png
-│   │   │   ├── path_line_ee.json
-│   │   │   ├── cold_map.npy
-│ ...
+├── train/
+│   ├── intersection_001/
+│   │   ├── satellite.png
+│   │   ├── class_labels.npy
+│   │   ├── paths/
+│   │   │   ├── path_1/
+│   │   │   │   ├── path_line.png
+│   │   │   │   ├── path_line_ee.json
+│   │   │   │   ├── cold_map.npy
+│   │   │   ├── path_2/
+│   │   │   │   ├── path_line.png
+│   │   │   │   ├── path_line_ee.json
+│   │   │   │   ├── cold_map.npy
+│   │   │   ├── path_3/
+│   │   │   │   ├── path_line.png
+│   │   │   │   ├── path_line_ee.json
+│   │   │   │   ├── cold_map.npy
+├── test/
+│   ├── intersection_001/
+│   │ ...
+
   ```
 ],
   caption: [Folder structure of the dataset. Each `intersection_XXX` folder contains a satellite image of an intersection and a `paths` folder containing the paths through the intersection. Each path folder contains the path line, the path's entry and exit points, and the cold map for the path in a `.npy` format.],
-) <listing.dataset_structure>
+) <listing:dataset_structure>
 
-Each `intersection_XXX` folder contains a satellite image saved as a PNG. Accompanying this image, is the `paths` folder, which contains a folder for each path through the intersection. Each path folder contains the path line image, currently saved as a PNG as well, a JSON file containing the entry and exit points of the path in relation to the image, not the global coordinates, and the corresponding cold map saved as a `.npy` file.
+Firstly, the dataset is split into two separate parts, `train` and `test`. This is done to ensure that the model is not overfitting to the training data. This is achieved by training the model on the `train` dataset and testing/validating it on the `test` dataset. To ensure that the models generalize well to the task as hand, the `test` dataset should contain intersections that are completely absent from the `train` dataset. This is done to ensure it does not fall into the simple trap of memorizing the training data and created really good results that can be considered false positives as it supposedly has never seen the data before. 
+
+This `train`/`test` split in the dataset is created in the folder structure instead of using the simpler functionalities offered by PyTorch. PyTorch offers a `random_split` function from its utility sub-library. This function takes in some dataset declared as a PyTorch `Dataset` object, as shown below in @c3:dataset_structure:dataset_class, and splits it based on a given ratio. This is a simple way to split the dataset, but, as is the case of the created dataset, some images are very similar, meaning that the split does not achieve the desired effect and the model overfits to the training data. Thus, a completely different set of intersections is used for the `test` dataset.
+
+Each `intersection_XXX` folder contains a satellite image saved as a #acr("PNG"). Accompanying this image, is the `paths` folder, which contains a folder for each path through the intersection. Each path folder contains the path line image, currently saved as a #acr("PNG") as well, a #acr("JSON") file containing the entry and exit points of the path in relation to the image, not the global coordinates, and the corresponding cold map saved as a `.npy` file.
 
 ==== Dataset class <c3:dataset_structure:dataset_class>
-
-#text("UPDATE TEXT TO REFLECT CHANGES", fill: red, weight: "black")
 
 #let init = {text("__init__", font: "JetBrainsMono NFM")}
 #let len = {text("__len__", font: "JetBrainsMono NFM")}
@@ -248,7 +426,7 @@ To be able to easily load a satellite image and its corresponding paths, entry/e
     outset: 1mm,
     inset: 0em,
     radius: 3pt,
-  )[#text("__init__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is the function called when the class is instantiated. It initializes the dataset with the root directory of the dataset, a transform function, and a path transform function. The root directory is the directory where the dataset is stored, the transform function is a function that can be applied to the satellite image, and the path transform function is a function that can be applied to the path line. These transforms are simply `ToTensor` functions provided by PyTorch. The `__init__` function also creates a list of all the intersections in the dataset by listing all directories in the root directory. The code for the `__init__` function can be seen in @listing:dataset_structure_init below.
+  )[#text("__init__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is the function called when the class is instantiated. It initializes the dataset with the root directory of the dataset, a transform function, and a path transform function. The root directory is the directory where the dataset is stored, the transform function is a function that can be applied to the satellite image, and the path transform function is a function that can be applied to the path line. The root directory passed to the instantiation should that of either the training or test dataset within the dataset root folder. The transforms are simply `ToTensor` functions provided by PyTorch. The `__init__` function also creates a list of all the paths in the dataset by listing all directories found in the `paths` folders. The code for the `__init__` function can be seen in @listing:dataset_structure_init below.
   \ #v(-1cm) \
     #listing([
     ```python
@@ -257,11 +435,12 @@ def __init__(self, root_dir, transform = None, path_transform = None):
   self.transform = transform
   self.path_transform = path_transform
   
-  self.path_dirs = glob.glob('dataset/*/paths/*')
+  self.path_dirs = glob.glob(f'{root_dir}/*/paths/*')
     ```
   ],
     caption: [Code snippet of the #init function for the dataset.],
   ) <listing:dataset_structure_init>
+  Here the library `glob` is used to list all directories found in the `paths` folders. It is a useful library that allows for the use of wildcards in the path, making it easy to find all directories in the `paths` folders. This approach was used as it was not certain that all `paths` folders contained three subfolders, meaning that there might be inconsistencies in how the data is structured across different intersections. This approach ensures that all paths are found, regardless of the structure of the `paths` folder.
 ]
 
 #std-block(breakable: true)[
@@ -270,7 +449,7 @@ def __init__(self, root_dir, transform = None, path_transform = None):
     outset: 1mm,
     inset: 0em,
     radius: 3pt,
-  )[#text("__len__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is another function required by the PyTorch `Dataset` class. It returns the length of the dataset. Thanks to the initialization of the dataset in the `__init__` function, the length of the dataset is simply the number of intersections in the dataset. The code for the `__len__` function can be seen in @listing:dataset_structure_len below.
+  )[#text("__len__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is another function required by the PyTorch `Dataset` class. It returns the length of the dataset. Thanks to the initialization of the dataset in the `__init__` function, the length of the dataset is simply the number of paths in the dataset. The code for the `__len__` function can be seen in @listing:dataset_structure_len below.
   \ #v(-1cm) \
     #listing([
     ```python
@@ -288,9 +467,7 @@ def __len__(self):
     outset: 1mm,
     inset: 0em,
     radius: 3pt,
-  )[#text("__getitem__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is one of the most crucial functions of the dataset class. The signature of the function is simply `__getitem__(self, idx)`, where `idx` is the index of the intersection to be loaded. First, the function retrieves the directory of the intersection at the given index. Then, it loads the satellite image from the intersection directory and applies the transform function to it. It then loads the paths from the intersection directory and applies the path transform function to them. These transforms are simply `ToTensor` as provided by PyTorch. 
-
-  Then, for each of the `path_X` directories in the `paths` directory, the function loads the path line image, the entry/exit data, and the cold map. The path line image is loaded and transformed, the entry/exit data is loaded from a JSON file, and the cold map is loaded from a `.npy` file. All of this data is then stored in a dictionary and returned as the sample. The code for the `__getitem__` function can be seen in @listing:dataset_structure_getitem below.
+  )[#text("__getitem__", white, size: 12pt, font: "JetBrainsMono NFM")] #h(0.35em) is one of the most crucial functions of the dataset class. The signature of the function is simply `__getitem__(self, idx)`, where `idx` is the index of the path to be loaded. First, the function retrieves the directory of the path at the given index. Then, it loads the satellite image from the intersection directory and applies the transform function to it. This is achieved by moving up by two directories, i.e. getting the satellite image from the `intersection_XXX` folder. It then loads the path itself and applies the path transform function to it. These transforms are simply `ToTensor` as provided by PyTorch. Then, for the path being indexed, the function loads the #acr("JSON") file containing the entry and exit points of the path, and the cold map. The entry/exit data is loaded from a #acr("JSON") file, and the cold map is loaded from a `.npy` file. All of this data is then stored in a dictionary and returned as the sample. The code for the `__getitem__` function can be seen in @listing:dataset_structure_getitem below.
   \ #v(-1cm) \
     #listing([
     ```python
@@ -341,33 +518,21 @@ dataset = IntersectionDataset(root_dir=dataset_dir,
                               transform=ToTensor(),
                               path_transform=ToTensor()) 
   ```
-], caption: [Instantiation of the dataset.])
+], caption: [Instantiation of the dataset.]) <listing:dataset_structure_instantiate>
 
-and creating the dataloader is as simple as:
+where `dataset_dir` is the path to either the training or test dataset folders. Creating the dataloader is as simple as:
 #listing([
   ```python
 dataloader = DataLoader(dataset, 
                         batch_size=b, 
                         shuffle=True, 
-                        num_workers=num_workers, 
-                        collate_fn=custom_collate_fn)
+                        num_workers=num_workers)
   ```
 ], caption: [Creating a dataloader for the dataset.])
 
-Arguments passed to the `DataLoader` initializer are the dataset, the batch size, whether the dataset should be shuffled, the number of workers to use for loading the data, and a the ability to give it a custom collate function. `num_workers` is found using the `multiprocessing` library as it easily finds the number of available computation cores, and the collate function is the function that is used to combine the data into a batch. The default collate function for the `DataLoader` class is `default_collate`, which simply stacks the data into a tensor. For this dataset, however, a custom collate function is needed as the number of paths in each intersection can vary. This is not handled by the default collate function, as it expects the data to be of the same size. This custom collate function can be seen in the listing below:
+Arguments passed to the `DataLoader` initializer are the dataset from @listing:dataset_structure_instantiate, the batch size, whether the dataset should be shuffled, the number of workers to use for loading the data, and the ability to give it a custom collate function, which is not necessary in this case as the default function `default_collate` handles the data gracefully. `num_workers` is found using the `multiprocessing` library as it easily finds the number of available computation cores. An example of the dataloader in action is shown in @fig.dataloader_example, where an example batch from the `DataLoader` is shown. The batch contains four paths, showcasing the path and the associated satellite image.
 
-#listing([
-  ```python
-def custom_collate_fn(batch):
-  satellite_batch = torch.stack([item["satellite"] for item in batch])
-  paths_batch = [item["paths"] for item in batch]
-  return {"satellite": satellite_batch, "paths": paths_batch}
-  ```
-], caption: [Custom collate function for the dataset.])
-
-The `custom_collate_fn` essentially stacks the satellite images into a tensor, and the paths into a list of lists. This allows for the graceful handling of the dataset by the `DataLoader`. This is highlighted in @fig.dataloader_example, where an example batch from the `DataLoader` is shown. The batch contains two intersections, each with two and three paths, respectively.
-
-#let fig1 = { image("../../../figures/img/dataset_example/loader_1.png") }
+#let fig1 = { image("../../../figures/img/dataset_example/loader_2.png") }
 
 #std-block(breakable: false)[
   #v(-1em)
@@ -377,6 +542,6 @@ The `custom_collate_fn` essentially stacks the satellite images into a tensor, a
     inset: 0em,
   )
   #figure( fig1,
-  caption: [Example batch from the `DataLoader` with `batch_size = 2`.]
+  caption: [Example batch from the `DataLoader` with `batch_size = 4`.]
 ) <fig.dataloader_example>
 ]

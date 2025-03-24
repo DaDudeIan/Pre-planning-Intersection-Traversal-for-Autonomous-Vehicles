@@ -1,6 +1,8 @@
 #import "../../../lib/mod.typ": *
 == Satellite Imagery <c4:sat>
 
+#text("ADD BIT ABOUT ZOOM LEVEL. INCLUDE COMPARISON IMAGES", fill: red, weight: "bold")
+
 Satellite imagery is a key component of this thesis project. The imagery will be used for both training and testing the #acr("DL") models, by creating a dataset detailed in @c4:data, and as input to said model during inference. This section covers the acquisition of satellite imagery, the process of signing URLs as required by the #acr("API"), and the code created for these purposes. 
 
 This project utilizes Google Maps Static #acr("API") as provided by Google Cloud Platform. The #acr("API") allows for the retrieval of static map images at a given resolution and zoom level. This #acr("API") was chosen due to its ease of use, the quality of the retrieved images, and the fact that it is free to use for a limited number of requests. The #acr("API") is used to retrieve satellite imagery of a given location.
@@ -53,7 +55,7 @@ The main functionality of satellite imagery retrieval can be seen in @code.sat. 
 
 #listing([
   ```python
-  def get_sat_image(lat: float, lon: float, zoom: int = 15, secret: str = None, print_url: bool = False) -> requests.Response:
+  def get_sat_image(lat: float, lon: float, zoom: int = 18, secret: str = None, print_url: bool = False) -> requests.Response:
     if not secret:
       raise Exception("Secret is required")
     if not lat or not lon:

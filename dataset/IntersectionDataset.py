@@ -6,6 +6,52 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset, DataLoader
 
+class IntersectionDataset(Dataset):
+    def __init__(self, root_dir, transform=None, path_transform=None):
+        self.root_dir = root_dir
+        self.transform = transform
+        self.path_transform = path_transform
+        
+        self.path_dirs = glob.glob(f'{root_dir}/*/paths/*')
+        
+    def __len__(self):
+        return len(self.path_dirs)
+    
+    def __getitem__(self, idx):
+        path_dir = self.path_dirs[idx]
+        
+        # Load satellite image (../../satellite.png)
+        satellite_path = os.path.join(os.path.dirname(os.path.dirname(path_dir)), 'satellite.png')
+        satellite_img = Image.open(satellite_path).convert('RGB')
+        
+        if self.transform:
+            satellite_img = self.transform(satellite_img)
+            
+        # load path line image (./path_line.png)
+        path_line_path = os.path.join(path_dir, 'path_line.png')
+        path_line_img = Image.open(path_line_path).convert('L')
+        
+        if self.path_transform:
+            path_line_img = self.path_transform(path_line_img)
+            
+        # load E/E json file (./path_line_ee.json)
+        json_path = os.path.join(path_dir, 'path_line_ee.json')
+        with open(json_path) as f:
+            ee_data = json.load(f)
+            
+        # load cold map npy (./cold_map.npy)
+        cold_map_path = os.path.join(path_dir, 'cold_map.npy')
+        cold_map = np.load(cold_map_path)
+        
+        # return sample
+        sample = {
+            'satellite': satellite_img,
+            'path_line': path_line_img,
+            'ee_data': ee_data,
+            'cold_map': cold_map
+        }
+        return sample
+
 class IntersectionDataset2(Dataset):
     def __init__(self, root_dir, transform=None, path_transform=None):
         self.root_dir = root_dir
@@ -72,49 +118,77 @@ class IntersectionDataset2(Dataset):
         }
         return sample
     
-class IntersectionDataset(Dataset):
+class IntersectionDatasetClasses(Dataset):
     def __init__(self, root_dir, transform=None, path_transform=None):
         self.root_dir = root_dir
         self.transform = transform
         self.path_transform = path_transform
         
-        self.path_dirs = glob.glob(f'{root_dir}/*/paths/*')
+        self.intersections = [
+            os.path.join(root_dir, f) 
+            for f in os.listdir(root_dir) 
+            if os.path.isdir(os.path.join(root_dir, f))
+        ]
         
     def __len__(self):
-        return len(self.path_dirs)
+        return len(self.intersections)
     
     def __getitem__(self, idx):
-        path_dir = self.path_dirs[idx]
+        intersection_dir = self.intersections[idx]
         
-        # Load satellite image (../../satellite.png)
-        satellite_path = os.path.join(os.path.dirname(os.path.dirname(path_dir)), 'satellite.png')
+        # Load satellite image
+        satellite_path = os.path.join(intersection_dir, 'satellite.png')
         satellite_img = Image.open(satellite_path).convert('RGB')
         
         if self.transform:
             satellite_img = self.transform(satellite_img)
             
-        # load path line image (./path_line.png)
-        path_line_path = os.path.join(path_dir, 'path_line.png')
-        path_line_img = Image.open(path_line_path).convert('L')
+        # Load class labels image
+        class_labels_path = os.path.join(intersection_dir, 'class_labels.npy')
+        class_labels = np.load(class_labels_path)
         
         if self.path_transform:
-            path_line_img = self.path_transform(path_line_img)
+            class_labels = self.path_transform(class_labels)
             
-        # load E/E json file (./path_line_ee.json)
-        json_path = os.path.join(path_dir, 'path_line_ee.json')
-        with open(json_path) as f:
-            ee_data = json.load(f)
+        # Store paths for each satellite image
+        paths_data = []
+        paths_dir = os.path.join(intersection_dir, 'paths')
+        if os.path.exists(paths_dir):
+            path_folders = [
+                os.path.join(paths_dir, f) 
+                for f in os.listdir(paths_dir) 
+                if os.path.isdir(os.path.join(paths_dir, f))
+            ]
             
-        # load cold map npy (./cold_map.npy)
-        cold_map_path = os.path.join(path_dir, 'cold_map.npy')
-        cold_map = np.load(cold_map_path)
-        
-        # return sample
+            for path_folder in path_folders:
+                # Path line image
+                path_line_path = os.path.join(path_folder, 'path_line.png')
+                path_line_img = Image.open(path_line_path).convert('RGB')
+                
+                if self.path_transform:
+                    path_line_img = self.path_transform(path_line_img)
+                    
+                # E/E json file
+                json_path = os.path.join(path_folder, 'path_line_ee.json')
+                with open(json_path) as f:
+                    ee_data = json.load(f)
+                    
+                # Load cold map npy
+                cold_map_path = os.path.join(path_folder, 'cold_map.npy')
+                cold_map = np.load(cold_map_path)
+                
+                # save data
+                paths_data.append({
+                    'path_line': path_line_img,
+                    'ee_data': ee_data,
+                    'cold_map': cold_map
+                })
+               
+        # return sample 
         sample = {
             'satellite': satellite_img,
-            'path_line': path_line_img,
-            'ee_data': ee_data,
-            'cold_map': cold_map
+            'class_labels': class_labels,
+            'paths': paths_data
         }
         return sample
                     
@@ -126,9 +200,10 @@ def custom_collate_fn(batch):
     For the 'paths' field, we simply collect them into a list.
     """
     satellite_batch = torch.stack([item["satellite"] for item in batch])
+    class_labels_batch = torch.stack([item["class_labels"] for item in batch])
     # Keep 'paths' as a list of lists (variable-length) without stacking.
     paths_batch = [item["paths"] for item in batch]
-    return {"satellite": satellite_batch, "paths": paths_batch}
+    return {"satellite": satellite_batch, "class_labels": class_labels_batch, "paths": paths_batch}
 
 
 def main():

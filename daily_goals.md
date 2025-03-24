@@ -157,3 +157,27 @@ Create U-net model and train
 ### All day
 
 Expand dataset greatly. Split into very separate train and test sets.
+
+## 17/03/2025
+
+### All day
+
+Update report. Start writing about U-net.
+
+## 19/03/2025
+
+### All day
+
+Work on data augmentation.
+
+## 20/03/2025
+
+### All day
+
+Train U-net with augmented data.
+
+## 21/03/2025
+
+### All day
+
+Document data augmentation. Reconsider training scheme.

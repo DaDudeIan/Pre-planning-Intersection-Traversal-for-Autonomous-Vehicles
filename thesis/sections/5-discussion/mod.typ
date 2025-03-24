@@ -16,3 +16,4 @@ In this section...
 == Other considerations <c6:other-considerations>
 // Use skeletonization to reduce the number of points in the line and make it 1 pixel wide
 // other considered languages: C/C++, Fortran
+// other models: RL
