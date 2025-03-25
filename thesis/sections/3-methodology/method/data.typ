@@ -213,7 +213,7 @@ Creating large datasets is a very time consuming tasks, scaling directly with th
 
 Once a bunch of satellite images were downloaded, a small python script was used to automatically distribute each intersection image to their own folder and within each folder, create the structure shown in @listing:dataset_structure. #acr("GIMP") was chosen as the software to draw the paths through the intersections. First, another small script distributed a `.xcf` file to each intersection folder. `.xcf` is the file format for #acr("GIMP") projects. This base `.xcf` was defined to be 400x400 pixels and contained a black background and three empty layers named "left", "right", and "ahead". This massively simplified the process of creating the paths by not having to create a new project every time a new intersection was to be processed.
 
-For each of the paths drawn in #acr("GIMP"), they were saved individually as a `.png` file. Yet another small script then used these images of the path to create the corresponding #acr("JSON") files containing the entry and exit coordinates of the path as well as generate the cold map. The cold map generated is stored as a `.npy` files, as the values of the cold map are simply between 0 and 1, meaning it does not make sense to store as a #acr("PNG") as there is not high enough values to be discernible to the human eye. The small scripts mentioned can be seen in #text("Appendix X", fill: red).
+For each of the paths drawn in #acr("GIMP"), they were saved individually as a `.png` file. Yet another small script then used these images of the path to create the corresponding #acr("JSON") files containing the entry and exit coordinates of the path as well as generate the cold map. The cold map generated is stored as a `.npy` files, as the values of the cold map are simply between 0 and 1, meaning it does not make sense to store as a #acr("PNG") as there is not high enough values to be discernible to the human eye. The small scripts mentioned can be seen in #text("Appendix X", fill: red). // sat_to_dataset, coldmap_gen, ee_gen
 
 As described, this is a very time consuming process, and despite many hours of work being put into it, the training dataset only consisted of 112 intersections, some of which have very similar satellite images. To enlarge this dataset dramatically, the dataset underwent augmentation. Augmentation can be done in many ways with different methods. A variety of augmentations were chosen for this dataset, including: colouration, distortion, cropping, and zooming. The reason for choosing these will be discussed in their respective sections.
 
@@ -292,7 +292,13 @@ caption: [Example of the colouration augmentations. The top row is the original 
 ) <fig:colouration>
 ]
 
-#distortion("DISTORTION", 14pt)
+#distortion("DISTORTION", 14pt) is the augmentation regarding the quality of the image. In this project, this is achieved by applying two methods of intentionally deteriorating the image quality. The first method is noise augmentation and the second is blurring the image. These augmentation were chosen, as they represent common downfalls when working with satellite images. Depending on the area where images are taken, the images are often more blurry in smaller towns and rural areas, while they are noticeably sharper and more pristine in larger cities like capitol cities. Thus, by incorporating distortion augmentations into the dataset, it becomes much more diverse and a better representation of the quality of images that the models are expected to work with.
+
+The noise augmentation was chosen as it is a common issue with images in general, not just satellite images. Noise is produced in images through various outside factors, such as atmospheric conditions, sensor limitations, and environmental interferences. By adding this noise augmentation to the images, it helps the model learn to ignore these artifacts and focus on the relevant features of the image. The noise augmentation was done by generating Gaussian noise through the `randn` function from the PyTorch library. Furthermore, this kind of augmentation has been noted to act as a form of regularization on it own @noise, as it prevents the model from overfitting to these clean, ideal, and pristine images that are common for very populated areas.
+
+The blur augmentation was chosen as blur is a common issue with satellite images, particularly when using images from smaller cities, rural areas, older images, or far out of the cities on the roads where population density is significantly lower. Applying a Gaussian blur simulates these conditions by intentionally deteriorating the image quality, making it more representative of real-world scenarios. This helps the model learn to extract structural features from the image, despite the images being obscured. This augmentation is particularly useful because it forces the model to focus on the structural features of the image, rather than the fine details. This is crucial for the model to generalize well to unseen data, as it is not expected to see the same images during inference as it did during training. 
+
+The code for the noise and blur augmentations can be seen in @listing:noise_a and @listing:blur_a, respectively. The noise augmentation function generates random noise using a normal distribution with a mean of 0 and a standard deviation between 0.1 and 0.5. The noise is then added to the image and the resulting image is clamped to a value between 0 and 1 before being returned as an image. The blur augmentation function applies a Gaussian blur to the image using a kernel size of 5, 7, or 9 and a sigma value of 1.5, 2, or 2.5. The kernel size and sigma values were chosen through testing to find the most visually appealing results, i.e. distortions great enough to distort the details of the image, but not so much that the image becomes unrecognizable.
 
 #let hue_a = std-block(breakable: false)[
   #box(
@@ -339,13 +345,15 @@ def blur_aug(image,
   return T.ToPILImage()(img)
     ```,
     caption: [Blur augmentation function.]
-  ) <listing:blur>
+  ) <listing:blur_a>
 ]
 
 #grid(
   columns: (1fr, 1fr),
   hue_a, sat_a
 )
+
+Examples of the distortion augmentations can be seen in @fig:distortion. The image to the far left-hand side is the original image, the top row is the noise augmented images, and the bottom row is the blur augmented images. The noise augmented images show the image with added noise, making certain features difficult to see and the image more obscured. The blur augmented images show the image with a Gaussian blur applied, making the image more obscured and less sharp. Seeing these examples, it is clear to see that, again, a large amount of diversity has been introduced to the dataset. The introduction of noise and blur further help the model generalize better by focusing on structural features rather than specific details. This addition to the dataset broadens the ability of the models and teaches them to perform better on suboptimal images.
 
 
 #let sat_image = { image("../../../figures/img/dataset_example/augmentation/sat_image.png") }
@@ -370,6 +378,115 @@ def blur_aug(image,
 caption: [Example of the distortion augmentations. The far left image is the original image, the top row is the noise augmented images, and the bottom row is the blur augmented images.]
 ) <fig:distortion>
 ]
+
+
+
+#text("CROP AND ZOOM", 14pt) is the last augmentation adopted to expand the dataset. They are very common spatial augmentations used on image datasets. They are typically selected to make the models trained more robust against non-centred images and to make the models more adept at generalizing to different scales. If centring is not an issue, then cropping is still a common method for classification tasks, as it helps the model focus on the relevant features of the image. Zooming is also a common augmentation, as it helps the model learn different spatial scales of whatever it is being taught to handle. Also, as discussed earlier in @c4:sat, the zoom level of images in the dataset is set to a value of 18, but these images still appear to consist of vastly different sized intersection, thanks to the fact that some intersection are simply larger than others. Thus, using a zoom augmentation, helps the models generalize better to different scales of intersections. Furthermore, this should also help the model gain a better understanding of road width and not overfit to any particular width present in the dataset.
+
+So, both of these augmentations help the trained models become scale invariant, which is a desired trait of models set to perform the task at hand, as the scale and size of intersection images gotten through satellite images can vary greatly. The crop augmentation was done by randomly cropping the satellite image and its corresponding paths. The crop size is determined by a factor of the original image size, with a default value of 0.8. The cropped image and paths are then resized back to the original dimensions to maintain consistency. This augmentation helps the model focus on different parts of the image and improves its robustness to non-centred features, as is highly relevant for this project. The zoom augmentation was done by resizing the image to a larger size and then cropping it back to the original size. Through testing, the zoom factors of 1.4 to 1.9 were chosen. After randomly selecting a zoom factor, the image is resized and cropped to simulate zooming in.
+
+
+#let hue_a = std-block(breakable: true)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Crop augmentation]] \
+  The crop augmentation was done by randomly cropping the satellite image and its corresponding paths. The crop size is determined by a factor of the original image size, with a default value of 0.8. The cropped image and paths are then resized back to the original dimensions to maintain consistency. This augmentation helps the model focus on different parts of the image and improves its robustness to non-centred features.
+  #listing(line-numbering: none,
+    ```python
+def crop_aug(sat_image, paths, factor = 0.8):
+    h, w = sat_image.size
+    new_h = int(h*factor)
+    new_w = int(w*factor)
+    top = random.randint(0, h - new_h)
+    left = random.randint(0, w - new_w)
+    img = F.crop(sat_image, top, left, 
+                 new_h, new_w)
+    scaled_img = F.resize(img, (h, w))
+    
+    path_images = []
+    for p in paths:
+        path = p["path_line"]
+        path_img = F.crop(path, top, left, 
+                          new_h, new_w)
+        scaled_path = F.resize(path_img, 
+            (h, w), interpolation=LANCZOS)
+        path_images.append(scaled_path)
+    
+    return scaled_img, path_images
+    ```,
+    caption: [Crop augmentation function.] 
+  ) <listing:crop_a>
+]
+
+
+#let sat_a = std-block(breakable: true)[
+  #box(
+    fill: theme.sapphire.lighten(10%),
+    outset: 1mm,
+    inset: 0em,
+    radius: 3pt,
+  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Zoom augmentation]] \
+  The zoom augmentation was done by resizing the image to a larger size and then cropping it back to the original size. Through testing, the zoom factors of 1.4 to 1.9 were chosen. After randomly selecting a zoom factor, the image is resized and cropped to simulate zooming in. The resulting image is then converted back to a #acr("PNG") image for easier handling.
+  #listing(line-numbering: none,
+    ```python
+def zoom_aug(image, paths, 
+             zoom_range = (1.4, 1.9)):
+  zoom_factor = uniform(*zoom_range)
+  tmp_h = int(image.size[0]*zoom_factor)
+  tmp_w = int(image.size[1]*zoom_factor)
+  img = F.resize(image, (tmp_h, tmp_w)) 
+  img = F.center_crop(img, image.size)
+  
+  path_images = []
+  for p in paths:
+    path = p["path_line"]
+    path_img = F.resize(path, 
+                        (tmp_h, tmp_w))
+    path_img = F.center_crop(path_img, 
+                             image.size)
+    path_images.append(path_img)
+  
+  return img, path_images
+    ```,
+    caption: [Zoom augmentation function.]
+  ) <listing:zoom_a>
+]
+
+#grid(
+  columns: (1fr, 1fr),
+  hue_a, sat_a
+)
+
+Examples of the crop and zoom augmentations can be seen in @fig:crop_zoom. The far left image is the original image, the top row is the crop augmented images, and the bottom row is the zoom augmented images. The crop augmented images show the image cropped to a different part of the image, with the associated paths being cropped by the same factors. This was a necessary step, separating these augmentations from the previous, as the paths through the image were not the exact same as when the image underwent colouration or distortion augmentations. The same is true for the zoom augmented image. Here, the paths also needed to undergo the same augmentation as the satellite image. Once again, these augmentation have clearly impacted the diversity of the dataset, as the models are now trained on images that are not centred and images that are zoomed in, which is important for generalization.
+
+#let sat_image = { image("../../../figures/img/dataset_example/augmentation/sat_image.png") }
+#let crop_zoom_aug = { image("../../../figures/img/dataset_example/augmentation/crop_zoom_aug.png") }
+
+#std-block(breakable: false)[
+  #v(-1em)
+  #box(
+    fill: theme.sapphire,
+    outset: 0em,
+    inset: 0em,
+  )
+  #figure(
+  grid(
+    columns: (1fr, 3fr),
+    column-gutter: 1mm,
+    align: (horizon, center),
+    sat_image, crop_zoom_aug
+  ),
+caption: [Example of the crop and zoom augmentations. The far left image is the original image, the top row is the crop augmented images, and the bottom row is the zoom augmented images.]
+) <fig:crop_zoom>
+]
+
+All in all, these augmentations were selected to expand the dataset by introducing real-world inspired variations of the satellite images. These augmentation mimic the unpredictable conditions posed by using satellite imagery. By employing techniques such as hue and saturation adjustments, greyscale conversions, noise injection, blur filtering, and spatial transformations like cropping and zooming, the augmented dataset now contains diverse lighting, quality, and scale entries. This strategy of employing such a variety of augmentations not only ballooned the size of the dataset immensely, but also made the dataset more representative of the real-world conditions the models are expected to work with, meaning that it should be more robust and better at generalizing to unseen data.
+
+Other augmentation techniques were considered for this project. Rotation, for example, was considered to further increase the diversity of the dataset by introducing variations in orientation, which could help the model learn to recognize paths from different angles. However, early on in this project, it was decided that the entry for each path should be at the bottom of the satellite image. Thus, rotation the images could have undesired consequences for the models' ability to generalize with this constraint. Flipping was also considered, but was ultimately left out, as it was deemed to have too little of a potential impact since many intersections already go in all directions. Translation was also considered, but was left out, as it would require the paths to be redrawn as they would no longer reach the edges of the image, which was a factor this entire set out to combat. Finally, a very common augmentation used in segmentation, is the act of using cutmix and its constituent parts, namely cutout and mixup. These were, however, also left out, as it is assumed that the satellite images do not contain holes or other artefacts that would be introduced by these augmentations. Furthermore, cutmix might disrupt the spatial features understood by the model. These may be introduced in future work, as they may ultimately increase the robustness of the models in environments that have blocking features.
+
 
 === Dataset Structure <c3:dataset_structure>
 

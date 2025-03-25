@@ -181,3 +181,9 @@ Train U-net with augmented data.
 ### All day
 
 Document data augmentation. Reconsider training scheme.
+
+## 25/03/2025
+
+### All day
+
+Document data augmentation

@@ -399,4 +399,13 @@ betti:
   publisher: Wolfram Research, Inc.
   url: https://mathworld.wolfram.com/BettiNumber.html
   note: Accessible online at Wolfram Research
+noise:
+  type: misc
+  title: 'Regularizing Deep Neural Networks by Noise: Its Interpretation and Optimization'
+  author:
+  - Noh, Hyeonwoo
+  - You, Tackgeun
+  - Mun, Jonghwan
+  - Han, Bohyung
+  date: 2017
 
