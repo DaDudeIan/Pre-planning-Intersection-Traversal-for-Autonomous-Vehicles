@@ -9,5 +9,6 @@
   [`listing:<int>`], [A reference to a specific listing, where `<int>` represents a line number.],
   [`listing:<int>-<int>`], [Reference to a range of lines within a listing.],
   [`file.ext`],[A reference to a specific file of given file type.],
-  [`file.ext:<func>`], [A reference to a specific function within a file.]
+  [`file.ext:<func>`], [A reference to a specific function within a file.],
+  [Stack], [Also called a suite, a stack is a collection of related functions.]
 )

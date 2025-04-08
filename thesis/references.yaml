@@ -408,4 +408,243 @@ noise:
   - Mun, Jonghwan
   - Han, Bohyung
   date: 2017
+synopsys:
+  type: misc
+  title: The 6 Levels of Vehicle Autonomy Explained
+  author: Staff, Synopsys Editorial
+  date: 2025-02
+  url: https://www.synopsys.com/blogs/chip-design/autonomous-driving-levels.html
+sae1:
+  type: report
+  title: Taxonomy and definitions for terms related to on-road motor vehicle automated driving systems
+  author: On-Road Automated Driving (ORAD) committee
+  date: 2017
+  publisher:
+    name: SAE International
+    location: 400 Commonwealth Drive, Warrendale, PA, United States
+  organization: SAE International
+sae2:
+  type: report
+  title: Taxonomy and definitions for terms related to driving automation systems for on-road motor vehicles
+  author: On-Road Automated Driving (ORAD) committee
+  date: 2021
+  publisher:
+    name: SAE International
+    location: 400 Commonwealth Drive, Warrendale, PA, United States
+  organization: SAE International
+statista1:
+  type: misc
+  title: 'Infographic: Cars Increasingly Ready for Autonomous Driving'
+  author: Buchholz, Katharina
+  date: 2024-09
+  publisher: Statista
+  url: https://www.statista.com/chart/25754/newly-registered-cars-by-autonomous-driving-level/
+statista2:
+  type: misc
+  title: Autonomous driving is taking over
+  author: Buchholz, Katharina
+  date: 2023-02
+  url: https://www.weforum.org/stories/2023/02/charted-autonomous-driving-accelerating-mobility/
+first_cc:
+  type: misc
+  title: The History of Cruise Control | Folsom Auto Mall
+  author: Mall, Folsom Auto
+  date: 2022
+  url: https://www.folsomautomall.com/blog/2022/november/21/the-history-of-cruise-control.htm
+autoseu:
+  type: misc
+  author: Davies, Pascal
+  date: 2022-09
+  url: https://autoseu.com/you-can-now-drive-partially-hands-free-in-france-this-is-whats-changing/
+fsd_level:
+  type: misc
+  author: Hoffmann, Constantin
+  date: 2025-03
+  url: https://www.shop4tesla.com/en/blogs/news/tesla-fsd-supervised-europa-2025
+ford:
+  type: misc
+  title: Ford BlueCruise | Håndfri kørsel i Blue Zones | Ford DK
+  author: Danmark, Ford
+  date: 2025
+  url: https://www.ford.dk/om-os/foererassistancesystemer/ford-bluecruise
+level5_decade:
+  type: misc
+  author: Murray, Charles
+  date: 2018
+  url: https://www.designnews.com/autonomous-vehicles/here-s-why-level-5-autonomous-cars-may-still-be-a-decade-away
+cohen_2021:
+  type: misc
+  title: Sensor Fusion - Fusing LiDARs & RADARs in Self-Driving Cars
+  author: Cohen, Jeremy
+  date: 2021-05
+  url: https://www.thinkautonomous.ai/blog/sensor-fusion/#:~:text=A%20Kalman%20filter%20can%20be,prediction
+sensor_fusion:
+  type: misc
+  title: 9 Types of Sensor Fusion Algorithms
+  author: Cohen, Jeremy
+  date: 2021-05
+  url: https://www.thinkautonomous.ai/blog/9-types-of-sensor-fusion-algorithms/
+cams:
+  type: misc
+  title: 'The Power of Perception: Cameras in Self-Driving Cars'
+  author: Marie, Jean
+  date: 2024-05
+  url: https://supplybridge.com/the-power-of-perception-cameras-in-self-driving-cars/
+sensors:
+  type: article
+  title: 'Exploring the Unseen: A Survey of Multi-Sensor Fusion and the Role of Explainable AI (XAI) in Autonomous Vehicles'
+  author:
+  - Yeong, De Jong
+  - Panduru, Krishna
+  - Walsh, Joseph
+  date: 2025
+  url: https://www.mdpi.com/1424-8220/25/3/856
+  serial-number:
+    doi: 10.3390/s25030856
+    issn: 1424-8220
+  parent:
+    type: periodical
+    title: Sensors
+    issue: 3
+    volume: 25
+kalman:
+  type: misc
+  title: Kalman Filter Explained Simply - The Kalman Filter
+  author: Franklin, William
+  date: 2020-12
+  url: https://thekalmanfilter.com/kalman-filter-explained-simply/
+neuron:
+  type: article
+  title: A logical calculus of the ideas immanent in nervous activity
+  author:
+  - McCulloch, Warren S
+  - Pitts, Walter
+  date: 1943-12
+  page-range: 115-133
+  parent:
+    type: periodical
+    title: Bulletin of Mathematical Biophysics
+    publisher: Springer Science, Business Media LLC
+    issue: 4
+    volume: 5
+snarc:
+  type: misc
+  title: 'The Pioneers of AI: Marvin Minsky and the SNARC'
+  author: Parvez, Zahid
+  date: 2023-01
+  url: https://zahid-parvez.medium.com/history-of-ai-the-first-neural-network-computer-marvin-minsky-231c8bd58409
+ibm_checkers:
+  type: misc
+  date: 2025
+  url: https://www.ibm.com/history/early-games
+Rosenblatt1958-bm:
+  type: article
+  title: 'The perceptron: a probabilistic model for information storage and organization in the brain'
+  author: Rosenblatt, F
+  date: 1958-11
+  page-range: 386-408
+  parent:
+    type: periodical
+    title: Psychol. Rev.
+    publisher: American Psychological Association (APA)
+    issue: 6
+    volume: 65
+ai_timeline:
+  type: misc
+  title: 'History and evolution of machine learning: A timeline'
+  author: Karjian, Ron
+  date: 2024
+  publisher: TechTarget
+  url: https://www.techtarget.com/whatis/feature/History-and-evolution-of-machine-learning-A-timeline
+backprop:
+  type: article
+  title: Learning representations by back-propagating errors
+  author:
+  - Rumelhart, David E
+  - Hinton, Geoffrey E
+  - Williams, Ronald J
+  date: 1986-10
+  page-range: 533-536
+  parent:
+    type: periodical
+    title: Nature
+    publisher: Springer Science, Business Media LLC
+    issue: 6088
+    volume: 323
+alexnet:
+  type: article
+  title: ImageNet Classification with Deep Convolutional Neural Networks
+  author:
+  - Krizhevsky, Alex
+  - Sutskever, Ilya
+  - Hinton, Geoffrey E
+  date: 2012
+  editor:
+  - Pereira, F.
+  - Burges, C.J.
+  - Bottou, L.
+  - Weinberger, K.Q.
+  page-range: ''
+  url: https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf
+  parent:
+    type: proceedings
+    title: Advances in Neural Information Processing Systems
+    publisher: Curran Associates, Inc.
+    volume: 25
+grad:
+  type: misc
+  date: 2021
+  url: https://www.wikiwand.com/en/articles/Gradient_descent
+cv_tasks:
+  type: misc
+  title: Computer Vision Tasks (Comprehensive 2025 Guide) - viso.ai
+  author: Boesch, Gaudenz
+  date: 2024-10
+  url: https://viso.ai/deep-learning/computer-vision-tasks/
+4o-image:
+  type: misc
+  date: 2025
+  url: https://openai.com/index/introducing-4o-image-generation/
+swin:
+  type: misc
+  title: 'Swin Transformer: Hierarchical Vision Transformer using Shifted Windows'
+  author:
+  - Liu, Ze
+  - Lin, Yutong
+  - Cao, Yue
+  - Hu, Han
+  - Wei, Yixuan
+  - Zhang, Zheng
+  - Lin, Stephen
+  - Guo, Baining
+  date: 2021
+  url: https://arxiv.org/abs/2103.14030
+  serial-number:
+    arxiv: '2103.14030'
+sat_res:
+  type: misc
+  title: Satellite Imagery for Everyone
+  author: Jagula, Dexter
+  date: 2022-02
+  url: https://spectrum.ieee.org/commercial-satellite-imagery#:~:text=The%20best%20commercially%20available%20spatial,Moderate
+sentinel-2:
+  type: misc
+  title: High-Resolution Building and Road Detection from Sentinel-2
+  author:
+  - Sirko, Wojciech
+  - Brempong, Emmanuel Asiedu
+  - Marcos, Juliana T. C.
+  - Annkah, Abigail
+  - Korme, Abel
+  - Hassen, Mohammed Alewi
+  - Sapkota, Krishna
+  - Shekel, Tomer
+  - Diack, Abdoulaye
+  - Nevo, Sella
+  - Hickey, Jason
+  - Quinn, John
+  date: 2024
+  url: https://arxiv.org/abs/2310.11622
+  serial-number:
+    arxiv: '2310.11622'
 

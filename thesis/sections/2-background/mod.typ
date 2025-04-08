@@ -1,11 +1,7 @@
 #import "../../lib/mod.typ": *
 = Background <chapter:background>
 
-// This section presents the relevant theory made use of for the thesis. First a technical introduction to the underlying theory is covered. In @s.b.gaussian-models and #numref(<s.b.probabilistic-inference>), Gaussian models and probabilistic inference are introduced, respectively. These two topics are the theoretical base for understanding factor graphs and the corresponding methods for inference and reasoning about them, as detailed in sections #numref(<s.b.factor-graphs>)-#numref(<s.b.gaussian-belief-propagation>). Lastly the central concepts of the #acr("ECS") computing architecture is introduced. Each subsection is accompanied with clear examples to help in comprehending the use of the theory.
-
-This section outlines the theory relevant to the thesis. It begins with...
-
-// #include "related-works.typ"
+This section outlines the theory relevant to the thesis. It begins with an introduction to #acrpl("AV") to provide a thorough understanding of the context in which the work is situated. The tool with which this project's problem statement will be tackled is presented in @c2s2.2:dl, where the fundamentals of #acr("DL") are presented. Within this section, the focus is on #acr("CV") and its applications in #acrpl("AV"), as well as the importance of datasets in training #acr("DL") models. @c2s2.3:si presents underlying theory on satellite imagery and its applications in #acrpl("AV"). Each section and subsection includes clear examples to aid comprehension.
 
 #include "background.typ"
 #include "related_work.typ"

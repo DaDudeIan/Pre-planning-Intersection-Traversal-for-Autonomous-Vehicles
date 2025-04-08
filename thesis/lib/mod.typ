@@ -23,5 +23,7 @@
 #import "aos-soa.typ": aos, soa
 #import "seq.typ": fib
 #import "@preview/nth:1.0.1": *
+#import "@preview/wrap-it:0.1.1": wrap-content
 
 #let cursor = line(length: 100%, stroke: 1em + red)
+#let subfigure(n) = { text(n, fill: theme.teal)}

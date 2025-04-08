@@ -987,3 +987,5 @@
 #let model_rq = 1
 #let loss_rq = 2
 #let dataset_rq = 3
+
+#let citation_needed = {text("[X]", fill: red)}

@@ -203,6 +203,9 @@ def custom_collate_fn(batch):
     class_labels_batch = torch.stack([item["class_labels"] for item in batch])
     # Keep 'paths' as a list of lists (variable-length) without stacking.
     paths_batch = [item["paths"] for item in batch]
+
+        
+        
     return {"satellite": satellite_batch, "class_labels": class_labels_batch, "paths": paths_batch}
 
 

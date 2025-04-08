@@ -67,6 +67,14 @@ def cmap_loss_logits(cmap_gt: torch.Tensor, path_pred: torch.Tensor, reduction: 
     
     return loss if reduction != 'mean' else loss / len(cmap_f)
 
+def cmap_loss_logits2(cmap_gt: torch.Tensor, path_pred: torch.Tensor, reduction: str = 'mean') -> torch.Tensor:
+    path_pred = torch.sigmoid(path_pred)
+    loss = (cmap_gt * path_pred).sum()
+    if reduction == 'mean':
+        loss = loss / cmap_gt.numel()
+    return loss
+
+
 class BCELoss(nn.Module):
     """
     Binary Cross-Entropy Loss with an optional weighting factor.
@@ -89,7 +97,7 @@ class BCELoss(nn.Module):
         self.weight = weight
         
     def forward(self, path_gt: torch.Tensor, path_pred: torch.Tensor, reduction: str = 'mean'):
-        loss = bce_loss_torch(path_gt, path_pred, reduction)
+        loss = bce_loss_logits(path_gt, path_pred) #, reduction)
         return self.weight * loss
 
 def bce_loss(path_gt: str, path_pred: str, reduction: str = "mean") -> float:

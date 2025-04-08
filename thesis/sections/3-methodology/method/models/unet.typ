@@ -109,8 +109,9 @@ class Down(nn.Module):
 
 #grid(
   columns: (1fr, 1fr),
-  b1, b2,
-  b3, b4
+  column-gutter: 2mm,
+  inset: 0mm,
+  [#b1 #v(-2.5mm) #b4], [#b2 #v(-2.5mm) #b3]
 )
 
 #let fig1 = { image("../../../../figures/img/models/unet/unet.png") }

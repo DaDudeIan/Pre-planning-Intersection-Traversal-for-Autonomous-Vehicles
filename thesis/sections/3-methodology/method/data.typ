@@ -531,6 +531,8 @@ Each `intersection_XXX` folder contains a satellite image saved as a #acr("PNG")
 
 ==== Dataset class <c3:dataset_structure:dataset_class>
 
+#text("UPDATE ALL TO REFLECT LATEST CHANGES. MAYBE ALSO DIFFERENT TYPES.", fill: red, weight: "semibold")
+
 #let init = {text("__init__", font: "JetBrainsMono NFM")}
 #let len = {text("__len__", font: "JetBrainsMono NFM")}
 #let getitem = {text("__getitem__", font: "JetBrainsMono NFM")}
