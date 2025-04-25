@@ -17,7 +17,7 @@ The following research questions have been formulated to address key challenges 
 #[
   #set par(first-line-indent: 0em)
   #set enum(numbering: req-enum.with(prefix: "RQ-", color: theme.teal))
-  + How can pixel-subset–based deep learning approaches, including #acrpl("CNN"), #acrpl("FCN"), #acrpl("ViT"), and diffusion-based models, be optimized to improve accuracy and efficiency in path planning for autonomous vehicles at intersections?
+  + How can pixel-subset-based deep learning approaches be optimized to improve accuracy and efficiency in path planning for autonomous vehicles at intersections? How do convolution-based and transformer-based models compare in this context?
   + Is it possible to design a loss function that effectively captures the similarity between generated and desired paths for autonomous vehicles without forcing exact matches?
   + Is it possible to create a dataset that allows for the training of a model, such that the data is not too stringent to a singular path?
   //+ What strategies can be employed to ensure robust localization of autonomous vehicles while following generated paths?  

@@ -173,436 +173,436 @@ As the previous sections have highlighted, there is a dire need for a topology-b
 
 Considerations of using existing topology existing methods. Dep #etal @topoloss introduced TopoNets and TopoLoss. This loss function revolves around penalizing jagged paths and encouraging smooth, brain-like topographic organization within neural networks by reshaping weight matrices into two-dimensional cortical sheets and maximizing the cosine similarity between these sheets and their blurred versions. Cortical sheets are two-dimensional grids formed by reshaping neural network weight matrices to emulate the brain's spatial organization of neurons, enabling topographic processing. While initially interesting in the context of this project, simple testing showed that the values returned from this loss, did not give a proper presentation of the path's topology, outside of its smoothness. And while smoothness is a part of the topology, this is will largely be handled by the #acr("BCE") loss.
 
-==== Continuity <c4:topo_cont>
+// ==== Continuity <c4:topo_cont>
 
-The first part of the topology loss is the continuity part. This part of the loss function is crucial for ensuring that the predicted path is continuous and does not contain any breaks. Breaks in a path would be unrealistic for a grounded vehicle to follow. To understand the continuity part of the topology loss, it is essential to understand the concept of Betti numbers as described below:
+// The first part of the topology loss is the continuity part. This part of the loss function is crucial for ensuring that the predicted path is continuous and does not contain any breaks. Breaks in a path would be unrealistic for a grounded vehicle to follow. To understand the continuity part of the topology loss, it is essential to understand the concept of Betti numbers as described below:
 
-#std-block(breakable: true)[
-  #box(
-    fill: theme.sapphire.lighten(10%),
-    outset: 1mm,
-    inset: 0em,
-    radius: 3pt,
-  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Betti Numbers]] \
-  Betti numbers @betti come from algebraic topology, and are used to distinguish topological spaces based on the connectivity of $n$-dimensional simplicial complexes. The $n$th Betti number, $beta_n$, counts the number of $n$-dimensional holes in a topological space. The Betti numbers for the first three dimensions are:
-  - $beta_0$: The number of connected components.
-  - $beta_1$: The number of loops.
-  - $beta_2$: The number of voids.
-  The logic follows that, in 1D, counting loops are not possible, as it is simply a line. This, if the number is greater than 1, it means it is split into more than component. In 2D, the number of loops is counted, i.e. a circled number of pixels. In 3D, this extends to voids. 
-]
+// #std-block(breakable: true)[
+//   #box(
+//     fill: theme.sapphire.lighten(10%),
+//     outset: 1mm,
+//     inset: 0em,
+//     radius: 3pt,
+//   )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Betti Numbers]] \
+//   Betti numbers @betti come from algebraic topology, and are used to distinguish topological spaces based on the connectivity of $n$-dimensional simplicial complexes. The $n$th Betti number, $beta_n$, counts the number of $n$-dimensional holes in a topological space. The Betti numbers for the first three dimensions are:
+//   - $beta_0$: The number of connected components.
+//   - $beta_1$: The number of loops.
+//   - $beta_2$: The number of voids.
+//   The logic follows that, in 1D, counting loops are not possible, as it is simply a line. This, if the number is greater than 1, it means it is split into more than component. In 2D, the number of loops is counted, i.e. a circled number of pixels. In 3D, this extends to voids. 
+// ]
 
-With this, for the 2D images used in this project, the Betti numbers are $beta_0$ and $beta_1$. The continuity part of the topology loss is designed to ensure that the predicted path has a single connected component and no loops. This is achieved by aiming for the Betti numbers to be $beta_0 = 1$ and $beta_1 = 0$. Higher dimensional Betti numbers are not relevant for this project, as the images are 2D. While Betti numbers are a powerful tool for topology analysis, they are not directly applicable to the loss function as they are discrete values. This means that offer no gradient information, which is essential for training a neural network. Instead, persistent homology is deployed.
+// With this, for the 2D images used in this project, the Betti numbers are $beta_0$ and $beta_1$. The continuity part of the topology loss is designed to ensure that the predicted path has a single connected component and no loops. This is achieved by aiming for the Betti numbers to be $beta_0 = 1$ and $beta_1 = 0$. Higher dimensional Betti numbers are not relevant for this project, as the images are 2D. While Betti numbers are a powerful tool for topology analysis, they are not directly applicable to the loss function as they are discrete values. This means that offer no gradient information, which is essential for training a neural network. Instead, persistent homology is deployed.
 
-Persistent homology is a mathematical tool used to study topological features of data. Homology itself is a branch of algebraic topology concerned with procedures to compute the topological features of objects. Persistent homology extends the basic idea of homology by considering not just a single snapshot of a topological space but a whole family of spaces built at different scales. Instead of calculating Betti numbers for one fixed space a filtration is performed. This filtration is a sequence of spaces, where each space is a subset of the next, i.e. a nested sequence of spaces where each one is built by gradually growing the features by some threshold. As this threshold varies, topological features such as connected components and loops will appear (be born) and eventually merge or vanish (die).
+// Persistent homology is a mathematical tool used to study topological features of data. Homology itself is a branch of algebraic topology concerned with procedures to compute the topological features of objects. Persistent homology extends the basic idea of homology by considering not just a single snapshot of a topological space but a whole family of spaces built at different scales. Instead of calculating Betti numbers for one fixed space a filtration is performed. This filtration is a sequence of spaces, where each space is a subset of the next, i.e. a nested sequence of spaces where each one is built by gradually growing the features by some threshold. As this threshold varies, topological features such as connected components and loops will appear (be born) and eventually merge or vanish (die).
 
-This birth and death of features is recorded in what is known as a persistence diagram or barcode (See @fig:persistent_homology). In these diagrams, each feature is represented by a bar (or a point in the diagram) whose length indicates how persistent, or significant, the feature is across different scales. Features with longer lifespans are generally considered to be more robust and representative of the underlying structure of the data, whereas those that quickly appear and disappear might be attributed to noise.
-// possibility of exploding loss when noisy image
+// This birth and death of features is recorded in what is known as a persistence diagram or barcode (See @fig:persistent_homology). In these diagrams, each feature is represented by a bar (or a point in the diagram) whose length indicates how persistent, or significant, the feature is across different scales. Features with longer lifespans are generally considered to be more robust and representative of the underlying structure of the data, whereas those that quickly appear and disappear might be attributed to noise.
+// // possibility of exploding loss when noisy image
 
 
-#let fig1 = { image("../../../figures/img/loss_example/comp12.png", width: 80%) }
-#let fig2 = { image("../../../figures/img/loss_example/pers_bar.png") }
-#let fig3 = { image("../../../figures/img/loss_example/pers_diag.png") }
+// #let fig1 = { image("../../../figures/img/loss_example/comp12.png", width: 80%) }
+// #let fig2 = { image("../../../figures/img/loss_example/pers_bar.png") }
+// #let fig3 = { image("../../../figures/img/loss_example/pers_diag.png") }
 
-#let fig4 = { image("../../../figures/img/loss_example/comp7.png", width: 80%) }
-#let fig5 = { image("../../../figures/img/loss_example/pers_bar_2.png") }
-#let fig6 = { image("../../../figures/img/loss_example/pers_diag_2.png") }
+// #let fig4 = { image("../../../figures/img/loss_example/comp7.png", width: 80%) }
+// #let fig5 = { image("../../../figures/img/loss_example/pers_bar_2.png") }
+// #let fig6 = { image("../../../figures/img/loss_example/pers_diag_2.png") }
 
-#std-block(breakable: false)[
-  #v(-1em)
-  #box(
-    fill: theme.sapphire,
-    outset: 0em,
-    inset: 0em,
-  )
-  #figure(
-  grid(
-  columns: (1fr, 1fr, 1fr),
-  column-gutter: 1mm,
-  align: (center, center),
-  fig1, fig2, fig3,
-  //fig4, fig5, fig6
+// #std-block(breakable: false)[
+//   #v(-1em)
+//   #box(
+//     fill: theme.sapphire,
+//     outset: 0em,
+//     inset: 0em,
+//   )
+//   #figure(
+//   grid(
+//   columns: (1fr, 1fr, 1fr),
+//   column-gutter: 1mm,
+//   align: (center, center),
+//   fig1, fig2, fig3,
+//   //fig4, fig5, fig6
   
-),
-caption: [The top row shows a connected path along with its persistence barcode and persistence diagram, while the bottom row shows a disconnected path. The number of lines in the barcode, stems from the fact that the images are rather large in size and thus the number of built spaces are many.]
-) <fig:persistent_homology>
-]
+// ),
+// caption: [The top row shows a connected path along with its persistence barcode and persistence diagram, while the bottom row shows a disconnected path. The number of lines in the barcode, stems from the fact that the images are rather large in size and thus the number of built spaces are many.]
+// ) <fig:persistent_homology>
+// ]
 
-Since sources are very scarce regarding the implementation of the differentiable wasserstein distance, an approximation is made for the backwards pass as shown in @code:persistent_homology. The entire implementation is shown in the code listing below: 
+// Since sources are very scarce regarding the implementation of the differentiable wasserstein distance, an approximation is made for the backwards pass as shown in @code:persistent_homology. The entire implementation is shown in the code listing below: 
 
-#listing([
-  ```python
-class PersistentHomologyLossFunction(torch.autograd.Function):
-  def forward(ctx, input_tensor, target_betti, threshold):
-    array = input_tensor.detach().cpu().numpy()
-    array_inv = 1.0 - array
-    cc = gd.CubicalComplex(top_dimensional_cells=array_inv)
+// #listing([
+//   ```python
+// class PersistentHomologyLossFunction(torch.autograd.Function):
+//   def forward(ctx, input_tensor, target_betti, threshold):
+//     array = input_tensor.detach().cpu().numpy()
+//     array_inv = 1.0 - array
+//     cc = gd.CubicalComplex(top_dimensional_cells=array_inv)
     
-    computed_betti = {}
-    for dim, (birth, death) in cc.persistence():
-      if death == float('inf') or death > threshold:
-        computed_betti.setdefault(dim, 0)
-        computed_betti[dim] += 1
+//     computed_betti = {}
+//     for dim, (birth, death) in cc.persistence():
+//       if death == float('inf') or death > threshold:
+//         computed_betti.setdefault(dim, 0)
+//         computed_betti[dim] += 1
 
-    ctx.computed_betti = computed_betti
-    ctx.target_betti = target_betti
-    ctx.input_shape = input_tensor.shape
+//     ctx.computed_betti = computed_betti
+//     ctx.target_betti = target_betti
+//     ctx.input_shape = input_tensor.shape
 
-    loss_sq = 0.0
-    for dim, target in target_betti.items():
-      comp = computed_betti.get(dim, 0)
-      diff = comp - target
-      loss_sq += diff * diff
-    loss_value = np.sqrt(loss_sq)
+//     loss_sq = 0.0
+//     for dim, target in target_betti.items():
+//       comp = computed_betti.get(dim, 0)
+//       diff = comp - target
+//       loss_sq += diff * diff
+//     loss_value = np.sqrt(loss_sq)
 
-    ctx.loss_value = loss_value
-    ctx.diff_dict = {dim: computed_betti.get(dim, 0) - target for dim, target in target_betti.items()}
+//     ctx.loss_value = loss_value
+//     ctx.diff_dict = {dim: computed_betti.get(dim, 0) - target for dim, target in target_betti.items()}
 
-    return torch.tensor(loss_value, dtype=input_tensor.dtype, device=input_tensor.device)
+//     return torch.tensor(loss_value, dtype=input_tensor.dtype, device=input_tensor.device)
 
-  def backward(ctx, grad_output):
-    total_diff = 0.0
-    for diff in ctx.diff_dict.values():
-      total_diff += diff
+//   def backward(ctx, grad_output):
+//     total_diff = 0.0
+//     for diff in ctx.diff_dict.values():
+//       total_diff += diff
 
-    L_val = ctx.loss_value if ctx.loss_value > 1e-8 else 1e-8
-    grad_scalar = total_diff / L_val
-    grad_input = grad_output * grad_scalar 
-                  * torch.ones(ctx.input_shape, device=grad_output.device)
+//     L_val = ctx.loss_value if ctx.loss_value > 1e-8 else 1e-8
+//     grad_scalar = total_diff / L_val
+//     grad_input = grad_output * grad_scalar 
+//                   * torch.ones(ctx.input_shape, device=grad_output.device)
 
-    return grad_input, None, None
+//     return grad_input, None, None
 
-class PersistentHomologyLoss(nn.Module):
-  def __init__(self, target_betti, threshold=0.5):
-    super(PersistentHomologyLoss, self).__init__()
-    self.target_betti = target_betti
-    self.threshold = threshold
+// class PersistentHomologyLoss(nn.Module):
+//   def __init__(self, target_betti, threshold=0.5):
+//     super(PersistentHomologyLoss, self).__init__()
+//     self.target_betti = target_betti
+//     self.threshold = threshold
 
-  def forward(self, input_tensor):
-    return PersistentHomologyLossFunction.apply(input_tensor, 
-                                                self.target_betti, 
-                                                self.threshold)
-  ```
-],
-caption: [Persistent Homology implementation.]
-) <code:persistent_homology>
+//   def forward(self, input_tensor):
+//     return PersistentHomologyLossFunction.apply(input_tensor, 
+//                                                 self.target_betti, 
+//                                                 self.threshold)
+//   ```
+// ],
+// caption: [Persistent Homology implementation.]
+// ) <code:persistent_homology>
 
-The loss function consists of two classes, `PersistentHomologyLoss` is the wrapper class that inherits from `torch.nn.Module`. It takes two parameters, `target_betti` and `threshold`. The `target_betti` parameter is a dictionary containing the target Betti numbers for the input tensor, while the `threshold` parameter is the threshold value used in the persistent homology calculation. The `forward` method of the `PersistentHomologyLoss` class calls the `PersistentHomologyLossFunction` class, which is a custom autograd function that performs the persistent homology calculation. The `PersistentHomologyLossFunction` class inherits from `torch.autograd.Function` and has two methods, `forward` and `backward`. 
+// The loss function consists of two classes, `PersistentHomologyLoss` is the wrapper class that inherits from `torch.nn.Module`. It takes two parameters, `target_betti` and `threshold`. The `target_betti` parameter is a dictionary containing the target Betti numbers for the input tensor, while the `threshold` parameter is the threshold value used in the persistent homology calculation. The `forward` method of the `PersistentHomologyLoss` class calls the `PersistentHomologyLossFunction` class, which is a custom autograd function that performs the persistent homology calculation. The `PersistentHomologyLossFunction` class inherits from `torch.autograd.Function` and has two methods, `forward` and `backward`. 
 
-The `forward` method takes the input tensor, target Betti numbers, and threshold as inputs. First, the tensor is converted to a numpy array so it can be used by the Gudhi function creating the cubical complex. The cubical complex is created using the `CubicalComplex` class, which constructs a cubical complex from the input tensor. The persistence of the cubical complex is then computed using the `persistence` method, which returns the birth and death values of the topological features. The computed Betti numbers for each dimension are then calculated and stored in the `computed_betti` dictionary. The loss value is calculated by comparing the computed Betti numbers to the target Betti numbers and summing the squared differences. The square root of the sum is then returned as the loss value:
+// The `forward` method takes the input tensor, target Betti numbers, and threshold as inputs. First, the tensor is converted to a numpy array so it can be used by the Gudhi function creating the cubical complex. The cubical complex is created using the `CubicalComplex` class, which constructs a cubical complex from the input tensor. The persistence of the cubical complex is then computed using the `persistence` method, which returns the birth and death values of the topological features. The computed Betti numbers for each dimension are then calculated and stored in the `computed_betti` dictionary. The loss value is calculated by comparing the computed Betti numbers to the target Betti numbers and summing the squared differences. The square root of the sum is then returned as the loss value:
 
-$
-  cal("L")_"cont" = sqrt(sum_"dim" (beta^"dim"_"computed" - beta^"dim"_"target")^2 )
-$
-
-The `backward` method calculates the gradient of the loss value with respect to the input tensor. The total difference between the computed and target Betti numbers is calculated, and the gradient is computed as the total difference divided by the loss value. The gradient is then multiplied by the output gradient and returned as the gradient. 
-
-Formally, there is no gradient to discrete values, so a surrogate gradient is required. First, the aggregate discrepancy is defined as 
-
-$
-  Delta = sum_(dim) (beta^"dim"_"computed" - beta^"dim"_"target")
-$
-
-The `backward` method approximates the derivative of the loss with respect to the input by simply computing a scalar gradient:
-
-$
-  g = Delta / L
-$
-
-where $L = max(epsilon, cal("L")_"cont")$ with $epsilon = 10^(-8)$. This scalar $g$ is then uniformly distributed over all elements of the input tensor. Finally, the gradient with respect to the input is given by
-
-$
-  gradient_x L = g dot "grad_output"
-$
-where $"grad_output"$ is the upstream gradient.
-
-Creating and using the `PersistentHomologyLoss` class is straightforward. The target Betti numbers are defined as a dictionary with the desired Betti numbers for each dimension. The threshold parameter is also defined in a variable and passed during initialization:
-
-#listing([
-  ```python
-target_betti = {0: 1, 1: 0}
-topo_loss_fn = PersistentHomologyLoss(target_betti, threshold=0.75)
-loss = topo_loss_fn(p_tensor)
-  ```
-],
-caption: [Creating and using the `PersistentHomologyLoss` class.]
-) <code.persistent_homology_usage>
-
-Examples of the persistent homology loss is shown in @fig:loss_topo_cont. Remember, the desired Betti numbers are $beta_0 = 1$ and $beta_1 = 0$, meaning that any more than 1 component and any loops should be penalized. As expected, the ground truth in (a) has a loss value of $0$. (b) showcases the fact that if parts of the true path are missing, the loss value will swiftly increase. (c) shows this even better, as it consists of 4 different component, thus achieving a difference of 3. (d) shows that the loss function also penalizes loops, as the loss value is $1$. 
-
-
-
-#std-block(breakable: false)[
-  #v(-1.2em)
-  #box(
-    fill: theme.sapphire,
-    outset: 0em,
-    inset: 0em,
-  )
-  #figure(
-  image("../../../figures/img/loss_example/topo_loss_plots_report2.png", width: 100%),
-  caption: [ Results of using the continuity part of the topology loss. ]
-  ) <fig:loss_topo_cont>
-]
-
-
-==== Branching <c4:topo_branch>
-
-The second part of the topology loss is the branching part. Branching refers to the presence of dead-ends in the predicted path. Dead-ends are points in the path that stop abruptly. These are undesired as a vehicle will only need one path to follow through an intersection and dead-end branches might stop in the middle of the intersection or somewhere completely irrelevant. This section of the loss function is another crucial part that goes along nicely with the continuity part because, while the continuity parts ensures that only one component is present, a branching path will still only total one component. So, the continuity part handles component count and loops, while the branching part handles undesired dead-ends. The only desired dead-ends are the entry and exit points of the intersection. How these are handled is discussed in @c4:topo_entry.
-
-This part of the loss function will focus on counting the number of endpoints of the predicted path. The goal is to penalize paths that have more than two endpoints, as this indicates that the path has branches. This will be achieved by using an altered kind of the 8-neighbour grid. In this grid, the value at each pixel is decided by how many neighbours is has as defined by some kernel. In the 8-neighbour grid, the kernel is defined as
-
-$
-  k = mat(
-    1, 1, 1;
-    1, 0, 1;
-    1, 1, 1;
-  )
-$ <branch_kernel>
-
-resulting in each grid point having a value stored equal to that of the number of occupied pixels surrounding it, naturally ignoring itself, after convolution. In the context of detecting branches, the desired value for all pixels is 2, other than the entry and exit points, which are allowed to have 1 as the only points. A value of 2 is allowed since this means that the pixel is on the path, i.e. each pixel has their own entry and exit neighbour points. This definition does, however, become troublesome when images are not binary, i.e. the path may be subject to some kind of smoothing or anti-aliasing. For example, if the pixels near the exit point have some value, they would be counted as neighbours, meaning that the exit point would not be considered an endpoint. Therefore, in the implementation in @code:branching_loss, a soft threshold is employed instead of a hard one.
-
-Also to be considered for this, is the fact that it should be differentiable. Thankfully, a soft threshold is differentiable, as it is simply a sigmoid function. The input tensor is put through the following equation:
-$
-  "input_tensor" = sigma(alpha ( "input_tensor"/255 - t))
-$
-where $t$ is the threshold, $alpha$ is the steepness of the sigmoid, and $sigma$ is the sigmoid function. This approach gives way for a differentiable approximation to a binary threshold, and a high value for $alpha$ will make the threshold very sharp, while a low value will make it very soft. Tests of various values for $alpha$ and $t$ were conducted early and can be found in @app:branch_loss_tests. From this, the values for chosen to be $alpha = 70.0$ and $t = 0.85$. This is also reflected in the code. These high values were chosen to ensure that the threshold is very sharp, and points that occur as a result of anti-aliasing are not counted as pixels in the actual end-points count.
-
-Next, the neighbour sum is calculated using the kernel defined in @branch_kernel. This is done by convolving the input tensor with the kernel using the `conv2d` function from PyTorch, resulting in a tensor where each pixel contains the number of occupied pixels in its 8-neighbourhood:
-$
-  "neighbour_sum"_(x,y) = sum_(i=-a)^a sum_(j=-b)^b k_(i,j) f_(x-i,y-j)
-$
-where $k$ is the kernel, $f$ is the input tensor, and $a$ and $b$ describe the size of the kernel by $-a <= i <= a$ and $-b <= j <= b$. In this case, $a = b = 1$ as the kernel is 3x3. `padding = 1` ensures equal stride.
-
-However, instead of directly counting the number of endpoints, the number of endpoints is calculated using a Gaussian function. This is done to ensure that the loss function is differentiable. The indicator function is defined as 
-$
-  "indicator" = exp(-(("neighbour_sum" - 1)^2) / (2 sigma^2))
-$ <branch_indicator>
-where $sigma$ is some defined value, here set to $sigma = 0.1$ as it then sharply peaks around 1. This further works as a smooth approximation compared to a strong threshold of $1$. Finally, the loss calculated by finding the number of endpoints with
-$
-  "endpoints" = "input_tensor" dot "indicator"
-$
-and squaring the difference between the number of endpoints and the target number of endpoints:
-$
-  cal("L")_"branch" = (E-T)^2
-$ <branch_dedt>
-where $E = sum "endpoints"$ and $T$ is the target number of endpoints. The loss is then returned as a tensor.
-
-
-
-#listing([
-  ```python
-class EndpointsLossFunction(torch.autograd.Function):
-  def forward(ctx, input_tensor, target_ee, alpha = 70.0, threshold = 0.85):
-    input_tensor = input_tensor / 255.0
-    input_tensor = torch.sigmoid(alpha * ((input_tensor) - threshold))
-
-    p = input_tensor.unsqueeze(0).unsqueeze(0)
-    
-    kernel = torch.tensor([[1, 1, 1], 
-                           [1, 0, 1], 
-                           [1, 1, 1]], 
-                          dtype=torch.float32).unsqueeze(0).unsqueeze(0)
-    
-    neighbour_sum = F.conv2d(p, kernel, padding=1).squeeze(0).squeeze(0)
-    
-    sigma = 0.1
-    desired_endpoints = 1
-    indicator = torch.exp(-((neighbour_sum - desired_endpoints) ** 2) / (2 * sigma ** 2))
-    
-    endpoints_map = input_tensor * indicator
-    measured_endpoints = torch.sum(endpoints_map)
-
-    loss_value = (measured_endpoints - target_ee) ** 2
-    
-    ... save values to ctx ...
-    
-    return loss_value
-
-  def backward(ctx, grad_output):
-
-    ... load ctx values ...
-
-    E = (input_tensor * indicator).sum()
-    
-    dL_dE = 2 * (E - target_ee)
-
-    grad_direct = indicator
-
-    factor = -(neighbour_sum - 1) / (sigma ** 2)
-    
-    conv_input = (input_tensor * indicator * factor).unsqueeze(0).unsqueeze(0)
-    grad_indirect = F.conv2d(conv_input, kernel, padding=1).squeeze(0).squeeze(0)
-    
-    grad_total = grad_direct + grad_indirect
-    
-    soft_thresholded = torch.sigmoid(alpha * (input_tensor - threshold))
-    sigmoid_deriv = (alpha / 255.0) * soft_thresholded * (1 - soft_thresholded)
-    
-    grad_input = grad_output * dL_dE * grad_total * sigmoid_deriv
-    
-    return grad_input, None
-    
-class EndpointsLoss(nn.Module):
-  def __init__(self, target_ee, alpha = 70.0, threshold = 0.8):
-    super(EndpointsLoss, self).__init__()
-    self.target_ee = target_ee
-    self.alpha = alpha
-    self.threshold = threshold
-
-  def forward(self, input_tensor):
-    return EndpointsLossFunction.apply(input_tensor, self.target_ee, 
-                                       self.alpha, self.threshold)
-  ```
-],
-caption: [Branching loss implementation.]
-) <code:branching_loss>
-
-
-// During backpropagation, the loss gradient is computed with respect to the input. The total derivative considers two contributions: the direct contribution from the indicator function and the indirect contribution from the convolution of the input tensor with the kernel. First, the direct contribution is found by taking the derivative of @branch_indicator with respect to the pixel value $p$:
 // $
-//   partial/(partial p) p dot "indicator" = "indicator"
+//   cal("L")_"cont" = sqrt(sum_"dim" (beta^"dim"_"computed" - beta^"dim"_"target")^2 )
 // $
 
-// Since the pixel values also affect the indicator indirectly through the neighbour sum, the indirect contribution comes from differentiating the indicator with respect to the neighbour sum:
+// The `backward` method calculates the gradient of the loss value with respect to the input tensor. The total difference between the computed and target Betti numbers is calculated, and the gradient is computed as the total difference divided by the loss value. The gradient is then multiplied by the output gradient and returned as the gradient. 
+
+// Formally, there is no gradient to discrete values, so a surrogate gradient is required. First, the aggregate discrepancy is defined as 
+
 // $
-//   (partial"indicator")/(partial"neighbour_sum") = -("neighbour_sum" - 1) / sigma^2 dot "indicator"
+//   Delta = sum_(dim) (beta^"dim"_"computed" - beta^"dim"_"target")
 // $
-// As seen in the implementation, the convolution of the product $p dot "indicator" dot (- ("neighbour_sum" - 1)/sigma^2)$. This is a result of the chain rule being applied to the derivative of the loss with respect to the input tensor. Another part of the total derivative is the simple loss found in @branch_dedt. The derivative of this simply becomes
+
+// The `backward` method approximates the derivative of the loss with respect to the input by simply computing a scalar gradient:
+
 // $
-//   2 * (E - T)
+//   g = Delta / L
 // $
-// where $E$ is the number of endpoints and $T$ is the target number of endpoints. Finally, continuing the chain rule through the sigmoid transformation by multiplying with the derivative of sigmoid function gives 
+
+// where $L = max(epsilon, cal("L")_"cont")$ with $epsilon = 10^(-8)$. This scalar $g$ is then uniformly distributed over all elements of the input tensor. Finally, the gradient with respect to the input is given by
+
 // $
-//   "sigmoid_deriv" = alpha / 255 * "soft_thresholded" * (1 - "soft_thresholded")
+//   gradient_x L = g dot "grad_output"
 // $
-// Multiplying all these components together gives the gradient with respect to the input tensor.
+// where $"grad_output"$ is the upstream gradient.
 
-To explain the backpropagation of this part of the loss function, I will re-introduce and define the following quantities:
+// Creating and using the `PersistentHomologyLoss` class is straightforward. The target Betti numbers are defined as a dictionary with the desired Betti numbers for each dimension. The threshold parameter is also defined in a variable and passed during initialization:
 
+// #listing([
+//   ```python
+// target_betti = {0: 1, 1: 0}
+// topo_loss_fn = PersistentHomologyLoss(target_betti, threshold=0.75)
+// loss = topo_loss_fn(p_tensor)
+//   ```
+// ],
+// caption: [Creating and using the `PersistentHomologyLoss` class.]
+// ) <code.persistent_homology_usage>
 
-#let b1 = std-block(breakable: false)[
-  #box(
-    fill: theme.sapphire.lighten(10%),
-    outset: 1mm,
-    inset: 0em,
-    radius: 3pt,
-  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Soft-threshold]] \
-  $
-    p = sigma ( alpha ( x / 255 - t))
-  $ <soft_threshold>
-  where 
-  - $p$ is the soft-thresholded pixel value, 
-  - $x$ is the input, 
-  - $t$ is the threshold, 
-  - $sigma$ is the sigmoid function, 
-  - $alpha$ is the steepness of the sigmoid.
-]
-
-#let b2 = std-block(breakable: false)[
-  #box(
-    fill: theme.sapphire.lighten(10%),
-    outset: 1mm,
-    inset: 0em,
-    radius: 3pt,
-  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Indicator]] \
-  $
-    I = exp(-((S - 1)^2) / (2 sigma^2)) 
-  $ <branch_indicator2>
-  where 
-  - $I$ is the indicator function, 
-  - $S$ is the neighbour sum obtained by convolution with $k$ from @branch_kernel, 
-  - $sigma$ is a scalar value.
-]
-
-#let b3 = std-block(breakable: false)[
-  #box(
-    fill: theme.sapphire.lighten(10%),
-    outset: 1mm,
-    inset: 0em,
-    radius: 3pt,
-  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Pixel endpoint contribution]] \
-  $
-    f(p) = p dot I 
-  $ <branch_endpoint>
-  where 
-  - $p$ comes from @soft_threshold,
-  - $I$ is the indicator from @branch_indicator2.
-]
-
-#let b4 = std-block(breakable: false)[
-  #box(
-    fill: theme.sapphire.lighten(10%),
-    outset: 1mm,
-    inset: 0em,
-    radius: 3pt,
-  )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Loss function definition]] \
-  $
-    cal("L")_"branch" = (E - T)^2
-  $ <branch_loss>
-  where 
-  - $E$ is the number of endpoints,
-  - $T$ is the target number of endpoints.
-]
-
-#grid(
-  columns: (1fr, 1fr),
-  b1, b2,
-  b3, b4
-)
-
-Several calculation contribute to the total derivative. Firstly, the derivative of the loss in @branch_loss is simply
-$
-  (partial cal("L")_"branch")/(partial E) = 2  (E - T)
-$ <branch_dedt2>
-
-Secondly, the direct contribution from the indicator function is found by taking the derivative of @branch_indicator2 with respect to the pixel value $p$:
-$
-  partial/(partial p) p dot I = I
-$
-directly representing the sensitivity of @branch_endpoint. Thirdly, since the indicator $I$ is a function of the neighbour sum $S$, which in turn depends on $p$ via convolution, there is an indirect contribution as well. Given @branch_indicator2, its derivative with respect to $S$ is 
-$
-  (partial I)/(partial S) = - (S-1)/(sigma^2) dot I
-$ <branch_indirect>
-To then find the contributions from neighbouring pixels, the product $p dot$ @branch_indirect is convolved with the kernel $k$ from @branch_kernel. Lastly, the derivative of @soft_threshold is found by taking the derivative of $p$ with respect to $x$. First, the derivative of the sigmoid function is found:
-$
-  sigma'(x) = sigma(x)  (1 - sigma(x))
-$
-So the derivative of $p$ with respect to input $x$ is 
-$
-  (partial)/(partial x) p = alpha/255 sigma(alpha (x/255 - t)) (1 - sigma(alpha (x/255 - t)))
-$ <branch_sigmoid>
-
-Now, to find the total gradient, the chain rule will be applied to find the gradient of the loss with respect to the input $x$:
-$
-  (partial)/(partial x) cal("L")_"branch" = (partial cal(L)_"branch")/(partial E) dot (partial E)/(partial p) dot (partial p)/(partial x)
-$ <branch_grad>
-- $(partial cal(L)_"branch")/(partial E)$ was found in @branch_dedt2,
-
-- $(partial E)/(partial p)$ is the direct and indirect contributions from the indicator function, and
-
-- $(partial p)/(partial x)$ is @branch_sigmoid rewritten as $alpha/255 p(1-p)$
-
-yielding the complete gradient
-$
-  (partial)/(partial x) cal("L")_"branch" = 2  (E - T) dot [ I + "Conv"(p dot (- (S-1)/(sigma^2))) ] dot alpha/255 p(1-p) 
-$ <complete_branch_grad>
-as seen in @code:branching_loss line 48. Some results can be seen in @fig:loss_topo_branch.
-
-#std-block(breakable: false)[
-  #v(-1.2em)
-  #box(
-    fill: theme.sapphire,
-    outset: 0em,
-    inset: 0em,
-  )
-  #figure(
-  image("../../../figures/img/loss_example/branch_loss_plots_report.png", width: 100%),
-  caption: [ Results of using the branching part of the topology loss. ]
-  ) <fig:loss_topo_branch>
-]
+// Examples of the persistent homology loss is shown in @fig:loss_topo_cont. Remember, the desired Betti numbers are $beta_0 = 1$ and $beta_1 = 0$, meaning that any more than 1 component and any loops should be penalized. As expected, the ground truth in (a) has a loss value of $0$. (b) showcases the fact that if parts of the true path are missing, the loss value will swiftly increase. (c) shows this even better, as it consists of 4 different component, thus achieving a difference of 3. (d) shows that the loss function also penalizes loops, as the loss value is $1$. 
 
 
-// considerations: It should only penalize branches that are dead-ends, not the points at which it branches. If deg(p) > 2, that shows the points at which it is branching, but this is not critical as path thickness is not to be considered in this part of the loss function. So only penalize end-points that bring the total above 2.
+
+// #std-block(breakable: false)[
+//   #v(-1.2em)
+//   #box(
+//     fill: theme.sapphire,
+//     outset: 0em,
+//     inset: 0em,
+//   )
+//   #figure(
+//   image("../../../figures/img/loss_example/topo_loss_plots_report2.png", width: 100%),
+//   caption: [ Results of using the continuity part of the topology loss. ]
+//   ) <fig:loss_topo_cont>
+// ]
 
 
-==== Entry/Exit <c4:topo_entry>
+// ==== Branching <c4:topo_branch>
+
+// The second part of the topology loss is the branching part. Branching refers to the presence of dead-ends in the predicted path. Dead-ends are points in the path that stop abruptly. These are undesired as a vehicle will only need one path to follow through an intersection and dead-end branches might stop in the middle of the intersection or somewhere completely irrelevant. This section of the loss function is another crucial part that goes along nicely with the continuity part because, while the continuity parts ensures that only one component is present, a branching path will still only total one component. So, the continuity part handles component count and loops, while the branching part handles undesired dead-ends. The only desired dead-ends are the entry and exit points of the intersection. How these are handled is discussed in @c4:topo_entry.
+
+// This part of the loss function will focus on counting the number of endpoints of the predicted path. The goal is to penalize paths that have more than two endpoints, as this indicates that the path has branches. This will be achieved by using an altered kind of the 8-neighbour grid. In this grid, the value at each pixel is decided by how many neighbours is has as defined by some kernel. In the 8-neighbour grid, the kernel is defined as
+
+// $
+//   k = mat(
+//     1, 1, 1;
+//     1, 0, 1;
+//     1, 1, 1;
+//   )
+// $ <branch_kernel>
+
+// resulting in each grid point having a value stored equal to that of the number of occupied pixels surrounding it, naturally ignoring itself, after convolution. In the context of detecting branches, the desired value for all pixels is 2, other than the entry and exit points, which are allowed to have 1 as the only points. A value of 2 is allowed since this means that the pixel is on the path, i.e. each pixel has their own entry and exit neighbour points. This definition does, however, become troublesome when images are not binary, i.e. the path may be subject to some kind of smoothing or anti-aliasing. For example, if the pixels near the exit point have some value, they would be counted as neighbours, meaning that the exit point would not be considered an endpoint. Therefore, in the implementation in @code:branching_loss, a soft threshold is employed instead of a hard one.
+
+// Also to be considered for this, is the fact that it should be differentiable. Thankfully, a soft threshold is differentiable, as it is simply a sigmoid function. The input tensor is put through the following equation:
+// $
+//   "input_tensor" = sigma(alpha ( "input_tensor"/255 - t))
+// $
+// where $t$ is the threshold, $alpha$ is the steepness of the sigmoid, and $sigma$ is the sigmoid function. This approach gives way for a differentiable approximation to a binary threshold, and a high value for $alpha$ will make the threshold very sharp, while a low value will make it very soft. Tests of various values for $alpha$ and $t$ were conducted early and can be found in @app:branch_loss_tests. From this, the values for chosen to be $alpha = 70.0$ and $t = 0.85$. This is also reflected in the code. These high values were chosen to ensure that the threshold is very sharp, and points that occur as a result of anti-aliasing are not counted as pixels in the actual end-points count.
+
+// Next, the neighbour sum is calculated using the kernel defined in @branch_kernel. This is done by convolving the input tensor with the kernel using the `conv2d` function from PyTorch, resulting in a tensor where each pixel contains the number of occupied pixels in its 8-neighbourhood:
+// $
+//   "neighbour_sum"_(x,y) = sum_(i=-a)^a sum_(j=-b)^b k_(i,j) f_(x-i,y-j)
+// $
+// where $k$ is the kernel, $f$ is the input tensor, and $a$ and $b$ describe the size of the kernel by $-a <= i <= a$ and $-b <= j <= b$. In this case, $a = b = 1$ as the kernel is 3x3. `padding = 1` ensures equal stride.
+
+// However, instead of directly counting the number of endpoints, the number of endpoints is calculated using a Gaussian function. This is done to ensure that the loss function is differentiable. The indicator function is defined as 
+// $
+//   "indicator" = exp(-(("neighbour_sum" - 1)^2) / (2 sigma^2))
+// $ <branch_indicator>
+// where $sigma$ is some defined value, here set to $sigma = 0.1$ as it then sharply peaks around 1. This further works as a smooth approximation compared to a strong threshold of $1$. Finally, the loss calculated by finding the number of endpoints with
+// $
+//   "endpoints" = "input_tensor" dot "indicator"
+// $
+// and squaring the difference between the number of endpoints and the target number of endpoints:
+// $
+//   cal("L")_"branch" = (E-T)^2
+// $ <branch_dedt>
+// where $E = sum "endpoints"$ and $T$ is the target number of endpoints. The loss is then returned as a tensor.
+
+
+
+// #listing([
+//   ```python
+// class EndpointsLossFunction(torch.autograd.Function):
+//   def forward(ctx, input_tensor, target_ee, alpha = 70.0, threshold = 0.85):
+//     input_tensor = input_tensor / 255.0
+//     input_tensor = torch.sigmoid(alpha * ((input_tensor) - threshold))
+
+//     p = input_tensor.unsqueeze(0).unsqueeze(0)
+    
+//     kernel = torch.tensor([[1, 1, 1], 
+//                            [1, 0, 1], 
+//                            [1, 1, 1]], 
+//                           dtype=torch.float32).unsqueeze(0).unsqueeze(0)
+    
+//     neighbour_sum = F.conv2d(p, kernel, padding=1).squeeze(0).squeeze(0)
+    
+//     sigma = 0.1
+//     desired_endpoints = 1
+//     indicator = torch.exp(-((neighbour_sum - desired_endpoints) ** 2) / (2 * sigma ** 2))
+    
+//     endpoints_map = input_tensor * indicator
+//     measured_endpoints = torch.sum(endpoints_map)
+
+//     loss_value = (measured_endpoints - target_ee) ** 2
+    
+//     ... save values to ctx ...
+    
+//     return loss_value
+
+//   def backward(ctx, grad_output):
+
+//     ... load ctx values ...
+
+//     E = (input_tensor * indicator).sum()
+    
+//     dL_dE = 2 * (E - target_ee)
+
+//     grad_direct = indicator
+
+//     factor = -(neighbour_sum - 1) / (sigma ** 2)
+    
+//     conv_input = (input_tensor * indicator * factor).unsqueeze(0).unsqueeze(0)
+//     grad_indirect = F.conv2d(conv_input, kernel, padding=1).squeeze(0).squeeze(0)
+    
+//     grad_total = grad_direct + grad_indirect
+    
+//     soft_thresholded = torch.sigmoid(alpha * (input_tensor - threshold))
+//     sigmoid_deriv = (alpha / 255.0) * soft_thresholded * (1 - soft_thresholded)
+    
+//     grad_input = grad_output * dL_dE * grad_total * sigmoid_deriv
+    
+//     return grad_input, None
+    
+// class EndpointsLoss(nn.Module):
+//   def __init__(self, target_ee, alpha = 70.0, threshold = 0.8):
+//     super(EndpointsLoss, self).__init__()
+//     self.target_ee = target_ee
+//     self.alpha = alpha
+//     self.threshold = threshold
+
+//   def forward(self, input_tensor):
+//     return EndpointsLossFunction.apply(input_tensor, self.target_ee, 
+//                                        self.alpha, self.threshold)
+//   ```
+// ],
+// caption: [Branching loss implementation.]
+// ) <code:branching_loss>
+
+
+// // During backpropagation, the loss gradient is computed with respect to the input. The total derivative considers two contributions: the direct contribution from the indicator function and the indirect contribution from the convolution of the input tensor with the kernel. First, the direct contribution is found by taking the derivative of @branch_indicator with respect to the pixel value $p$:
+// // $
+// //   partial/(partial p) p dot "indicator" = "indicator"
+// // $
+
+// // Since the pixel values also affect the indicator indirectly through the neighbour sum, the indirect contribution comes from differentiating the indicator with respect to the neighbour sum:
+// // $
+// //   (partial"indicator")/(partial"neighbour_sum") = -("neighbour_sum" - 1) / sigma^2 dot "indicator"
+// // $
+// // As seen in the implementation, the convolution of the product $p dot "indicator" dot (- ("neighbour_sum" - 1)/sigma^2)$. This is a result of the chain rule being applied to the derivative of the loss with respect to the input tensor. Another part of the total derivative is the simple loss found in @branch_dedt. The derivative of this simply becomes
+// // $
+// //   2 * (E - T)
+// // $
+// // where $E$ is the number of endpoints and $T$ is the target number of endpoints. Finally, continuing the chain rule through the sigmoid transformation by multiplying with the derivative of sigmoid function gives 
+// // $
+// //   "sigmoid_deriv" = alpha / 255 * "soft_thresholded" * (1 - "soft_thresholded")
+// // $
+// // Multiplying all these components together gives the gradient with respect to the input tensor.
+
+// To explain the backpropagation of this part of the loss function, I will re-introduce and define the following quantities:
+
+
+// #let b1 = std-block(breakable: false)[
+//   #box(
+//     fill: theme.sapphire.lighten(10%),
+//     outset: 1mm,
+//     inset: 0em,
+//     radius: 3pt,
+//   )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Soft-threshold]] \
+//   $
+//     p = sigma ( alpha ( x / 255 - t))
+//   $ <soft_threshold>
+//   where 
+//   - $p$ is the soft-thresholded pixel value, 
+//   - $x$ is the input, 
+//   - $t$ is the threshold, 
+//   - $sigma$ is the sigmoid function, 
+//   - $alpha$ is the steepness of the sigmoid.
+// ]
+
+// #let b2 = std-block(breakable: false)[
+//   #box(
+//     fill: theme.sapphire.lighten(10%),
+//     outset: 1mm,
+//     inset: 0em,
+//     radius: 3pt,
+//   )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Indicator]] \
+//   $
+//     I = exp(-((S - 1)^2) / (2 sigma^2)) 
+//   $ <branch_indicator2>
+//   where 
+//   - $I$ is the indicator function, 
+//   - $S$ is the neighbour sum obtained by convolution with $k$ from @branch_kernel, 
+//   - $sigma$ is a scalar value.
+// ]
+
+// #let b3 = std-block(breakable: false)[
+//   #box(
+//     fill: theme.sapphire.lighten(10%),
+//     outset: 1mm,
+//     inset: 0em,
+//     radius: 3pt,
+//   )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Pixel endpoint contribution]] \
+//   $
+//     f(p) = p dot I 
+//   $ <branch_endpoint>
+//   where 
+//   - $p$ comes from @soft_threshold,
+//   - $I$ is the indicator from @branch_indicator2.
+// ]
+
+// #let b4 = std-block(breakable: false)[
+//   #box(
+//     fill: theme.sapphire.lighten(10%),
+//     outset: 1mm,
+//     inset: 0em,
+//     radius: 3pt,
+//   )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Loss function definition]] \
+//   $
+//     cal("L")_"branch" = (E - T)^2
+//   $ <branch_loss>
+//   where 
+//   - $E$ is the number of endpoints,
+//   - $T$ is the target number of endpoints.
+// ]
+
+// #grid(
+//   columns: (1fr, 1fr),
+//   b1, b2,
+//   b3, b4
+// )
+
+// Several calculation contribute to the total derivative. Firstly, the derivative of the loss in @branch_loss is simply
+// $
+//   (partial cal("L")_"branch")/(partial E) = 2  (E - T)
+// $ <branch_dedt2>
+
+// Secondly, the direct contribution from the indicator function is found by taking the derivative of @branch_indicator2 with respect to the pixel value $p$:
+// $
+//   partial/(partial p) p dot I = I
+// $
+// directly representing the sensitivity of @branch_endpoint. Thirdly, since the indicator $I$ is a function of the neighbour sum $S$, which in turn depends on $p$ via convolution, there is an indirect contribution as well. Given @branch_indicator2, its derivative with respect to $S$ is 
+// $
+//   (partial I)/(partial S) = - (S-1)/(sigma^2) dot I
+// $ <branch_indirect>
+// To then find the contributions from neighbouring pixels, the product $p dot$ @branch_indirect is convolved with the kernel $k$ from @branch_kernel. Lastly, the derivative of @soft_threshold is found by taking the derivative of $p$ with respect to $x$. First, the derivative of the sigmoid function is found:
+// $
+//   sigma'(x) = sigma(x)  (1 - sigma(x))
+// $
+// So the derivative of $p$ with respect to input $x$ is 
+// $
+//   (partial)/(partial x) p = alpha/255 sigma(alpha (x/255 - t)) (1 - sigma(alpha (x/255 - t)))
+// $ <branch_sigmoid>
+
+// Now, to find the total gradient, the chain rule will be applied to find the gradient of the loss with respect to the input $x$:
+// $
+//   (partial)/(partial x) cal("L")_"branch" = (partial cal(L)_"branch")/(partial E) dot (partial E)/(partial p) dot (partial p)/(partial x)
+// $ <branch_grad>
+// - $(partial cal(L)_"branch")/(partial E)$ was found in @branch_dedt2,
+
+// - $(partial E)/(partial p)$ is the direct and indirect contributions from the indicator function, and
+
+// - $(partial p)/(partial x)$ is @branch_sigmoid rewritten as $alpha/255 p(1-p)$
+
+// yielding the complete gradient
+// $
+//   (partial)/(partial x) cal("L")_"branch" = 2  (E - T) dot [ I + "Conv"(p dot (- (S-1)/(sigma^2))) ] dot alpha/255 p(1-p) 
+// $ <complete_branch_grad>
+// as seen in @code:branching_loss line 48. Some results can be seen in @fig:loss_topo_branch.
+
+// #std-block(breakable: false)[
+//   #v(-1.2em)
+//   #box(
+//     fill: theme.sapphire,
+//     outset: 0em,
+//     inset: 0em,
+//   )
+//   #figure(
+//   image("../../../figures/img/loss_example/branch_loss_plots_report.png", width: 100%),
+//   caption: [ Results of using the branching part of the topology loss. ]
+//   ) <fig:loss_topo_branch>
+// ]
+
+
+// // considerations: It should only penalize branches that are dead-ends, not the points at which it branches. If deg(p) > 2, that shows the points at which it is branching, but this is not critical as path thickness is not to be considered in this part of the loss function. So only penalize end-points that bring the total above 2.
+
+
+// ==== Entry/Exit <c4:topo_entry>

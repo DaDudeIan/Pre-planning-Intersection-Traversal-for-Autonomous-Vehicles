@@ -84,3 +84,5 @@
   definition: Generative Adversarial Network
 - acronym: CE
   definition: Cross-Entropy
+- acronym: ASPP
+  definition: Atrous Spatial Pyramid Pooling

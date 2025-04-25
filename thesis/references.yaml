@@ -647,4 +647,99 @@ sentinel-2:
   url: https://arxiv.org/abs/2310.11622
   serial-number:
     arxiv: '2310.11622'
+deeplabv3p:
+  type: misc
+  title: 'Review: DeepLabv3+ — Atrous Separable Convolution (Semantic Segmentation)'
+  author: Tsang, Sik-Ho
+  date: 2019-09
+  url: https://sh-tsang.medium.com/review-deeplabv3-atrous-separable-convolution-semantic-segmentation-a625f6e83b90
+unet_og:
+  type: misc
+  title: 'U-Net: Convolutional Networks for Biomedical Image Segmentation'
+  author:
+  - Ronneberger, Olaf
+  - Fischer, Philipp
+  - Brox, Thomas
+  date: 2015
+  url: https://arxiv.org/abs/1505.04597
+  serial-number:
+    arxiv: '1505.04597'
+deeplabv1:
+  type: misc
+  title: 'DeepLab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs'
+  author:
+  - Chen, Liang-Chieh
+  - Papandreou, George
+  - Kokkinos, Iasonas
+  - Murphy, Kevin
+  - Yuille, Alan L.
+  date: 2017
+  url: https://arxiv.org/abs/1606.00915
+  serial-number:
+    arxiv: '1606.00915'
+vit_og:
+  type: misc
+  title: 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale'
+  author:
+  - Dosovitskiy, Alexey
+  - Beyer, Lucas
+  - Kolesnikov, Alexander
+  - Weissenborn, Dirk
+  - Zhai, Xiaohua
+  - Unterthiner, Thomas
+  - Dehghani, Mostafa
+  - Minderer, Matthias
+  - Heigold, Georg
+  - Gelly, Sylvain
+  - Uszkoreit, Jakob
+  - Houlsby, Neil
+  date: 2021
+  url: https://arxiv.org/abs/2010.11929
+  serial-number:
+    arxiv: '2010.11929'
+deeplabv3:
+  type: misc
+  title: Rethinking Atrous Convolution for Semantic Image Segmentation
+  author:
+  - Chen, Liang-Chieh
+  - Papandreou, George
+  - Schroff, Florian
+  - Adam, Hartwig
+  date: 2017
+  url: https://arxiv.org/abs/1706.05587
+  serial-number:
+    arxiv: '1706.05587'
+deeplabv3plus:
+  type: misc
+  title: Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation
+  author:
+  - Chen, Liang-Chieh
+  - Zhu, Yukun
+  - Papandreou, George
+  - Schroff, Florian
+  - Adam, Hartwig
+  date: 2018
+  url: https://arxiv.org/abs/1802.02611
+  serial-number:
+    arxiv: '1802.02611'
+mobilenetv3:
+  type: misc
+  title: Searching for MobileNetV3
+  author:
+  - Howard, Andrew
+  - Sandler, Mark
+  - Chu, Grace
+  - Chen, Liang-Chieh
+  - Chen, Bo
+  - Tan, Mingxing
+  - Wang, Weijun
+  - Zhu, Yukun
+  - Pang, Ruoming
+  - Vasudevan, Vijay
+  - Le, Quoc V.
+  - Adam, Hartwig
+  date: 2019
+  url: https://arxiv.org/abs/1905.02244
+  serial-number:
+    arxiv: '1905.02244'
 
