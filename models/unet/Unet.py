@@ -150,14 +150,3 @@ def display_output(output, threshold=0.5, thresholded=False):
     plt.tight_layout()
     plt.show()
 
-# Example usage:
-if __name__ == "__main__":
-    import cv2
-    img = cv2.imread("satellite.png")
-    img_t = torch.tensor(img).permute(2, 0, 1).unsqueeze(0).float()
-    model = UNet(n_channels=3, n_classes=1)
-    output = model(img_t)
-    print("Output shape:", output.shape)  # Expected: torch.Size([1, 1, 400, 400])
-    display_output(output)
-    
-    
