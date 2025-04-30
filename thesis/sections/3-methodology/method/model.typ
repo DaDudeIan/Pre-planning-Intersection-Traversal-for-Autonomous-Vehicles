@@ -22,6 +22,16 @@ The following sections will present the chosen model, starting with the convolut
 
 #include "models/swin.typ"
 
+=== Training Strategy <c4:training-strategy>
+Highlight the use of this when training using topology loss and CE.
+```python
+def alpha(epoch, alpha_hi = 0.95, alpha_lo = 0.55, T_warm = 50, N_epochs = 500):
+    if epoch < T_warm:
+        return alpha_hi
+    r = (epoch - T_warm) / max(1, N_epochs - T_warm)
+    return alpha_hi - (alpha_hi - alpha_lo) * r
+```
+
 
 // Other considerations:
 // - RL (no, because of added complexity)

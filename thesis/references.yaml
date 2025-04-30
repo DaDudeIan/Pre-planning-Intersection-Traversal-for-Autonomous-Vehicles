@@ -742,4 +742,26 @@ mobilenetv3:
   url: https://arxiv.org/abs/1905.02244
   serial-number:
     arxiv: '1905.02244'
+topology_loss:
+  type: article
+  title: A Topological Loss Function for Deep-Learning Based Image Segmentation Using Persistent Homology
+  author:
+  - Clough, James R.
+  - Byrne, Nicholas
+  - Oksuz, Ilkay
+  - Zimmer, Veronika A.
+  - Schnabel, Julia A.
+  - King, Andrew P.
+  date: 2022-12
+  page-range: 8766-8778
+  url: http://dx.doi.org/10.1109/TPAMI.2020.3013679
+  serial-number:
+    doi: 10.1109/tpami.2020.3013679
+    issn: 1939-3539
+  parent:
+    type: periodical
+    title: IEEE Transactions on Pattern Analysis and Machine Intelligence
+    publisher: Institute of Electrical, Electronics Engineers (IEEE)
+    issue: 12
+    volume: 44
 

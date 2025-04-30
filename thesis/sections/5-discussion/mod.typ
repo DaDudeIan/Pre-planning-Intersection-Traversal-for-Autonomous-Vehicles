@@ -18,3 +18,7 @@ In this section...
 // other considered languages: C/C++, Fortran
 // other models: RL
 // GPS not enough
+
+// thought experiment on how to implement for other domains (warehouse robots, racing, overall AV, deep sea automation). speculative
+
+// examiner from the production engineering world

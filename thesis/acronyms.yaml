@@ -86,3 +86,5 @@
   definition: Cross-Entropy
 - acronym: ASPP
   definition: Atrous Spatial Pyramid Pooling
+- acronym: PH
+  definition: Persistent Homology
