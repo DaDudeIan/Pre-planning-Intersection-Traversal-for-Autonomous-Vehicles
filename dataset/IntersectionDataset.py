@@ -147,8 +147,14 @@ class IntersectionDatasetClasses(Dataset):
         class_labels_path = os.path.join(intersection_dir, 'class_labels.npy')
         class_labels = np.load(class_labels_path)
         
+        
+            
+        class_labels_cmap = os.path.join(intersection_dir, 'class_label_cold_map.npy')
+        class_labels_cmap = np.load(class_labels_cmap)
+
         if self.path_transform:
             class_labels = self.path_transform(class_labels)
+            class_labels_cmap = self.path_transform(class_labels_cmap)
             
         # Store paths for each satellite image
         paths_data = []
@@ -188,7 +194,8 @@ class IntersectionDatasetClasses(Dataset):
         sample = {
             'satellite': satellite_img,
             'class_labels': class_labels,
-            'paths': paths_data
+            'paths': paths_data,
+            'class_labels_cmap': class_labels_cmap
         }
         return sample
                     
@@ -201,12 +208,16 @@ def custom_collate_fn(batch):
     """
     satellite_batch = torch.stack([item["satellite"] for item in batch])
     class_labels_batch = torch.stack([item["class_labels"] for item in batch])
+    class_labels_cmap_batch = torch.stack([item["class_labels_cmap"] for item in batch])
     # Keep 'paths' as a list of lists (variable-length) without stacking.
     paths_batch = [item["paths"] for item in batch]
-
-        
-        
-    return {"satellite": satellite_batch, "class_labels": class_labels_batch, "paths": paths_batch}
+    
+    return {
+        "satellite": satellite_batch,
+        "class_labels": class_labels_batch,
+        "class_labels_cmap": class_labels_cmap_batch,
+        "paths": paths_batch
+    }
 
 
 def main():

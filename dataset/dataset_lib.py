@@ -120,6 +120,48 @@ def get_nearest_coords(image_path: str, fun = process_rows2) -> np.ndarray:
     
     return nearest_coords
 
+def get_nearest_coords_npy(path: str, fun=process_rows2) -> np.ndarray:
+    """
+    Processes a binary matrix stored in a .npy file to find the nearest coordinates using parallel processing.
+    Args:
+        path (str): The file path to the .npy file to be processed.
+        fun (callable, optional): The function to process rows of the binary matrix. Defaults to process_rows2.
+    Returns:
+        np.ndarray: An array of the nearest coordinates.
+    Raises:
+        ValueError: If the provided file path is not valid or the file cannot be loaded.
+    """
+    if not path:
+        raise ValueError("Please provide a valid .npy file path.")
+    
+    print(f"Processing {path}")
+    
+    # Load the binary matrix from the .npy file
+    binary = np.load(path)
+    
+    if binary.ndim != 2:
+        raise ValueError("The .npy file must contain a 2D binary matrix.")
+    
+    h, w = binary.shape
+    num_processes = mp.cpu_count()
+    chunk_size = h // num_processes
+    
+    tasks = []
+    for p in range(num_processes):
+        start = p * chunk_size
+        # Make sure the last chunk includes any remaining rows
+        end = h if p == num_processes - 1 else (p + 1) * chunk_size
+        tasks.append((start, end, binary))
+
+    # Use a Pool to process rows in parallel
+    with mp.Pool(num_processes) as pool:
+        results = pool.starmap(fun, tasks)
+
+    # Concatenate the results from each process
+    nearest_coords = np.concatenate(results, axis=0)
+    
+    return nearest_coords
+
 
 
 def coords_to_coldmap(coords, threshold: float = 20, exponent: float = 1.25, normalize: int = 1):
