@@ -156,45 +156,45 @@ class IntersectionDatasetClasses(Dataset):
             class_labels = self.path_transform(class_labels)
             class_labels_cmap = self.path_transform(class_labels_cmap)
             
-        # Store paths for each satellite image
-        paths_data = []
-        paths_dir = os.path.join(intersection_dir, 'paths')
-        if os.path.exists(paths_dir):
-            path_folders = [
-                os.path.join(paths_dir, f) 
-                for f in os.listdir(paths_dir) 
-                if os.path.isdir(os.path.join(paths_dir, f))
-            ]
+        # # Store paths for each satellite image
+        # paths_data = []
+        # paths_dir = os.path.join(intersection_dir, 'paths')
+        # if os.path.exists(paths_dir):
+        #     path_folders = [
+        #         os.path.join(paths_dir, f) 
+        #         for f in os.listdir(paths_dir) 
+        #         if os.path.isdir(os.path.join(paths_dir, f))
+        #     ]
             
-            for path_folder in path_folders:
-                # Path line image
-                path_line_path = os.path.join(path_folder, 'path_line.png')
-                path_line_img = Image.open(path_line_path).convert('RGB')
+        #     for path_folder in path_folders:
+        #         # Path line image
+        #         path_line_path = os.path.join(path_folder, 'path_line.png')
+        #         path_line_img = Image.open(path_line_path).convert('RGB')
                 
-                if self.path_transform:
-                    path_line_img = self.path_transform(path_line_img)
+        #         if self.path_transform:
+        #             path_line_img = self.path_transform(path_line_img)
                     
-                # E/E json file
-                json_path = os.path.join(path_folder, 'path_line_ee.json')
-                with open(json_path) as f:
-                    ee_data = json.load(f)
+        #         # E/E json file
+        #         json_path = os.path.join(path_folder, 'path_line_ee.json')
+        #         with open(json_path) as f:
+        #             ee_data = json.load(f)
                     
-                # Load cold map npy
-                cold_map_path = os.path.join(path_folder, 'cold_map.npy')
-                cold_map = np.load(cold_map_path)
+        #         # Load cold map npy
+        #         cold_map_path = os.path.join(path_folder, 'cold_map.npy')
+        #         cold_map = np.load(cold_map_path)
                 
-                # save data
-                paths_data.append({
-                    'path_line': path_line_img,
-                    'ee_data': ee_data,
-                    'cold_map': cold_map
-                })
+        #         # save data
+        #         paths_data.append({
+        #             'path_line': path_line_img,
+        #             'ee_data': ee_data,
+        #             'cold_map': cold_map
+        #         })
                
         # return sample 
         sample = {
             'satellite': satellite_img,
             'class_labels': class_labels,
-            'paths': paths_data,
+            #'paths': paths_data,
             'class_labels_cmap': class_labels_cmap
         }
         return sample
@@ -210,13 +210,13 @@ def custom_collate_fn(batch):
     class_labels_batch = torch.stack([item["class_labels"] for item in batch])
     class_labels_cmap_batch = torch.stack([item["class_labels_cmap"] for item in batch])
     # Keep 'paths' as a list of lists (variable-length) without stacking.
-    paths_batch = [item["paths"] for item in batch]
+    #paths_batch = [item["paths"] for item in batch]
     
     return {
         "satellite": satellite_batch,
         "class_labels": class_labels_batch,
         "class_labels_cmap": class_labels_cmap_batch,
-        "paths": paths_batch
+        #"paths": paths_batch
     }
 
 
