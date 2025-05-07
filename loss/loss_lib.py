@@ -182,3 +182,60 @@ def bce_loss_logits(path_gt, path_pred) -> torch.Tensor:
     bce_loss = criterion(path_pred, path_gt)
     
     return bce_loss
+
+class ColdMapLoss(nn.Module):
+    """
+    A weighted binary-cross-entropy loss that
+
+    • makes the inverted cold-map (1-cmap) the positive class  
+    • punishes *false positives* stronger the further they are from the GT path  
+    • punishes *false negatives* everywhere on the GT path
+    """
+    def __init__(
+        self,
+        alpha: float = 2.0,      # weight for missing the path   (FN)
+        beta:  float = 1.0,      # weight for spurious pixels    (FP)
+        reduction: str = "mean", # 'mean' | 'sum' | 'none'
+        bg:     int = 0,         # background class index
+    ):
+        super().__init__()
+        self.alpha = alpha
+        self.beta = beta
+        self.reduction = reduction
+        self.bg = bg
+
+    def forward(self, cmap: torch.Tensor, logits: torch.Tensor) -> torch.Tensor:
+        """
+        cmap   : cold-map normalised to [0,1]               (N, 1, H, W)
+        logits : raw model outputs (no sigmoid applied)     (N, 1, H, W)
+        """
+        
+        
+        probs = torch.softmax(logits, dim=1)                 # (N,C,H,W)
+        p_bg  = probs[:, self.bg:self.bg+1, :, :]            # (N,1,H,W)
+        p_fg  = 1.0 - p_bg                                   # (N,1,H,W)
+        
+        logits_fg = torch.logit(p_fg, eps=1e-6)
+        
+        if cmap.ndim == 3:                                   # (N,H,W) → (N,1,H,W)
+            cmap = cmap.unsqueeze(1)
+
+        assert cmap.shape == logits_fg.shape, \
+            f"cmap shape {cmap.shape} must match (N,1,H,W) of foreground prob."
+        
+        target = 1.0 - cmap                     # t ∈ [0,1]
+
+        # pixel-wise weights:
+        w_pos  = self.alpha * target            # higher near the real path
+        w_neg  = self.beta  * cmap              # higher far from the path
+        weight = w_pos + w_neg                  # ∈ [β, α]
+
+        # stable weighted BCE
+        bce = F.binary_cross_entropy_with_logits(logits_fg, target, weight, reduction="none")
+
+        if self.reduction == "mean":
+            return bce.mean()
+        elif self.reduction == "sum":
+            return bce.sum()
+        else:                                   # 'none'
+            return bce
