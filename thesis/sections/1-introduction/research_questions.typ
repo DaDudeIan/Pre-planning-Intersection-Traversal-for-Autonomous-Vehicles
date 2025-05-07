@@ -1,6 +1,6 @@
 #import "../../lib/mod.typ": *
 
-== Research Questions <c1:research_questions>
+== Research Questions #checked <c1:research_questions>
 
 // Waypoint-based vs subset of pixels-based path drawing
 

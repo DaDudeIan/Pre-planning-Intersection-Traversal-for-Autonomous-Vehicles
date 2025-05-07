@@ -1,7 +1,7 @@
 #import "../../lib/mod.typ": *
 
 // https://www.scribbr.com/research-process/problem-statement/
-== Problem Statement <c1s1_1:problem-statement>
+== Problem Statement #checked <c1s1_1:problem-statement>
 
 // Importance of the problem / Contextualize
 Advancements in #acr("AV") technologies have been at the forefront of tech innovations in the #nths(21) century. A key challenge in the development of fully autonomous vehicles, is their ability to handle intersections. Intersections pose a wide variety of challenges to #acrpl("AV"): from those posed by complex structures, to those posed by the unpredictability of human drivers, to faded lines that make it difficult for on-board computer vision system to clearly identify lanes or paths. All of these hinder #acrpl("AV") from reaching their full potential and being able to navigate intersections safely and efficiently.
@@ -14,4 +14,4 @@ The challenges posed by intersections cause major problems for #acr("AV") develo
 
 
 // Aim and objectives for project / solution direction
-This projects aims to develop a solution that will help #acrpl("AV") to better handle intersections. With the use of #acr("DL") and #acr("CV") technologies, trained on and utilizing satellite imagery, this project aims to train a model that can accurately identify the proper path for an #acr("AV") to travel through an intersection. The system is not meant to replace current systems deployed in #acrpl("AV"), but rather assist the existing systems make better decisions when in self-driving mode, approaching an arbitrary intersection.
+This projects aims to develop a solution that will help #acrpl("AV") to better handle intersections. With the use of #acr("DL") and #acr("CV") technologies, trained on and utilizing satellite imagery, this project aims to train a small set of models that can accurately identify the proper path for an #acr("AV") to travel through an intersection. The system is not meant to replace current systems deployed in #acrpl("AV"), but rather assist the existing systems make better decisions when in self-driving mode, approaching an arbitrary intersection.

@@ -22,3 +22,8 @@ In this section...
 // thought experiment on how to implement for other domains (warehouse robots, racing, overall AV, deep sea automation). speculative
 
 // examiner from the production engineering world
+
+== Ablation <c6:ablation>
+MAYBE, if time allows
+
+Hyperparameters, scheduler (cosann vs exp), optimizer (adam vs adamw), weight initialization

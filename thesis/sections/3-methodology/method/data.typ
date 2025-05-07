@@ -157,6 +157,8 @@ To figure out the optimal values for the threshold and exponent, a grid search w
   )
 ]
 
+#text("FIX: USED EXP=0.5, NOT 1.25", fill: red, weight: "black")
+
 While pretty, these coldmaps can be difficult to understand. Therefore, @fig.dataset_3d shows the 3D plots of the generated cold maps with exponent values $e in {0.50, 0.75, 1.25}$. While the 2D plots with $e < 1$ seem to the eye to be the plots that more greatly penalizes larger distances, the 3D plots reveal that while the points that are further away are more penalized, the gradient is not as steep as the 2D plots would suggest. While heavily penalized, the slope does a poor job of pointing the gradient in the right direction. Then if a point is close, it will experience rapid change that forces it closer to the true path. This is not the desired effect of this loss function, as it should be more lenient to points that are close to the true path. Thus, when $e > 1$, the slope is much more gentle closer to the true path, and steeper further away, which is the desired effect. So, despite the opposite being the intuitive point to take away from glancing at the 2D plots, the 3D plots reveal that the exponent value $e$ should be greater than 1, and thus the value of $e=1.25$ was chosen for the cold maps and defined as the default for the function in @code.coldmap.
 
 #std-block(breakable: false)[

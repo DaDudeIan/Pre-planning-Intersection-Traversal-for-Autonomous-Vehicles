@@ -27,3 +27,4 @@
 
 #let cursor = line(length: 100%, stroke: 1em + red)
 #let subfigure(n) = { text(n, fill: theme.teal)}
+#let checked = { text("✓", fill: theme.teal) }
