@@ -1,0 +1,110 @@
+Training: DeepLabV3+ (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 289 | Epoch 20/100 | Train Loss: 0.2242 | Train Accuracy: 157782.1792 | Test Loss: 0.4373 | Test Accuracy: 154403.9688
+Checkpoint saved at epoch 20
+Time elapsed (s) 585 | Epoch 40/100 | Train Loss: 0.2973 | Train Accuracy: 158146.7721 | Test Loss: 0.4836 | Test Accuracy: 154840.5000
+Checkpoint saved at epoch 50
+Time elapsed (s) 883 | Epoch 60/100 | Train Loss: 0.3630 | Train Accuracy: 158032.7655 | Test Loss: 0.5374 | Test Accuracy: 154784.7188
+Time elapsed (s) 1176 | Epoch 80/100 | Train Loss: 0.4212 | Train Accuracy: 157359.5675 | Test Loss: 0.5647 | Test Accuracy: 154199.4688
+Time elapsed (s) 1473 | Epoch 100/100 | Train Loss: 0.4679 | Train Accuracy: 155471.5022 | Test Loss: 0.6536 | Test Accuracy: 153585.8750
+Checkpoint saved at epoch 100
+✅ Training finished successfully for DeepLabV3+ (CE+cmap) (Attempt 1)
+
+Training: U-Net (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 685 | Epoch 20/100 | Train Loss: 0.2147 | Train Accuracy: 158775.9668 | Test Loss: 0.5092 | Test Accuracy: 154859.7812
+Checkpoint saved at epoch 20
+Time elapsed (s) 1408 | Epoch 40/100 | Train Loss: 0.2911 | Train Accuracy: 158920.8186 | Test Loss: 0.5388 | Test Accuracy: 155203.2188
+Checkpoint saved at epoch 50
+Time elapsed (s) 2132 | Epoch 60/100 | Train Loss: 0.3584 | Train Accuracy: 158466.9115 | Test Loss: 0.5868 | Test Accuracy: 154860.5625
+Time elapsed (s) 2855 | Epoch 80/100 | Train Loss: 0.4177 | Train Accuracy: 156775.3440 | Test Loss: 0.6253 | Test Accuracy: 154086.3125
+Time elapsed (s) 3577 | Epoch 100/100 | Train Loss: 0.4652 | Train Accuracy: 156270.0022 | Test Loss: 0.6513 | Test Accuracy: 153935.6562
+Checkpoint saved at epoch 100
+✅ Training finished successfully for U-Net (CE+cmap) (Attempt 1)
+
+Training: ViT (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/init.py:511: UserWarning: Initializing zero-element tensors is a no-op
+  warnings.warn("Initializing zero-element tensors is a no-op")
+Checkpoint saved at epoch 10
+Time elapsed (s) 576 | Epoch 20/100 | Train Loss: 0.3098 | Train Accuracy: 150973.4768 | Test Loss: 0.5317 | Test Accuracy: 146363.6875
+Checkpoint saved at epoch 20
+Time elapsed (s) 1184 | Epoch 40/100 | Train Loss: 0.3625 | Train Accuracy: 151346.6095 | Test Loss: 0.5836 | Test Accuracy: 145941.0625
+Checkpoint saved at epoch 50
+Time elapsed (s) 1791 | Epoch 60/100 | Train Loss: 0.4167 | Train Accuracy: 151077.8385 | Test Loss: 0.6391 | Test Accuracy: 145372.1562
+Time elapsed (s) 2393 | Epoch 80/100 | Train Loss: 0.4747 | Train Accuracy: 149559.8396 | Test Loss: 0.6463 | Test Accuracy: 144978.6875
+Time elapsed (s) 2996 | Epoch 100/100 | Train Loss: 0.4950 | Train Accuracy: 152092.0885 | Test Loss: 0.7543 | Test Accuracy: 146657.3438
+Checkpoint saved at epoch 100
+✅ Training finished successfully for ViT (CE+cmap) (Attempt 1)
+
+Training: Swin (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 797 | Epoch 20/100 | Train Loss: 0.3235 | Train Accuracy: 149620.4381 | Test Loss: 0.4861 | Test Accuracy: 149272.0625
+Checkpoint saved at epoch 20
+Time elapsed (s) 1644 | Epoch 40/100 | Train Loss: 0.3795 | Train Accuracy: 149304.1748 | Test Loss: 0.5541 | Test Accuracy: 148483.2500
+Checkpoint saved at epoch 50
+Time elapsed (s) 2486 | Epoch 60/100 | Train Loss: 0.4300 | Train Accuracy: 148806.9535 | Test Loss: 0.6166 | Test Accuracy: 148282.4375
+Time elapsed (s) 3318 | Epoch 80/100 | Train Loss: 0.4805 | Train Accuracy: 147733.8473 | Test Loss: 0.6336 | Test Accuracy: 147120.2500
+Time elapsed (s) 4155 | Epoch 100/100 | Train Loss: 0.5149 | Train Accuracy: 147647.1803 | Test Loss: 0.7504 | Test Accuracy: 147006.9062
+Checkpoint saved at epoch 100
+✅ Training finished successfully for Swin (CE+cmap) (Attempt 1)
+
+Training: DeepLabV3+ (cmap) (Attempt 1/3)
+--------------------------------------------------
+Time elapsed (s) 135 | Epoch 10/50 | Train Loss: 0.6852 | Train Accuracy: 146136.8131 | Test Loss: 0.7234 | Test Accuracy: 146408.8750
+Checkpoint saved at epoch 10
+Time elapsed (s) 281 | Epoch 20/50 | Train Loss: 0.6803 | Train Accuracy: 145190.6283 | Test Loss: 0.7210 | Test Accuracy: 145806.9375
+Checkpoint saved at epoch 20
+Time elapsed (s) 428 | Epoch 30/50 | Train Loss: 0.6813 | Train Accuracy: 144349.6405 | Test Loss: 0.7190 | Test Accuracy: 144847.3750
+Time elapsed (s) 577 | Epoch 40/50 | Train Loss: 0.6788 | Train Accuracy: 143868.3385 | Test Loss: 0.7176 | Test Accuracy: 145041.6875
+Time elapsed (s) 723 | Epoch 50/50 | Train Loss: 0.6781 | Train Accuracy: 143743.5144 | Test Loss: 0.7180 | Test Accuracy: 144370.2812
+Checkpoint saved at epoch 50
+✅ Training finished successfully for DeepLabV3+ (cmap) (Attempt 1)
+
+Training: U-Net (cmap) (Attempt 1/3)
+--------------------------------------------------
+Time elapsed (s) 323 | Epoch 10/50 | Train Loss: 0.6939 | Train Accuracy: 147738.1858 | Test Loss: 0.7583 | Test Accuracy: 148395.9688
+Checkpoint saved at epoch 10
+Time elapsed (s) 682 | Epoch 20/50 | Train Loss: 0.6797 | Train Accuracy: 148029.6947 | Test Loss: 0.7558 | Test Accuracy: 148510.8125
+Checkpoint saved at epoch 20
+Time elapsed (s) 1043 | Epoch 30/50 | Train Loss: 0.6852 | Train Accuracy: 146967.4690 | Test Loss: 0.7435 | Test Accuracy: 148167.2812
+Time elapsed (s) 1403 | Epoch 40/50 | Train Loss: 0.6786 | Train Accuracy: 148218.8916 | Test Loss: 0.7615 | Test Accuracy: 148523.9688
+Time elapsed (s) 1763 | Epoch 50/50 | Train Loss: 0.6778 | Train Accuracy: 148324.9248 | Test Loss: 0.7661 | Test Accuracy: 148742.5312
+Checkpoint saved at epoch 50
+✅ Training finished successfully for U-Net (cmap) (Attempt 1)
+
+Training: ViT (cmap) (Attempt 1/3)
+--------------------------------------------------
+/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/init.py:511: UserWarning: Initializing zero-element tensors is a no-op
+  warnings.warn("Initializing zero-element tensors is a no-op")
+Time elapsed (s) 268 | Epoch 10/50 | Train Loss: 0.7429 | Train Accuracy: 141577.6869 | Test Loss: 0.7690 | Test Accuracy: 142564.3750
+Checkpoint saved at epoch 10
+Time elapsed (s) 573 | Epoch 20/50 | Train Loss: 0.7115 | Train Accuracy: 141381.2710 | Test Loss: 0.7697 | Test Accuracy: 140728.2188
+Checkpoint saved at epoch 20
+Time elapsed (s) 878 | Epoch 30/50 | Train Loss: 0.7142 | Train Accuracy: 141376.9336 | Test Loss: 0.7689 | Test Accuracy: 139352.8750
+Time elapsed (s) 1177 | Epoch 40/50 | Train Loss: 0.6935 | Train Accuracy: 141765.9049 | Test Loss: 0.7775 | Test Accuracy: 139569.0000
+Time elapsed (s) 1475 | Epoch 50/50 | Train Loss: 0.6861 | Train Accuracy: 141195.1007 | Test Loss: 0.7829 | Test Accuracy: 139696.8125
+Checkpoint saved at epoch 50
+✅ Training finished successfully for ViT (cmap) (Attempt 1)
+
+Training: Swin (cmap) (Attempt 1/3)
+--------------------------------------------------
+Time elapsed (s) 374 | Epoch 10/50 | Train Loss: 0.7097 | Train Accuracy: 137934.1095 | Test Loss: 0.7550 | Test Accuracy: 139932.9062
+Checkpoint saved at epoch 10
+Time elapsed (s) 794 | Epoch 20/50 | Train Loss: 0.6942 | Train Accuracy: 138280.6283 | Test Loss: 0.7531 | Test Accuracy: 141145.8125
+Checkpoint saved at epoch 20
+Time elapsed (s) 1215 | Epoch 30/50 | Train Loss: 0.7010 | Train Accuracy: 138829.2301 | Test Loss: 0.7559 | Test Accuracy: 140313.4375
+Time elapsed (s) 1630 | Epoch 40/50 | Train Loss: 0.6918 | Train Accuracy: 139545.6582 | Test Loss: 0.7458 | Test Accuracy: 141760.6562
+Time elapsed (s) 2046 | Epoch 50/50 | Train Loss: 0.6898 | Train Accuracy: 139854.6305 | Test Loss: 0.7491 | Test Accuracy: 142725.8438
+Checkpoint saved at epoch 50
+✅ Training finished successfully for Swin (cmap) (Attempt 1)
+
+==================================================
+
+=== Training Summary ===
+All models trained successfully! 🎉
+
+Total time elapsed: 319.70 minutes

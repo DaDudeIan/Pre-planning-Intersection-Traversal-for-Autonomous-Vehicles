@@ -1,0 +1,366 @@
+Training: DeepLabV3+ (CE) (Attempt 1/3)
+--------------------------------------------------
+Setup complete. Starting training.
+Checkpoint saved at epoch 10
+Checkpoint saved at epoch 20
+Time elapsed (s) 436 | Epoch 30/300 | Train Loss: 0.0393 | Train Accuracy: 158229.9956 | Test Loss: 0.3079 | Test Accuracy: 155387.9688
+Checkpoint saved at epoch 50
+Time elapsed (s) 867 | Epoch 60/300 | Train Loss: 0.0199 | Train Accuracy: 159108.9447 | Test Loss: 0.4765 | Test Accuracy: 155579.3125
+Time elapsed (s) 1301 | Epoch 90/300 | Train Loss: 0.0112 | Train Accuracy: 159492.3241 | Test Loss: 0.6870 | Test Accuracy: 155933.6250
+Checkpoint saved at epoch 100
+Time elapsed (s) 1734 | Epoch 120/300 | Train Loss: 0.0072 | Train Accuracy: 159677.2666 | Test Loss: 0.8319 | Test Accuracy: 156002.9062
+Time elapsed (s) 2163 | Epoch 150/300 | Train Loss: 0.0053 | Train Accuracy: 159760.8462 | Test Loss: 0.9739 | Test Accuracy: 155974.5625
+Time elapsed (s) 2596 | Epoch 180/300 | Train Loss: 0.0093 | Train Accuracy: 159584.1748 | Test Loss: 0.7978 | Test Accuracy: 155998.8438
+Time elapsed (s) 3030 | Epoch 210/300 | Train Loss: 0.0068 | Train Accuracy: 159699.2456 | Test Loss: 0.9320 | Test Accuracy: 156006.5625
+Time elapsed (s) 3463 | Epoch 240/300 | Train Loss: 0.0046 | Train Accuracy: 159794.2146 | Test Loss: 1.1011 | Test Accuracy: 156026.5625
+Time elapsed (s) 3899 | Epoch 270/300 | Train Loss: 0.0033 | Train Accuracy: 159853.8363 | Test Loss: 1.2683 | Test Accuracy: 156051.0000
+Time elapsed (s) 4329 | Epoch 300/300 | Train Loss: 0.0027 | Train Accuracy: 159881.1272 | Test Loss: 1.3702 | Test Accuracy: 156039.2188
+Checkpoint saved at epoch 300
+✅ Training finished successfully for DeepLabV3+ (CE) (Attempt 1)
+
+Training: U-Net (CE) (Attempt 1/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce.py", line 81, in <module>
+    model = u.Unet().to(device)
+            ^^^^^^
+AttributeError: module 'unet.Unet' has no attribute 'Unet'. Did you mean: 'UNet'?
+⚠️ Training FAILED for U-Net (CE) (Attempt 1)
+
+Training: U-Net (CE) (Attempt 2/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce.py", line 81, in <module>
+    model = u.Unet().to(device)
+            ^^^^^^
+AttributeError: module 'unet.Unet' has no attribute 'Unet'. Did you mean: 'UNet'?
+⚠️ Training FAILED for U-Net (CE) (Attempt 2)
+
+Training: U-Net (CE) (Attempt 3/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce.py", line 81, in <module>
+    model = u.Unet().to(device)
+            ^^^^^^
+AttributeError: module 'unet.Unet' has no attribute 'Unet'. Did you mean: 'UNet'?
+⚠️ Training FAILED for U-Net (CE) (Attempt 3)
+
+❌ Maximum retries exceeded for U-Net (CE). Marking as FAILED.
+
+Training: ViT (CE) (Attempt 1/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_vit_ce.py", line 62, in <module>
+    import vit.ViT as v
+ModuleNotFoundError: No module named 'vit.ViT'
+⚠️ Training FAILED for ViT (CE) (Attempt 1)
+
+Training: ViT (CE) (Attempt 2/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_vit_ce.py", line 62, in <module>
+    import vit.ViT as v
+ModuleNotFoundError: No module named 'vit.ViT'
+⚠️ Training FAILED for ViT (CE) (Attempt 2)
+
+Training: ViT (CE) (Attempt 3/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_vit_ce.py", line 62, in <module>
+    import vit.ViT as v
+ModuleNotFoundError: No module named 'vit.ViT'
+⚠️ Training FAILED for ViT (CE) (Attempt 3)
+
+❌ Maximum retries exceeded for ViT (CE). Marking as FAILED.
+
+Training: Swin (CE) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Checkpoint saved at epoch 20
+Time elapsed (s) 1217 | Epoch 30/300 | Train Loss: 0.1882 | Train Accuracy: 150490.5166 | Test Loss: 0.4099 | Test Accuracy: 149431.0625
+Checkpoint saved at epoch 50
+Time elapsed (s) 2466 | Epoch 60/300 | Train Loss: 0.1470 | Train Accuracy: 152350.1515 | Test Loss: 0.5326 | Test Accuracy: 150581.5000
+Time elapsed (s) 3706 | Epoch 90/300 | Train Loss: 0.1305 | Train Accuracy: 153255.0520 | Test Loss: 0.9303 | Test Accuracy: 150886.1875
+Checkpoint saved at epoch 100
+Time elapsed (s) 4954 | Epoch 120/300 | Train Loss: 0.1248 | Train Accuracy: 153562.2544 | Test Loss: 1.0162 | Test Accuracy: 151299.8438
+Time elapsed (s) 6196 | Epoch 150/300 | Train Loss: 0.1216 | Train Accuracy: 153742.6139 | Test Loss: 1.3670 | Test Accuracy: 151419.9688
+Time elapsed (s) 7446 | Epoch 180/300 | Train Loss: 0.1362 | Train Accuracy: 152985.2721 | Test Loss: 0.6981 | Test Accuracy: 151375.8438
+Time elapsed (s) 8691 | Epoch 210/300 | Train Loss: 0.1254 | Train Accuracy: 153547.3385 | Test Loss: 1.0207 | Test Accuracy: 151202.9062
+Time elapsed (s) 9931 | Epoch 240/300 | Train Loss: 0.1219 | Train Accuracy: 153721.6018 | Test Loss: 1.1770 | Test Accuracy: 151470.3750
+Time elapsed (s) 11171 | Epoch 270/300 | Train Loss: 0.1194 | Train Accuracy: 153866.2588 | Test Loss: 1.6202 | Test Accuracy: 151506.2500
+Time elapsed (s) 12413 | Epoch 300/300 | Train Loss: 0.1187 | Train Accuracy: 153902.2002 | Test Loss: 1.7518 | Test Accuracy: 151440.5312
+Checkpoint saved at epoch 300
+✅ Training finished successfully for Swin (CE) (Attempt 1)
+
+Training: DeepLabV3+ (CE+Topo) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 4674 | Epoch 20/100 | Train Loss: 0.0340 | Train Accuracy: 158460.9259 | Test Loss: 0.3880 | Test Accuracy: 154921.1875
+Checkpoint saved at epoch 20
+Time elapsed (s) 10266 | Epoch 40/100 | Train Loss: 0.0237 | Train Accuracy: 158863.5188 | Test Loss: 0.5584 | Test Accuracy: 155186.5938
+Checkpoint saved at epoch 50
+Time elapsed (s) 16329 | Epoch 60/100 | Train Loss: 0.0239 | Train Accuracy: 158622.4546 | Test Loss: 0.5762 | Test Accuracy: 154915.1562
+Time elapsed (s) 22710 | Epoch 80/100 | Train Loss: 0.0286 | Train Accuracy: 157976.0929 | Test Loss: 0.3989 | Test Accuracy: 154015.8125
+Time elapsed (s) 29177 | Epoch 100/100 | Train Loss: 0.0090 | Train Accuracy: 159205.0763 | Test Loss: 0.9172 | Test Accuracy: 154854.0938
+Checkpoint saved at epoch 100
+✅ Training finished successfully for DeepLabV3+ (CE+Topo) (Attempt 1)
+
+Training: U-Net (CE+Topo) (Attempt 1/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce-topo.py", line 156, in <module>
+    L_ce = lce(output, class_labels)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+           ^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: weight tensor should be defined either for all or no classes
+⚠️ Training FAILED for U-Net (CE+Topo) (Attempt 1)
+
+Training: U-Net (CE+Topo) (Attempt 2/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce-topo.py", line 156, in <module>
+    L_ce = lce(output, class_labels)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+           ^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: weight tensor should be defined either for all or no classes
+⚠️ Training FAILED for U-Net (CE+Topo) (Attempt 2)
+
+Training: U-Net (CE+Topo) (Attempt 3/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce-topo.py", line 156, in <module>
+    L_ce = lce(output, class_labels)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+           ^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: weight tensor should be defined either for all or no classes
+⚠️ Training FAILED for U-Net (CE+Topo) (Attempt 3)
+
+❌ Maximum retries exceeded for U-Net (CE+Topo). Marking as FAILED.
+
+Training: ViT (CE+Topo) (Attempt 1/3)
+--------------------------------------------------
+/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/init.py:511: UserWarning: Initializing zero-element tensors is a no-op
+  warnings.warn("Initializing zero-element tensors is a no-op")
+Checkpoint saved at epoch 10
+Time elapsed (s) 4919 | Epoch 20/100 | Train Loss: 0.1464 | Train Accuracy: 152348.3772 | Test Loss: 0.5301 | Test Accuracy: 147410.5625
+Checkpoint saved at epoch 20
+Time elapsed (s) 10910 | Epoch 40/100 | Train Loss: 0.1327 | Train Accuracy: 152712.2633 | Test Loss: 0.6030 | Test Accuracy: 147874.5938
+Checkpoint saved at epoch 50
+Time elapsed (s) 17051 | Epoch 60/100 | Train Loss: 0.1438 | Train Accuracy: 151220.1538 | Test Loss: 0.5057 | Test Accuracy: 147588.4375
+Time elapsed (s) 23241 | Epoch 80/100 | Train Loss: 0.1381 | Train Accuracy: 150756.0332 | Test Loss: 0.3042 | Test Accuracy: 147906.4688
+Time elapsed (s) 29461 | Epoch 100/100 | Train Loss: 0.0631 | Train Accuracy: 153406.5819 | Test Loss: 0.4888 | Test Accuracy: 147982.6562
+Checkpoint saved at epoch 100
+✅ Training finished successfully for ViT (CE+Topo) (Attempt 1)
+
+Training: Swin (CE+Topo) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 5318 | Epoch 20/100 | Train Loss: 0.1612 | Train Accuracy: 151468.3075 | Test Loss: 0.5428 | Test Accuracy: 149983.4062
+Checkpoint saved at epoch 20
+Time elapsed (s) 11802 | Epoch 40/100 | Train Loss: 0.1459 | Train Accuracy: 151755.1150 | Test Loss: 0.6033 | Test Accuracy: 149732.0625
+Checkpoint saved at epoch 50
+Time elapsed (s) 18436 | Epoch 60/100 | Train Loss: 0.1304 | Train Accuracy: 151281.4889 | Test Loss: 0.5069 | Test Accuracy: 148998.2812
+Time elapsed (s) 25070 | Epoch 80/100 | Train Loss: 0.1361 | Train Accuracy: 149777.5509 | Test Loss: 0.3502 | Test Accuracy: 149224.3125
+Time elapsed (s) 31733 | Epoch 100/100 | Train Loss: 0.0738 | Train Accuracy: 152312.1803 | Test Loss: 0.4962 | Test Accuracy: 149676.8125
+Checkpoint saved at epoch 100
+✅ Training finished successfully for Swin (CE+Topo) (Attempt 1)
+
+Training: DeepLabV3+ (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 283 | Epoch 20/100 | Train Loss: 0.2523 | Train Accuracy: 158173.6980 | Test Loss: 0.4893 | Test Accuracy: 155049.9688
+Checkpoint saved at epoch 20
+Time elapsed (s) 581 | Epoch 40/100 | Train Loss: 0.3797 | Train Accuracy: 158586.9425 | Test Loss: 0.6394 | Test Accuracy: 155262.8125
+Checkpoint saved at epoch 50
+Time elapsed (s) 877 | Epoch 60/100 | Train Loss: 0.5956 | Train Accuracy: 158291.9558 | Test Loss: 0.7975 | Test Accuracy: 154934.9688
+Time elapsed (s) 1173 | Epoch 80/100 | Train Loss: 0.7207 | Train Accuracy: 142346.8429 | Test Loss: 0.8844 | Test Accuracy: 143286.5938
+Time elapsed (s) 1467 | Epoch 100/100 | Train Loss: 0.7847 | Train Accuracy: 107116.7699 | Test Loss: 0.9599 | Test Accuracy: 107683.5312
+Checkpoint saved at epoch 100
+✅ Training finished successfully for DeepLabV3+ (CE+cmap) (Attempt 1)
+
+Training: U-Net (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce-cmap.py", line 157, in <module>
+    L_ce = lce(output, class_labels)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+           ^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: weight tensor should be defined either for all or no classes
+⚠️ Training FAILED for U-Net (CE+cmap) (Attempt 1)
+
+Training: U-Net (CE+cmap) (Attempt 2/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce-cmap.py", line 157, in <module>
+    L_ce = lce(output, class_labels)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+           ^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: weight tensor should be defined either for all or no classes
+⚠️ Training FAILED for U-Net (CE+cmap) (Attempt 2)
+
+Training: U-Net (CE+cmap) (Attempt 3/3)
+--------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/ianda/OneDrive/AU/msc/intersection-traversal/models/bulk/train_unet_ce-cmap.py", line 157, in <module>
+    L_ce = lce(output, class_labels)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1739, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1750, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/modules/loss.py", line 1295, in forward
+    return F.cross_entropy(
+           ^^^^^^^^^^^^^^^^
+  File "/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/functional.py", line 3494, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: weight tensor should be defined either for all or no classes
+⚠️ Training FAILED for U-Net (CE+cmap) (Attempt 3)
+
+❌ Maximum retries exceeded for U-Net (CE+cmap). Marking as FAILED.
+
+Training: ViT (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/init.py:511: UserWarning: Initializing zero-element tensors is a no-op
+  warnings.warn("Initializing zero-element tensors is a no-op")
+Checkpoint saved at epoch 10
+Time elapsed (s) 571 | Epoch 20/100 | Train Loss: 0.3502 | Train Accuracy: 151210.4004 | Test Loss: 0.5907 | Test Accuracy: 146783.5938
+Checkpoint saved at epoch 20
+Time elapsed (s) 1174 | Epoch 40/100 | Train Loss: 0.4574 | Train Accuracy: 151879.4170 | Test Loss: 0.7313 | Test Accuracy: 145062.1562
+Checkpoint saved at epoch 50
+Time elapsed (s) 1779 | Epoch 60/100 | Train Loss: 0.6529 | Train Accuracy: 149334.0940 | Test Loss: 0.8491 | Test Accuracy: 141000.7500
+Time elapsed (s) 2376 | Epoch 80/100 | Train Loss: 0.7762 | Train Accuracy: 137262.6394 | Test Loss: 0.9047 | Test Accuracy: 132334.9688
+Time elapsed (s) 2975 | Epoch 100/100 | Train Loss: 0.8078 | Train Accuracy: 104784.9126 | Test Loss: 1.0079 | Test Accuracy: 105872.0312
+Checkpoint saved at epoch 100
+✅ Training finished successfully for ViT (CE+cmap) (Attempt 1)
+
+Training: Swin (CE+cmap) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 801 | Epoch 20/100 | Train Loss: 0.3681 | Train Accuracy: 149669.0354 | Test Loss: 0.5514 | Test Accuracy: 150032.6875
+Checkpoint saved at epoch 20
+Time elapsed (s) 1645 | Epoch 40/100 | Train Loss: 0.4752 | Train Accuracy: 149452.2279 | Test Loss: 0.6643 | Test Accuracy: 148796.8125
+Checkpoint saved at epoch 50
+Time elapsed (s) 2480 | Epoch 60/100 | Train Loss: 0.6644 | Train Accuracy: 145479.6438 | Test Loss: 0.8395 | Test Accuracy: 144497.3438
+Time elapsed (s) 3312 | Epoch 80/100 | Train Loss: 0.7720 | Train Accuracy: 123026.6394 | Test Loss: 0.9018 | Test Accuracy: 124586.6250
+Time elapsed (s) 4138 | Epoch 100/100 | Train Loss: 0.8182 | Train Accuracy: 87134.5852 | Test Loss: 0.9759 | Test Accuracy: 94522.7188
+Checkpoint saved at epoch 100
+✅ Training finished successfully for Swin (CE+cmap) (Attempt 1)
+
+Training: DeepLabV3+ (cmap) (Attempt 1/3)
+--------------------------------------------------
+Time elapsed (s) 133 | Epoch 10/50 | Train Loss: 0.6570 | Train Accuracy: 64022.8662 | Test Loss: 0.6899 | Test Accuracy: 62906.7188
+Checkpoint saved at epoch 10
+Time elapsed (s) 278 | Epoch 20/50 | Train Loss: 0.6551 | Train Accuracy: 63457.8119 | Test Loss: 0.6884 | Test Accuracy: 61654.7812
+Checkpoint saved at epoch 20
+Time elapsed (s) 425 | Epoch 30/50 | Train Loss: 0.6558 | Train Accuracy: 59264.5531 | Test Loss: 0.6864 | Test Accuracy: 55695.6875
+Time elapsed (s) 570 | Epoch 40/50 | Train Loss: 0.6544 | Train Accuracy: 59161.4502 | Test Loss: 0.6834 | Test Accuracy: 56260.3750
+Time elapsed (s) 716 | Epoch 50/50 | Train Loss: 0.6541 | Train Accuracy: 58282.0232 | Test Loss: 0.6819 | Test Accuracy: 57335.7500
+Checkpoint saved at epoch 50
+✅ Training finished successfully for DeepLabV3+ (cmap) (Attempt 1)
+
+Training: U-Net (cmap) (Attempt 1/3)
+--------------------------------------------------
+Time elapsed (s) 325 | Epoch 10/50 | Train Loss: 18.9892 | Train Accuracy: 154130.1593 | Test Loss: 19.0909 | Test Accuracy: 154675.0938
+Checkpoint saved at epoch 10
+Time elapsed (s) 680 | Epoch 20/50 | Train Loss: 18.9892 | Train Accuracy: 154130.1593 | Test Loss: 19.0909 | Test Accuracy: 154675.0938
+Checkpoint saved at epoch 20
+Time elapsed (s) 1036 | Epoch 30/50 | Train Loss: 18.9892 | Train Accuracy: 154130.1593 | Test Loss: 19.0909 | Test Accuracy: 154675.0938
+Time elapsed (s) 1389 | Epoch 40/50 | Train Loss: 18.9892 | Train Accuracy: 154130.1593 | Test Loss: 19.0909 | Test Accuracy: 154675.0938
+Time elapsed (s) 1744 | Epoch 50/50 | Train Loss: 18.9892 | Train Accuracy: 154130.1593 | Test Loss: 19.0909 | Test Accuracy: 154675.0938
+Checkpoint saved at epoch 50
+✅ Training finished successfully for U-Net (cmap) (Attempt 1)
+
+Training: ViT (cmap) (Attempt 1/3)
+--------------------------------------------------
+/home/iduck/.msc_venv/lib/python3.12/site-packages/torch/nn/init.py:511: UserWarning: Initializing zero-element tensors is a no-op
+  warnings.warn("Initializing zero-element tensors is a no-op")
+Time elapsed (s) 266 | Epoch 10/50 | Train Loss: 0.7308 | Train Accuracy: 58918.9259 | Test Loss: 0.7552 | Test Accuracy: 58681.5938
+Checkpoint saved at epoch 10
+Time elapsed (s) 570 | Epoch 20/50 | Train Loss: 0.6775 | Train Accuracy: 60455.2622 | Test Loss: 0.7595 | Test Accuracy: 59340.0312
+Checkpoint saved at epoch 20
+Time elapsed (s) 873 | Epoch 30/50 | Train Loss: 0.6830 | Train Accuracy: 60670.4204 | Test Loss: 0.7576 | Test Accuracy: 64971.9375
+Time elapsed (s) 1170 | Epoch 40/50 | Train Loss: 0.6601 | Train Accuracy: 59302.5022 | Test Loss: 0.7573 | Test Accuracy: 57423.1875
+Time elapsed (s) 1467 | Epoch 50/50 | Train Loss: 0.6567 | Train Accuracy: 58612.4856 | Test Loss: 0.7593 | Test Accuracy: 55317.5938
+Checkpoint saved at epoch 50
+✅ Training finished successfully for ViT (cmap) (Attempt 1)
+
+Training: Swin (cmap) (Attempt 1/3)
+--------------------------------------------------
+Time elapsed (s) 377 | Epoch 10/50 | Train Loss: 0.6797 | Train Accuracy: 35763.4613 | Test Loss: 0.7270 | Test Accuracy: 42096.6250
+Checkpoint saved at epoch 10
+Time elapsed (s) 808 | Epoch 20/50 | Train Loss: 0.6604 | Train Accuracy: 34105.0597 | Test Loss: 0.7244 | Test Accuracy: 35042.1562
+Checkpoint saved at epoch 20
+Time elapsed (s) 1324 | Epoch 30/50 | Train Loss: 0.6664 | Train Accuracy: 33228.4912 | Test Loss: 0.7259 | Test Accuracy: 28688.5312
+Time elapsed (s) 1740 | Epoch 40/50 | Train Loss: 0.6570 | Train Accuracy: 33109.3131 | Test Loss: 0.7226 | Test Accuracy: 32458.7188
+Time elapsed (s) 2162 | Epoch 50/50 | Train Loss: 0.6559 | Train Accuracy: 33037.7754 | Test Loss: 0.7218 | Test Accuracy: 32070.3438
+Checkpoint saved at epoch 50
+✅ Training finished successfully for Swin (cmap) (Attempt 1)
+
+==================================================
+
+=== Training Summary ===
+Failed models:
+- U-Net (CE)
+- ViT (CE)
+- U-Net (CE+Topo)
+- U-Net (CE+cmap)
+
+Total time elapsed: 2074.01 minutes

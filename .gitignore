@@ -3,3 +3,12 @@
 
 # ignore checkpoint files
 *.pth
+
+# ignore py cache files
+/model/*/__pycache__
+*.pyc
+
+# Specific files
+Vit2.py
+Swin2.py
+Deeplabv2.py

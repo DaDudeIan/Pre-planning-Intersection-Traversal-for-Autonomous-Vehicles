@@ -1,0 +1,3 @@
+Training: DeepLabV3+ (CE) (Attempt 1/3)
+--------------------------------------------------
+Setup complete. Starting training.

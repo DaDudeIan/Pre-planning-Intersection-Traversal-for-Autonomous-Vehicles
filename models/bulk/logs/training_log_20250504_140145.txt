@@ -1,0 +1,29 @@
+Training: DeepLabV3+ (CE) (Attempt 1/3)
+--------------------------------------------------
+Setup complete. Starting training.
+Checkpoint saved at epoch 10
+Checkpoint saved at epoch 20
+Time elapsed (s) 437 | Epoch 30/300 | Train Loss: 0.0407 | Train Accuracy: 158171.2146 | Test Loss: 0.3231 | Test Accuracy: 155338.2500
+Checkpoint saved at epoch 50
+Time elapsed (s) 865 | Epoch 60/300 | Train Loss: 0.0195 | Train Accuracy: 159111.6681 | Test Loss: 0.4731 | Test Accuracy: 155816.8438
+Time elapsed (s) 1293 | Epoch 90/300 | Train Loss: 0.0115 | Train Accuracy: 159478.6715 | Test Loss: 0.6420 | Test Accuracy: 155908.9375
+Checkpoint saved at epoch 100
+Time elapsed (s) 1717 | Epoch 120/300 | Train Loss: 0.0073 | Train Accuracy: 159672.1007 | Test Loss: 0.8070 | Test Accuracy: 156025.9062
+Time elapsed (s) 2138 | Epoch 150/300 | Train Loss: 0.0055 | Train Accuracy: 159755.5708 | Test Loss: 0.9549 | Test Accuracy: 156046.3125
+Time elapsed (s) 2563 | Epoch 180/300 | Train Loss: 0.0102 | Train Accuracy: 159545.5830 | Test Loss: 0.6869 | Test Accuracy: 155883.5938
+Time elapsed (s) 2987 | Epoch 210/300 | Train Loss: 0.0068 | Train Accuracy: 159696.9956 | Test Loss: 0.9232 | Test Accuracy: 156020.3125
+Time elapsed (s) 3419 | Epoch 240/300 | Train Loss: 0.0046 | Train Accuracy: 159795.7611 | Test Loss: 1.0995 | Test Accuracy: 156077.1875
+Time elapsed (s) 3842 | Epoch 270/300 | Train Loss: 0.0033 | Train Accuracy: 159852.4513 | Test Loss: 1.2267 | Test Accuracy: 156106.6562
+Time elapsed (s) 4265 | Epoch 300/300 | Train Loss: 0.0027 | Train Accuracy: 159879.4712 | Test Loss: 1.3896 | Test Accuracy: 156095.7500
+Checkpoint saved at epoch 300
+✅ Training finished successfully for DeepLabV3+ (CE) (Attempt 1)
+
+Training: DeepLabV3+ (CE+Topo) (Attempt 1/3)
+--------------------------------------------------
+Checkpoint saved at epoch 10
+Time elapsed (s) 4614 | Epoch 20/160 | Train Loss: 0.0351 | Train Accuracy: 158413.1515 | Test Loss: 0.3723 | Test Accuracy: 154998.1250
+Checkpoint saved at epoch 20
+Time elapsed (s) 10150 | Epoch 40/160 | Train Loss: 0.0245 | Train Accuracy: 158850.2965 | Test Loss: 0.4878 | Test Accuracy: 155242.6875
+Checkpoint saved at epoch 50
+Time elapsed (s) 16150 | Epoch 60/160 | Train Loss: 0.0239 | Train Accuracy: 158810.9657 | Test Loss: 0.5381 | Test Accuracy: 155091.2500
+Time elapsed (s) 22427 | Epoch 80/160 | Train Loss: 0.0301 | Train Accuracy: 158392.3562 | Test Loss: 0.5425 | Test Accuracy: 154693.2188
