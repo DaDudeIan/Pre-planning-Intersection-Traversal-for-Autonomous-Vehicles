@@ -1,6 +1,6 @@
 #import "../../../../lib/mod.typ": *
 
-=== Cold Map Loss <c4:cold_loss>
+=== Cold Map Loss #checked <c4:cold_loss>
 
 The cold map loss is a novel loss function designed to enforce topological constraints on the predicted path. It is based on the idea of using a cold map, which is a grid of the same size as the input image, where the intensity of each cell is a value derived from the distance to the nearest path pixel. Before covering them and their creation, the BCE loss function is presented, as it is closely related the CE loss but for binary classification tasks, such as when looking at the structure of the predicted path.
 
@@ -75,7 +75,7 @@ This value represents the dissimilarity between the predicted probability of $0.
 
 Other considerations for handling imbalanced data include methods like Dice @dice_loss similarity coefficient and Focal loss @focal_loss, which can also be effective in certain contexts. The Dice similarity coefficient is a measure of overlap between two samples, and is particularly useful when dealing with imbalanced data. The Focal loss is designed to address the class imbalance problem by focusing on hard examples that are misclassified. These methods can be used in conjunction with the BCE loss to improve the model's performance, especially when dealing with heavily imbalanced datasets. But for the purposes of this project, the BCE loss is expected to be sufficient.
 
-==== Cold Maps
+==== Cold Maps #checked
 
 //#text("REMEMBER: Cold and heat map used to penalize false positives and false negatives, respectively. Comment on trivial optimum (optimizer just driving everything to 0.", fill: red)
 
@@ -102,43 +102,22 @@ $
   w = alpha h_"map" + beta c_"map"  
 $
 
-where $alpha = 2$ and $beta = 1$ because it should reward true positives more than anything else. This, along with the output logits from the model, is passed to the BCE loss function, which will then calculate the loss as a weighted sum of the individual losses. 
+where $alpha = 1$ and $beta = 0.5$ because it should reward true positives more than anything else. This, along with the output logits from the model, is passed to the BCE loss function, which will then calculate the loss as a weighted sum of the individual losses. Examples of this loss function in action is shown in @fig:cmap_loss_comp.  
 
-//This value does, however, grow extremely quickly, as the dot product, as shown by @eq:loss_cold, is simply a sum over the entire image. This means that the loss value will be very high, even for small deviations from the true path, and extremely high for large deviations or noisy images, as expected from the model during early stages of training. While this rapid growth can be combated by introducing a very low weight to the loss function, doing so would also mean that smaller deviations become irrelevant, which in undesired. Thus, inspired by BCE, I will introduce a mean reduction to the loss function, which will divide the loss by the number of pixels in the image. This will ensure that the loss value is more stable and that the model can learn from smaller deviations. With this, the implementation of a cold map loss, will be based on the following equation:
-
-// The implementation of  is very straightforward, and is shown in the code listing below:
-
-// #listing([
-//   ```python
-// def cmap_loss(cmap_gt, path_pred, reduction) -> torch.Tensor:
-//   cmap_f = torch.flatten(cmap_gt)
-//   path_f = torch.flatten(path_pred)
-  
-//   loss = torch.dot(cmap_f, path_f)
-    
-//   return loss if reduction != 'mean' else loss / len(cmap_f)
-
-// class CmapLoss(nn.Module):
-//   def __init__(self, weight: float = 1.0, reduction: str = 'mean'):
-//     super(CmapLoss, self).__init__()
-//     self.weight = weight
-      
-//   def forward(self, cmap_gt: torch.Tensor, path_pred: torch.Tensor):
-//     loss = cmap_loss_torch(cmap_gt, path_pred, self.reduction)
-//     return self.weight * loss
-//   ```
-// ],
-// caption: [Implementation of the cold map loss calculation using PyTorch.]
-// ) <code.cold_loss>
-
-// To implement this loss function, a class `CmapLoss` is created, which inherits from `torch.nn.Module`. The class has a single parameter, `weight`, which is used to scale the loss value. The `forward` method takes the ground truth cold map `cmap_gt` and the predicted path `path_pred` as inputs. The method then calculates the loss using the `cmap_loss` function and scales it by the `weight` parameter. The function `cmap_loss` takes two PyTorch tensors as inputs: `cmap_gt`, which represents the ground truth cold map, and `path_pred`, which is the predicted path output from the model. The cold map and predicted path are initially matrices with dimensions corresponding to the image's height and width. To compute the loss as a single scalar, both matrices are flattened into one-dimensional vectors. The function then calculates the dot product between these two vectors using `torch.dot`, effectively summing the element-wise products. If the `reduction` parameter is set to `mean`, the loss is divided by the number of elements in the vectors, which is the total number of pixels in the image. 
-
-Examples of this loss function in action is shown in @fig:cmap_loss_comp. The left and center top row plots overlays a complete, single width path on top of the cold map. This highlights the fact that paths that are close to the true path, are penalized less and the further away, the more the penalty explodes in value. The last image in the top row shows how the loss handles a noisy image. As it can be seen, the loss is significantly higher than the rest. This is a desired trait of the loss function, as noise is just about the exact opposite of a continuous path. The bottom row shows alternate paths. The path on the rightmost image is the true path, which shows that if the path is dead on, then the penalty is none. The leftmost image, shows a path that is not connected. As shown, it still scores a perfect score. This is because the cold map loss only penalizes the distance from the path, not the topology of the path itself, so breaks will only result in a higher score. Lastly, the center image shows the true path, but with several branches. As seen in the loss value, this also incurs very little penalty. The bottom row of images highlight a dire need for a topology-based loss, which will be explored in @c4:topology_loss. 
+#let fig1 = image("../../../../figures/img/loss_example/cmap_test_1_13.png")
+#let fig2 = image("../../../../figures/img/loss_example/cmap_test_2_57.png")
+#let fig3 = image("../../../../figures/img/loss_example/cmap_test_2_61.png")
+#let fig4 = image("../../../../figures/img/loss_example/cmap_test_0_88.png")
 
 #std-block(breakable: false)[
   #figure(
-  image("../../../../figures/img/loss_example/cmap_loss_comparison7.png", width: 60%),
-  caption: [Paths drawn on top of a cold map with their associated loss. The top row shows fully connected paths, while the bottom row shows paths with breaks and branches, as well as the true path. \ #text("UPDATE FIGURE", fill: red, weight: "black")]
+    grid(
+      columns: (1fr, 1fr, 1fr, 1fr),
+      fig1, fig2, fig3, fig4,
+      [#subfigure("(a)") Loss: 1.13], [#subfigure("(b)") Loss: 2.57], [#subfigure("(c)") Loss: 2.61], [#subfigure("(d)") Loss: 0.88]
+    ),
+    caption: [Paths drawn on top of a cold map with their associated loss.]
 ) <fig:cmap_loss_comp>
 ]
 
+Despite the fact that the loss value for @fig:cmap_loss_comp#subfigure("a") is seemingly high, it is actually a good path. This might seem like an error in the loss function, but the loss value itself is not of the highest importance. The most important part is the fact that the optimizer is able to drive the model to a point where it can output a path that is close to the true path, i.e. lower the loss value as much as possible. As this cold map based loss function is a novel approach, it should be compared to related loss functions that aim to achieve the same goal. Therefore, the following section will present work already done in this area, concerning itself with a more algebraic approach to the topology problem.

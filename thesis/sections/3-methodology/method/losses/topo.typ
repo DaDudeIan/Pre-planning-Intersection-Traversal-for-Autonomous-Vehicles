@@ -142,3 +142,4 @@ This highlights the effectiveness of this loss function. If this keeps going, th
   ) <fig:loss_topo_cont>
 ]
 
+Finally, before any loss function can be used, there needs to exist a dataset to train on. The dataset needs to contain content that it is desired for the model to learn. Furthermore, it is important for each entry to have their annotated ground truth, otherwise the loss function would not have anything to compare against. This is especially the case with models trained on supervised learning. Thus, the next section will cover the dataset created for this project.
