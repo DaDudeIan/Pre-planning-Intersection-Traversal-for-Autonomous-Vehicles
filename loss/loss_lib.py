@@ -193,8 +193,8 @@ class ColdMapLoss(nn.Module):
     """
     def __init__(
         self,
-        alpha: float = 2.0,      # weight for missing the path   (FN)
-        beta:  float = 1.0,      # weight for spurious pixels    (FP)
+        alpha: float = 1.0,      # weight for missing the path   (FN)
+        beta:  float = 0.5,      # weight for spurious pixels    (FP)
         reduction: str = "mean", # 'mean' | 'sum' | 'none'
         bg:     int = 0,         # background class index
     ):
