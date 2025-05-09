@@ -7,7 +7,7 @@ Chosen for this project are two groups of models, those that are based on convol
 
 Furthermore, it should be noted that other DL methodologies were considered. First, is reinforcement learning, which was not chosen as it would add unnecessary complexity to the project. Second, is the use of generative models, which were also not chosen as they introduce a massive change in training algorithm. Both of these points highlight the fact that their implementation would require a significant paradigm shift in this project, which was deemed to go beyond the scope of this thesis. 
 
-The following sections will present the chosen model, starting with the convolution-based models, followed by the transformer-based models. First, the U-Net model proposed in 2015 @unet_og will be presented, focusing on its reliance of classical convolution and usage of alternative convolutional methods. DeepLab was originally proposed in 2016 @deeplabv1 with the implemented V3+ version introduced in 2018 @deeplabv3p. With this model, the focus will be on the use of atrous convolution and the ASPP module. The first of the transformer-based models is the Vision Transformer (ViT), presented in @c2s2.2.1:cv, which introduced the transformer architecture to the field of computer vision. Finally, the Swin Transformer is a hierarchical transformer model that introduced shifted windows to the transformer architecture, allowing for a more efficient computation of self-attention.
+The following sections will present the chosen model, starting with the convolution-based models, followed by the transformer-based models. First, the U-Net model proposed in 2015 @unet_og will be presented, focusing on its reliance of classical convolution and usage of alternative convolutional methods and skip connections. DeepLab was originally proposed in 2016 @deeplabv1 with the implemented V3+ version introduced in 2018 @deeplabv3p. With this model, the focus will be on the use of atrous convolution and the ASPP module. The first of the transformer-based models is the Vision Transformer (ViT), presented in @c2s2.2.1:cv, which introduced the transformer architecture to the field of computer vision. Finally, the Swin Transformer is a hierarchical transformer model that introduced shifted windows to the transformer architecture, allowing for a more efficient computation of self-attention.
 
 // ResNet-based CNN + U-Net
 // Diffusion-based models
@@ -21,6 +21,8 @@ The following sections will present the chosen model, starting with the convolut
 #include "models/vit.typ"
 
 #include "models/swin.typ"
+
+Finally, with all the models presented, the next step is to discuss the training strategy used for all models. The training strategy is a crucial part of the model, as it defines how the model will be trained and what kinds of loss functions will be used and how they will be used together. 
 
 === Training Strategy <c4:training-strategy>
 Highlight the use of this when training using topology loss and CE.

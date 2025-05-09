@@ -9,7 +9,7 @@ In this section...
 // Notable shortcomings of project: requires latest satellite images to be completely useful. (like contruction zones, etc)
 // comment on branching loss not working well with thick line (comp9)
 
-== Future Work <c6:future-work>
+//== Future Work <c6:future-work>
 
 
 
@@ -22,6 +22,8 @@ In this section...
 // thought experiment on how to implement for other domains (warehouse robots, racing, overall AV, deep sea automation). speculative
 
 // examiner from the production engineering world
+
+// How to find the angle to rotate? When driving with a GPS, use coordinates to the centre. Find angle by finding the angle between the two points. 
 
 == Ablation <c6:ablation>
 MAYBE, if time allows

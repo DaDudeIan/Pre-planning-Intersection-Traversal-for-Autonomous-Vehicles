@@ -1,5 +1,5 @@
 #import "../../../../lib/mod.typ": *
-=== DeepLabV3+ <c4:deeplab>
+=== DeepLabV3+ #checked <c4:deeplab>
 
 #let convolution_colour = rgb("7EA6E0")
 #let Down_colour = rgb("FF3333")

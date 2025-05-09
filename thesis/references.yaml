@@ -764,4 +764,141 @@ topology_loss:
     publisher: Institute of Electrical, Electronics Engineers (IEEE)
     issue: 12
     volume: 44
+alphago:
+  type: misc
+  title: 'Artificial intelligence: Google''s AlphaGo beats Go master Lee Se-dol'
+  author: News, BBC
+  date: 2016-03
+  url: https://www.bbc.com/news/technology-35785875
+openai_five:
+  type: misc
+  title: OpenAI Five defeats Dota 2 world champions
+  author: OpenAI
+  date: 2022-10
+  url: https://openai.com/index/openai-five-defeats-dota-2-world-champions/
+deign_2024:
+  type: misc
+  title: How ChatGPT changed… well, almost everything
+  author: Deign, Jason
+  date: 2024-12
+  url: https://newsroom.cisco.com/c/r/newsroom/en/us/a/y2024/m12/how-chatgpt-changed-well-almost-everything.html
+attention:
+  type: misc
+  title: Attention Is All You Need
+  author:
+  - Vaswani, Ashish
+  - Shazeer, Noam
+  - Parmar, Niki
+  - Uszkoreit, Jakob
+  - Jones, Llion
+  - Gomez, Aidan N.
+  - Kaiser, Lukasz
+  - Polosukhin, Illia
+  date: 2023
+  url: https://arxiv.org/abs/1706.03762
+  serial-number:
+    arxiv: '1706.03762'
+waymo_dataset:
+  type: article
+  title: 'Waymo Open Dataset: An Autonomous Driving Dataset for Perception and Prediction'
+  author:
+  - Sun, Pei
+  - Kretzschmar, Henrik
+  - Dotiwalla, Xerxes
+  - Chouard, Aurelien
+  - Patnaik, Vijaysai
+  - Tsui, Paul
+  - Guo, James
+  - Zhou, Yin
+  - Chai, Yuning
+  - Caine, Benjamin
+  - Vasudevan, Vijay
+  - Han, Wei
+  - Ngiam, Jiquan
+  - Zhao, Hang
+  - Timofeev, Aleksei
+  - Ettinger, Scott
+  - Krivokon, Maxim
+  - Gao, Amy
+  - Joshi, Aditya
+  - Zhang, Yu
+  - Shlens, Jonathon
+  - Chen, Zhifeng
+  - Anguelov, Dragomir
+  date: 2020-06
+  parent:
+    type: proceedings
+    title: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)
+nuscenes:
+  type: misc
+  title: NuScenes
+  date: 2025
+  url: https://www.nuscenes.org/
+argoverse:
+  type: misc
+  title: 'Argoverse 2: Next Generation Datasets for Self-Driving Perception and Forecasting'
+  author:
+  - Wilson, Benjamin
+  - Qi, William
+  - Agarwal, Tanmay
+  - Lambert, John
+  - Singh, Jagjeet
+  - Khandelwal, Siddhesh
+  - Pan, Bowen
+  - Kumar, Ratnesh
+  - Hartnett, Andrew
+  - Pontes, Jhony Kaesemodel
+  - Ramanan, Deva
+  - Carr, Peter
+  - Hays, James
+  date: 2023
+  url: https://arxiv.org/abs/2301.00493
+  serial-number:
+    arxiv: '2301.00493'
+interactiondataset:
+  type: article
+  title: '{INTERACTION} {Dataset}: {An} {INTERnational}, {Adversarial} and {Cooperative} {moTION} {Dataset} in {Interactive} {Driving} {Scenarios} with {Semantic} {Maps}'
+  author:
+  - Zhan, Wei
+  - Sun, Liting
+  - Wang, Di
+  - Shi, Haojie
+  - Clausse, Aubrey
+  - Naumann, Maximilian
+  - Kümmerle, Julius
+  - Königshof, Hendrik
+  - Stiller, Christoph
+  - name: La Fortelle
+    given-name: Arnaud
+    prefix: de
+  - Tomizuka, Masayoshi
+  date: 2019-09
+  parent:
+    type: periodical
+    title: arXiv:1910.03088 [cs, eess]
+tusimple:
+  type: misc
+  title: End-to-End Lane Marker Detection via Row-wise Classification
+  author:
+  - Yoo, Seungwoo
+  - Lee, Heeseok
+  - Myeong, Heesoo
+  - Yun, Sungrack
+  - Park, Hyoungwoo
+  - Cho, Janghoon
+  - Kim, Duck Hoon
+  date: 2020
+  url: https://arxiv.org/abs/2005.08630
+  serial-number:
+    arxiv: '2005.08630'
+deepglobe:
+  type: misc
+  date: 2018
+  url: http://deepglobe.org/
+spacenet:
+  type: misc
+  title: spacenet.ai - Accelerating Geospatial Machine Learning
+  author: spacenet.ai
+  date: 2025
+  url: https://spacenet.ai/
 

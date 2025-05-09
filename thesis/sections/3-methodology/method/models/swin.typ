@@ -1,5 +1,5 @@
 #import "../../../../lib/mod.typ": *
-=== Swin Transformer <c4:swin>
+=== Swin Transformer #checked <c4:swin>
 
 #let patch_colour = rgb("2226FF")
 #let window_colour = rgb("B85450")
@@ -9,7 +9,7 @@
 
 
 // Hello #ball(window_colour) #ball(patch_colour) #ball(layer_norm_colour) #ball(msa_colour)
-The Swin Transformer extends the pure-attention idea of ViT with a hierarchical, window-based design that scales gracefully to high-resolution images. As reviewed in §2.2.1, Swin partitions the feature map into fixed-size, non-overlapping windows #ball(window_colour) and computes self-attention only within each window. @fig:swin_sw#subfigure("a") visualises this arrangement for a $2 times 2$ window composed of $4 times 4$ patches #ball(patch_colour); the quadratic cost of attention is now bound by the window area rather than the entire image. @fig:swin_sw#subfigure("b") shows two successive Swin transformer blocks. These ensure the exchange of information across window borders, where the second block #ball(msa_colour) in a pair shifts the window grid by half the window size, so that the pixels sitting on window edges in the first block #ball(msa_colour) lie at the centre of a window in the next. This “shifted window” scheme allows cross-window interactions with only a negligible increase in computation, while still preserving the locality that makes the model efficient.
+The Swin Transformer extends the pure-attention idea of ViT with a hierarchical, window-based design that scales gracefully to high-resolution images. As reviewed in @c2s2.2.1:cv, Swin partitions the feature map into fixed-size, non-overlapping windows #ball(window_colour) and computes self-attention only within each window. @fig:swin_sw#subfigure("a") visualises this arrangement for a $2 times 2$ window composed of $4 times 4$ patches #ball(patch_colour). The quadratic cost of attention is now bound by the window area rather than the entire image. @fig:swin_sw#subfigure("b") shows two successive Swin transformer blocks. These ensure the exchange of information across window borders, where the second block #ball(msa_colour) in a pair shifts the window grid by half the window size, so that the pixels sitting on window edges in the first block #ball(msa_colour) lie at the centre of a window in the next. This “shifted window” scheme allows cross-window interactions with only a negligible increase in computation, while still preserving the locality that makes the model efficient.
 
 #let fig1 = {image("../../../../figures/img/models/swin/sw.png")}
 #let fig2 = {image("../../../../figures/img/models/swin/swin_block.png")}

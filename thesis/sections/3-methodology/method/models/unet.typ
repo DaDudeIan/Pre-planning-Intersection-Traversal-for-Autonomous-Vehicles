@@ -1,5 +1,5 @@
 #import "../../../../lib/mod.typ": *
-=== U-Net <c4:unet>
+=== U-Net #checked <c4:unet>
 
 #let DoubleConv_colour = rgb("7EA6E0")
 #let Down_colour = rgb("FF3333")

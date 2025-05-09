@@ -1,5 +1,5 @@
 #import "../../../../lib/mod.typ": *
-=== Vision Transformer <c4:vit>
+=== Vision Transformer #checked <c4:vit>
 
 #let linear_proj_colour = rgb("FFCCE6")
 #let embedding_colour = rgb("CC99FF")
