@@ -38,7 +38,7 @@
   alignment: auto,
   stroke: none,
   header-color: (
-    fill: catppuccin.latte.sapphire.darken(10%),
+    fill: catppuccin.latte.sapphire.lighten(10%),
     text: white
   ),
   even-color: catppuccin.latte.mantle,
@@ -111,7 +111,7 @@
       abbreviation = entry
       continue
     }
-    description = entry.at(0)
+    description = entry
     new_content.push((abbreviation, description))
   }
 

@@ -901,4 +901,14 @@ spacenet:
   author: spacenet.ai
   date: 2025
   url: https://spacenet.ai/
+adamw:
+  type: misc
+  title: Decoupled Weight Decay Regularization
+  author:
+  - Loshchilov, Ilya
+  - Hutter, Frank
+  date: 2019
+  url: https://arxiv.org/abs/1711.05101
+  serial-number:
+    arxiv: '1711.05101'
 
