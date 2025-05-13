@@ -111,7 +111,12 @@
       abbreviation = entry
       continue
     }
-    description = entry
+    //description = entry.at(0)
+    description = if type(entry) == array or type(entry) == content {
+      entry.at(0)
+    } else {
+      entry
+    }
     new_content.push((abbreviation, description))
   }
 

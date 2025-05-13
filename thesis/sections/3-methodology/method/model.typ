@@ -92,7 +92,7 @@ where $eta_min$ and $eta_max$ are the ranges of the learning rate, with $eta_max
 
 Other considerations for the scheduler include exponential decay and plateau decay. Exponential decay is a simple and effective way to reduce the learning rate over time, but it can be too aggressive and lead to premature convergence. Plateau decay, on the other hand, is more adaptive as it lowers the learning rate if the validation loss does not improve for a certain number of epochs. 
 
-With the training strategy now fully defined --- including the choice of loss functions, optimizer, and scheduler --- the stage is set to evaluate how each model performs under these conditions. The following chapter presents the results of these experiments, comparing both the quantitative metrics and qualitative outputs of each configuration.
+With the training strategy now fully defined---including the choice of loss functions, optimizer, and scheduler---the stage is set to evaluate how each model performs under these conditions. The following chapter presents the results of these experiments, comparing both the quantitative metrics and qualitative outputs of each configuration.
 
 // Other considerations:
 // - RL (no, because of added complexity)
