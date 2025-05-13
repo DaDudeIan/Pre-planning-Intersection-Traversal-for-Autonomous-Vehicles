@@ -1,6 +1,6 @@
 #import "../../lib/mod.typ": *
 
-= Related Work <c3:related-work>
+= Related Work #checked <c3:related-work>
 // works that already utilize satellite imagery i.e. works that use sat images for autonomous navigation
 
 This brief chapter will present the work in areas most closely related to the work presented in this thesis, namely path-planning and intersection management. Path-planning has been a long-standing area of research in the field of robotics and autonomous navigation, with many algorithms and techniques developed over the years. Intersection management is a more recent area of research that focuses on the challenges of managing multiple vehicles at intersections, particularly in urban environments. 
@@ -23,13 +23,25 @@ Other areas of research in path-planning include #acrpl("GA") and #acr("FL"). #a
 
 #acrpl("NN") are also finding their usage in the field. #acrpl("NN") are made to imitate the human brain's innate ability to learn. They are trained on data and learn how to react to it. They are used in the field, not necessarily for path-planning explicitly, but more in conjunction with other algorithms that use their output as input. I.e. a #acr("NN") might be able to tell the controller where some obstacle is, meaning it is giving a helping hand to algorithms like #acr("APF"). Akin to #acr("APF"), #acr("RL") models are taught to react to their surroundings, driving towards a goal and being rewarded and penalized for the actions that it takes, like how #acr("APF") is moving towards a goal and avoiding obstacles due to the repulsive forces.
 
-In summary, the evolution of path-planning $dash$ from early graph search methods like Dijkstra and A\* to more adaptive techniques such as D\*, RRT, and learning-based models $dash$ illustrates a steady push toward efficiency and robustness. Approaches like #acrpl("APF"), #acrpl("GA"), and #acr("FL") add further flexibility, each with its own trade-offs. Together, these methods highlight the ongoing effort to balance computational efficiency with real-world challenges.
+In summary, the evolution of path-planning---from early graph search methods like Dijkstra and A\* to more adaptive techniques such as D\*, RRT, and learning-based models---illustrates a steady push toward efficiency and robustness. Approaches like #acrpl("APF"), #acrpl("GA"), and #acr("FL") add further flexibility, each with its own trade-offs. Together, these methods highlight the ongoing effort to balance computational efficiency with real-world challenges.
 
 
-== Intersection Management <c3s3.2:intersection-management>
+== Intersection Management #checked <c3s3.2:intersection-management>
 // AIM, V2X
 // Multi-agent RL, Cooperative learning
 // Simulation (sim-to-real)
 // 
 
 // == On-board vs Cloud Computing <c3s3.3:edge-cloud> // Maybe discussion (theoretical) 
+
+Intersection management can be split into two categories: managing multiple vehicles travelling through an intersection and vehicles managing their own traversal through them. This latter task has been covered in detail in the previous section, as it can be considered a path-planning task. Therefore this section will focus on the former. 
+
+Managing AVs at intersections is a key challenge for improving traffic flow and safety. Researchers have proposed various methods to address this issue. An approach that gained some population when released what the Autonomous Intersection Management (AIM) system @aim. AIM is a preservation-based scheduling system where a centralized intersection controller assigns vehicles exclusive space-time slots to pass through the intersection. This idea was initially proposed in 2004 and witnessed continuous development for some years. Part of the its popularity comes from the simulation videos being spread across the internet with the help of social media, which captured people's attention by showcasing how well and sleekly the system worked. In AIM, each vehicle approaching the intersection will send a request to the intersection controller containing its time of arrival and turn intentions. The controller models the intersection as a discrete grid of tiles that can only be occupied by one vehicle at a time. The controller checks the requested path and checks if it collides with any other vehicle's path. If it does, the controller will reject the request and ask the vehicle to wait for a certain amount of time before trying again. This process continues until the vehicle is granted permission to pass through the intersection. This paradigm allows for very tight scheduling of vehicles and very high throughput.
+
+AIM is an example of a centralized #acr("V2I") system and it has a variety of variants. Many works seek to optimize the scheduling beyond the simple first-come-first-served approach. As noted by Karthikeyan #etal @aim_rl, improvements have been attempted by using global optimization or heuristics to minimize overall delay or to prioritize certain traffic stream. Themselves use a #acr("RL") approach, where deep RL is applied to the controller so it can learn an optimal policy for ordering vehicles through intersections, rather than using fixed rules. 
+
+Alternate research has explored decentralized approaches to intersection management, where vehicles communicate with each other to negotiate their paths. This approach is often referred to as #acr("V2V") communication. Virtual Traffic Lights (VTL) is a system where vehicles approaching an intersection use V2V communication to dynamically decide who has right-of-way without any physical traffic lights being present. Typically in the VTL protocol, the vehicles themselves find a passing order by electing a leader or agreeing on a passing order. Research has shown this approach improve the effectiveness of intersections @vtl.
+
+Beyond these hitherto theoretical systems, researches at specific companies are starting their own real-world implementation of these technologies. Modern V2X communication standards allow vehicle to transmit their own state and receive infrastructure signals in real time. This allows for both vehicles and the infrastructure to react to each other. For instance, if many vehicles are approaching an intersection, the infrastructure can send a signal to all vehicles to slow down and wait for a green light or even change the light to green earlier to let the mass of vehicles through. Concretely, a proof-of-concept system @aim_proof that optimized traffic light timing, lane usage, and AV acceleration yielded increased throughput and reduced fuel consumption.
+
+In summary, intersection management and path-planning need to go hand-in-hand for AVs to achieve their full potential. This work presents a method that helps both areas. The following chapter will present said work done in this thesis, presenting a method that will help AVs improve their own intersection path-planning abilities.

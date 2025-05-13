@@ -76,6 +76,10 @@
   definition: Electric Vehicle
 - acronym: V2X
   definition: Vehicle-to-Everything
+- acronym: V2I
+  definition: Vehicle-to-Infrastructure
+- acronym: V2V
+  definition: Vehicle-to-Vehicle
 - acronym: AI
   definition: Artificial Intelligence
 - acronym: ANN

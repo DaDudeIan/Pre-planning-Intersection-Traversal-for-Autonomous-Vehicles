@@ -6,8 +6,7 @@ In this section...
 == Integration with existing systems <c6:integration>
 
 == Shortcomings <c6:shortcomings>
-// Notable shortcomings of project: requires latest satellite images to be completely useful. (like contruction zones, etc)
-// comment on branching loss not working well with thick line (comp9)
+// Notable shortcomings of project: requires latest satellite images to be completely useful. (like construction zones, etc)
 
 //== Future Work <c6:future-work>
 
@@ -24,6 +23,8 @@ In this section...
 // examiner from the production engineering world
 
 // How to find the angle to rotate? When driving with a GPS, use coordinates to the centre. Find angle by finding the angle between the two points. 
+
+// on-board vs cloud processing
 
 == Ablation <c6:ablation>
 MAYBE, if time allows

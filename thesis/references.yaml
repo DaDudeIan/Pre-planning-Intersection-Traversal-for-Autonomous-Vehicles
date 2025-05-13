@@ -911,4 +911,46 @@ adamw:
   url: https://arxiv.org/abs/1711.05101
   serial-number:
     arxiv: '1711.05101'
+aim_rl:
+  type: article
+  title: Autonomous Intersection Management by Using Reinforcement Learning
+  author:
+  - Karthikeyan, P.
+  - Chen, Wei-Lun
+  - Hsiung, Pao-Ann
+  date: 2022
+  url: https://www.mdpi.com/1999-4893/15/9/326
+  serial-number:
+    doi: 10.3390/a15090326
+    issn: 1999-4893
+  parent:
+    type: periodical
+    title: Algorithms
+    issue: 9
+    volume: 15
+vtl:
+  type: article
+  title: Virtual Traffic Light Implementation on a Roadside Unit over 802.11p Wireless Access in Vehicular Environments
+  author:
+  - Wong, Robert
+  - White, Jack
+  - Gill, Sumanjit
+  - Tayeb, Shahab
+  date: 2022
+  url: https://www.mdpi.com/1424-8220/22/20/7699
+  serial-number:
+    doi: 10.3390/s22207699
+    issn: 1424-8220
+  parent:
+    type: periodical
+    title: Sensors
+    issue: 20
+    volume: 22
+aim_proof:
+  type: article
+  url: https://www.fhwa.dot.gov/publications/research/operations/21068/21068.pdf
+  serial-number:
+    doi: https://doi.org/10.21949/1521653
+  parent:
+    type: periodical
 
