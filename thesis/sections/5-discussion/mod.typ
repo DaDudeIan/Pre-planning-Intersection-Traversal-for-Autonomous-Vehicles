@@ -26,6 +26,8 @@ In this section...
 
 // on-board vs cloud processing
 
+// Look into how ViT and Swin handle structural priors
+
 == Ablation <c6:ablation>
 MAYBE, if time allows
 
