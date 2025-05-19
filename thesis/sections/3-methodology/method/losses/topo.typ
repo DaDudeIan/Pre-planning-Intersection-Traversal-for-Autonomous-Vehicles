@@ -59,7 +59,21 @@ This birth and death of features is recorded in what is known as a persistence d
 
 The following will cover the method used to achieve the continuity loss function. It closely follows the work done by Clough #etal @topology_loss with some minor changes that will be pointed out. Furthermore, the implementation is done using the Gudhi library, which is a Python library for computational topology. It provides a set of tools for computing persistent homology and other topological features of data. The library is designed to be efficient and easy to use, making it a good choice for this project. Lastly, PyTorch's ability to create custom autograd functions is used to implement the persistent homology loss function.
 
-The output from the network is a tensor of size 
+#let fig1 = { image("../../../../figures/img/loss_example/clough_res.png") }
+
+#let fig = std-block(breakable: false)[
+  #figure(
+    fig1,
+    caption: [Fig. 6 from @topology_loss.]
+  ) <fig:clough_res>
+]
+
+#let c = [#h(4mm)Before presenting the loss function definition, it is important to understand exactly what this loss function is supposed to achieve. The intuition behind the loss function is, as mentioned, to drive the network towards achieving a specified set of betti numbers. @fig:clough_res comes from the work done by Clough #etal, where they show the result of using three different topological priors, i.e. the betti numbers. In all cases shown, it drives the output towards the desired number of components and loops. Therefore, defining the topological priors of the function that is to train the models as $beta_0 = 1, beta_1 = 0$, should yield results similar to the top-most output image in @fig:clough_res. As they point out, however, this loss function does not ensure correct looking outputs, since topology alone is not enough to describe the actual shape of an output. Therefore, in testing it will only be shown in combination with the CE loss function.]
+
+
+#wrap-content(fig, c, align: right, columns: (3fr, 2.5fr))
+
+#h(4mm) Now, the output from the network is a tensor of size 
 $ Omega = H times W $ 
 where, in this project, $H=400$ and $W=400$. Then for each pixel $x in Omega$, the network outputs a logit vector:
 $ L(x) in RR^C $

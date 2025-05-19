@@ -12,8 +12,8 @@ All experiments were conducted on the same hardware. The desktop features an Int
 
 #include "ce.typ"
 
-#include "cmap.typ"
-
 #include "ce_cont.typ"
+
+#include "cmap.typ"
 
 #include "ce_cmap.typ"

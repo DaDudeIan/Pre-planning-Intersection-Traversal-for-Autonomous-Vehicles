@@ -52,7 +52,7 @@
 
 == Cold Map Standalone
 
-This section will serve as a proof-of-concept for the structural prior method presented called cold map loss. The results shown will be from models that have been trained using the cold map loss defined in @c4:cold_loss. The results will be shown for the first 10 epochs and the 50th epoch. The classes shown using the colours of the previous section serve no purpose in these outputs. The cold map loss does not deal with classifying pixels, but purely the structure of the output. Classification of pixels is a crucial part of the task at hand, as it is critical information for an AV to have when approaching an intersection. Therefore, this section will mere show the loss in a proof-of-concept context.
+This section will serve as a proof-of-concept for the structural prior method presented called cold map loss. The results shown will be from models that have been trained using the cold map loss defined in @c4:cold_loss. The results will be shown for the first 10 epochs and the 50th epoch. The classes shown using the colours of the previous section serve no purpose in these outputs. The cold map loss does not deal with classifying pixels, but purely the structure of the output. Classification of pixels is a crucial part of the task at hand, as it is critical information for an AV to have when approaching an intersection. Therefore, this section will merely show the loss in a proof-of-concept context.
 
 
 
@@ -92,9 +92,6 @@ The transformer-based models do also appear to not be particularly happy with th
 
 Compared to the purely CE-trained models, the graphs for these models are significantly different. The losses plateau after just a few epochs, with only marginal improvements after 50 epochs. This implies that the core structure of the road is learned very quickly. Furthermore, it implies that the models quickly converge on the structural features defined by the cold maps from the dataset.
 
-Unlike the overfitting seen in the CE-trained models, these models show little to no overfitting. The cold map loss seems to motivate for a more consistent behaviour in the models, hinting at them being able to generalize better to unseen data. This is more is like what is expected of a supervised learning task, where the model is able to learn the structure of the data and generalize to unseen data. Therefore, this loss function seems to be a good candidate to work in conjunction with the CE loss function.
-
-The accuracy graphs largely mirror the behaviour shown in the loss graphs. For some models, such as DeepLabv3+ and ViT, the validation accuracy displays more fluctuations and a decreasing value. These variations could potentially indicate sensitivity to learning rate adjustments from the cosine annealing scheduler, although the inverted spikes apparent in the CE-trained models are less evident here. Their categorical counterparts, U-Net and Swin, exhibit a more stable, increasing accuracy trend, suggesting a more consistent learning process. The fact that models trained on this loss seem to generalize well, shows promise for the use of this loss function in conjunction with the CE loss function.
 
 #std-block(breakable: false,
   figure(
@@ -118,6 +115,10 @@ The accuracy graphs largely mirror the behaviour shown in the loss graphs. For s
     caption: [Training and Validation graphs for the models trained with the cold map loss. The left column shows the training/test loss and the right column shows the training/validation accuracy. ]
   )
 )
+
+Unlike the overfitting seen in the CE-trained models, these models show little to no overfitting. The cold map loss seems to motivate for a more consistent behaviour in the models, hinting at them being able to generalize better to unseen data. This is more is like what is expected of a supervised learning task, where the model is able to learn the structure of the data and generalize to unseen data. Therefore, this loss function seems to be a good candidate to work in conjunction with the CE loss function.
+
+The accuracy graphs largely mirror the behaviour shown in the loss graphs. For some models, such as DeepLabv3+ and ViT, the validation accuracy displays more fluctuations and a decreasing value. These variations could potentially indicate sensitivity to learning rate adjustments from the cosine annealing scheduler, although the inverted spikes apparent in the CE-trained models are less evident here. Their categorical counterparts, U-Net and Swin, exhibit a more stable, increasing accuracy trend, suggesting a more consistent learning process. The fact that models trained on this loss seem to generalize well, shows promise for the use of this loss function in conjunction with the CE loss function, although its seemingly random pixel classification, might trip up the CE loss.
 
 // === Test on Training Set
 

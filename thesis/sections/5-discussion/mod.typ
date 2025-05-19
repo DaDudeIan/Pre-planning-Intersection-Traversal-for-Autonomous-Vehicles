@@ -28,6 +28,12 @@ In this section...
 
 // Look into how ViT and Swin handle structural priors
 
+// Discuss how a model's loss can sky rocket but the accuracy can remain good.
+
+// Why does the transformer models appear to play less nice with continuity loss function?
+
+// if interesting results, look at the mainly cmap trained model (deeplab_cmap-ce opposed to ce-cmap)
+
 == Ablation <c6:ablation>
 MAYBE, if time allows
 
