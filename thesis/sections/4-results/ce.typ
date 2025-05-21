@@ -199,4 +199,40 @@ These illustrations goes well with the observations made in the training and val
 )
 
 
-Generally, the results shown in #subfigure("Figure 27-29") shows promise in the task at hand. The models do fairly well when identifying the rules of the roads, but struggles to create a connected path to the end of the road. The transformer-based models are not performing well at all, but they still show signs of learning the general structure of the road, meaning they are likely able to learn the task with more training time and data. The training and validation graphs show that the models are overfitting very early in the training, which is a clear sign of the models not being able to generalize well. To help with the structure of the output, the next section will present the results of the models trained with CE and the continuity loss.
+Generally, the results shown in #subfigure("Figure 27-29") shows promise in the task at hand. The models do fairly well when identifying the rules of the roads, but struggles to create a connected path to the end of the road. The transformer-based models are not performing well at all, but they still show signs of learning the general structure of the road, meaning they are likely able to learn the task with more training time and data. The training and validation graphs show that the models are overfitting very early in the training, which is a clear sign of the models not being able to generalize well. 
+#let tab = [
+  #figure(
+    {
+      tablec(
+        columns: 8,
+        alignment: (x, y) => (left, center, center, center, center, center, center, center).at(x),
+        header: table.header(
+          [Model], [Epoch], [Class 0], [Class 1], [Class 2],
+          [Class 3], [Class 4], [mIoU $arrow.t$]
+        ),
+
+        [DeepLabV3+], [10],  [0.9695], [0.3344], [0.3253], [0.2983], [0.1772], [0.4209],
+        [DeepLabV3+], [100], [0.9765], [0.3506], [0.3188], [0.3432], [0.2214], [0.4421],
+        [DeepLabV3+], [300], [0.9774], [0.3540], [0.3302], [0.3388], [0.2480], [0.4497],
+
+        [U-Net], [10],      [0.9704], [0.2952], [0.2858], [0.3276], [0.1735], [0.4105],
+        [U-Net], [100],     [0.9748], [0.3016], [0.2799], [0.2983], [0.1721], [0.4053],
+        [U-Net], [300],     [0.9748], [0.2663], [0.2555], [0.2692], [0.1230], [0.3778],
+
+        [ViT], [10],        [0.9182], [0.1472], [0.1204], [0.1476], [0.0509], [0.2769],
+        [ViT], [100],       [0.9453], [0.1664], [0.1523], [0.2065], [0.1211], [0.3183],
+        [ViT], [300],       [0.9461], [0.1549], [0.1483], [0.1982], [0.1116], [0.3118],
+
+        [Swin], [10],       [0.9348], [0.1556], [0.1663], [0.1494], [0.1417], [0.3095],
+        [Swin], [100],      [0.9490], [0.2009], [0.1895], [0.1681], [0.1294], [0.3274],
+        [Swin], [300],      [0.9485], [0.2135], [0.2065], [0.1953], [0.1271], [0.3382],
+
+        []
+      )
+    },
+    caption: [Per-class IoU and mean IoU for the four models trained with plain CE loss at 10, 100, and 300 epochs.]
+  )<tab:ce_miou>
+]
+#tab
+
+Supporting this observation is @tab:ce_miou, showcasing that the models are not performing well at all. The mIoU is very low, with the best performing model, DeepLab, achieving a mIoU of 0.45 after 300 epochs. The other models are not far behind with U-Net achieving a mIoU of 0.41, following a drop is ViT achieving a mIoU of 0.32, and Swin achieving a mIoU of 0.34. The per-class are also very poor, with DeepLab achieving a loss of around 0.34 for each of the directions through an intersection, with the layered class being the worst performing class. This also holds true for the other models, just with much lower values. This does seem to mark a positive trend, where the models understand that an even spread of the classes is expected. To help with the structure of the output, the next section will present the results of the models trained with CE and the continuity loss.

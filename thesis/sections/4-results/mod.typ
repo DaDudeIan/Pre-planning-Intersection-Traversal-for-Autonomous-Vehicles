@@ -6,7 +6,9 @@ This section details the experiments conducted on the trained models created dur
 
 The images used for the qualitative results were chosen from the validation set. The two chosen images present different scenes and thus offer different challenges to the models. The first image is of a simple intersection, with two roads intersecting perpendicularly, but with turn lanes and slightly curvy roads. The second image is of an intersection where the intersect between the two roads is not perpendicular and there are a fair amount of clear road markings.
 
-Finally, as will be evident from the training and validation graphs, the models trained shows clears signs of overfitting. Therefore, a result of giving the models an image from the training dataset will be shown as well. This is to illustrate the models' ability to eventually learn the task, given large enough datasets and training time.
+As will be evident from the training and validation graphs, the models trained shows clears signs of overfitting. Therefore, a result of giving the models an image from the training dataset will be shown as well. This is to illustrate the models' ability to eventually learn the task, given large enough datasets and training time.
+
+Finally, the mean Intersection over Union (mIoU) will be shown for the models trained with the different loss methods. The mIoU is a common metric used in semantic segmentation tasks, and it provides a measure of how well the model's predictions align with the ground truth labels. The mIoU is calculated by taking the intersection of the predicted and true labels for each class, dividing it by the union of the predicted and true labels, and then averaging this value across all classes. Thus, a higher value is better, with a value of 1 being perfect.  Furthermore, the IoU for each class will be shown as well. Each value in the tables will be the average of the mIoU and IoU values from the validation set. To ensure clarity, the class labels are as follows: 0 = background, 1 = left-hand turn, 2 = right-hand turn, 3 = straight ahead, and 4 = layered. Each section will contain their own table, but a final section will present of all the models' mIoU values, to allow for a clear comparison between the different loss methods. 
 
 All experiments were conducted on the same hardware. The desktop features an Intel Core i7-9700K CPU, 16GB DIMM DDR5 RAM, and an NVIDIA GeForce RTX 2070 GPU with 4GB VRAM. All data was stored on an NVMe M.2 SSD, with the model checkpoints being saved to a SATA HDD. The environment on the desktop is Windows 11 Pro, utilizing the Windows Subsystem for Linux (WSL) running the Linux distribution Ubuntu 24.04. Although the computational capabilities of the machine should not influence the results for this specific experimental setup if replicated, it should be noted that larger systems allow for larger and more complex models, as well as larger batches of data to be processed at once, likely achieving better results.
 
@@ -17,3 +19,5 @@ All experiments were conducted on the same hardware. The desktop features an Int
 #include "cmap.typ"
 
 #include "ce_cmap.typ"
+
+#include "miou.typ"

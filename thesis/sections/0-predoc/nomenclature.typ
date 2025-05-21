@@ -19,5 +19,6 @@
   [State], [A stored value or set of values that can be accessed or modified during document processing.],
   [Grid], [A layout structure for arranging elements in columns and rows.],
   [Class], [A template or blueprint for creating objects, providing initial values for state and implementations of behaviour.],
+  [$arrow.t$ or $arrow.b$], [Indicates whether a value should be high or low, respectively.],
   
 )

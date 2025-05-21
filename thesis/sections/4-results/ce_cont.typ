@@ -156,4 +156,38 @@ The transformer models, however, show a very different behaviour. The training l
 
 This erratic behaviour is also present in the test set results. Expectedly, the convolutional-based models are very overfitted to the training set, so their outputs are hardly influenced by the topology-based loss. But the transformer models' outputs show why they generate such erratic graphs. For both models, the outputs w.r.t. the left- and right-hand turns are extremely bumpy and does not follow the shape of the road at all. As evident by the graphs, these lumpy outputs change a lot during training, likely going from being bumpy to one side of the road to the other, meaning the models are very slowly learning the task at hand, without showing any major improvements.
 
-In summary, the results of the models trained with the CE and continuity loss function show that the topology-based loss function does have a positive impact on the outputs. The main success comes from the fact that small artifacts are largely absent in the outputs, with the models having learnt to generate few large, connected components, often only generating the desired singular component. Although their results are cleaner, in the long run, the convolutional-based models show little improvement, as they only removed minor artifacts that could be removed with some post-processing. The transformer models, however, seem to be largely affected by the addition of the continuity loss, in that their training and validation graphs are very erratic hinting at an unstable training process. With these results, the novel cold map loss results will now be shown, first as a standalone method, and then in combination with the CE loss.
+#let tab = [
+  #figure(
+    {
+      tablec(
+        columns: 8,
+        alignment: (x, y) => (left, center, center, center, center, center, center, center).at(x),
+        header: table.header(
+          [Model], [Epoch], [Class 0], [Class 1], [Class 2],
+          [Class 3], [Class 4], [mIoU $arrow.t$]
+        ),
+
+        [DeepLabV3+], [50],  [0.9735], [0.3053], [0.3171], [0.3009], [0.2216], [0.4237],
+        [DeepLabV3+], [100], [0.9711], [0.2787], [0.3008], [0.2922], [0.1846], [0.4055],
+
+        [U-Net], [50],       [0.9722], [0.2815], [0.2744], [0.3003], [0.1353], [0.3928],
+        [U-Net], [100],      [0.9679], [0.2719], [0.2567], [0.2841], [0.1364], [0.3834],
+
+        [ViT], [50],         [0.9295], [0.1553], [0.1593], [0.1775], [0.1015], [0.3046],
+        [ViT], [100],        [0.9281], [0.1617], [0.1592], [0.1805], [0.1268], [0.3113],
+
+        [Swin], [50],        [0.9428], [0.1691], [0.1694], [0.1785], [0.1435], [0.3207],
+        [Swin], [100],       [0.9385], [0.1807], [0.1929], [0.1767], [0.1340], [0.3246],
+
+        []
+      )
+    },
+    caption: [Per-class IoU and mean IoU for the four models trained with combined cross-entropy + continuity loss at 50 and 100 epochs.]
+  )<tab:ce-cont_miou>
+]
+
+#tab
+
+@tab:ce-cont_miou also shows some disappointing results w.r.t the the per-class IoU and mIoU. Compared to @tab:ce_miou, the results have seemingly only gotten worse. The DeepLab model's outputs are still the best performing, but the mIoU has dropped from 0.45 to 0.42, which further dropped as training progressed to 0.41. It has seemingly become less confident in the three main classes, as the IoU per classes 1-3 has dropped to below 0.3. A similar drop is seen in all the other models, with the U-Net model dropping from 0.41 to 0.39, and the transformer models dropping from 0.32 to 0.30 for the ViT and from 0.34 to 0.32 for the Swin model.  
+
+In summary, the results of the models trained with the CE and continuity loss function show that the topology-based loss function does have a positive impact on the outputs, visually. The main success comes from the fact that small artifacts are largely absent in the outputs, with the models having learnt to generate few large, connected components, often only generating the desired singular component. Although their results are cleaner, in the long run, the convolutional-based models show little improvement, as they only removed minor artifacts that could be removed with some post-processing. The transformer models, however, seem to be largely affected by the addition of the continuity loss, in that their training and validation graphs are very erratic hinting at an unstable training process. Contrary to the visual improvement, the mIoU shown in the table, indicates that the models are not really improving with the addition of the continuity loss. With these results, the novel cold map loss results will now be shown, first as a standalone method, and then in combination with the CE loss.

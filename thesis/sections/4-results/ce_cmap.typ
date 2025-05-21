@@ -123,7 +123,7 @@ The transformer-based models are much more affected by the restarts, but does sw
 
 === Test on Training Set
 
-Looking at the results of passing through images from the training set yields some interesting results, highlighting some rather undesired artifacts introduced by the cold map loss. This is particularly apparent with the DeepLab results. After 100 epochs, the model seems to pad the output with a lot of pixels of a seemingly random nature. The other models to not exhibit this behaviour, not even the other convolution-based model, U-Net. The transformer-based models simply generate very thick outputs that are accurately classified.
+Looking at the results of passing through images from the training set yields some interesting results, highlighting some rather undesired artifacts introduced by the cold map loss. This is particularly apparent with the DeepLab results. After 100 epochs, the model seems to pad the output with a lot of pixels of a seemingly random nature. The other models do not exhibit this behaviour, not even the other convolution-based model, U-Net. The transformer-based models simply generate very thick outputs that are accurately classified.
 
 #std-block(breakable: false,
   figure(
@@ -138,8 +138,8 @@ Looking at the results of passing through images from the training set yields so
   )
 )
 
-#std-block(breakable: false,
-  figure(
+#std-block(breakable: false)[
+  #figure(
     grid(
       columns: (1fr, 1fr, 1fr, 1fr),
       column-gutter: 0mm,
@@ -148,5 +148,42 @@ Looking at the results of passing through images from the training set yields so
       [#subfigure("(a)") DeepLabv3+], [#subfigure("(b)") U-Net], [#subfigure("(c)") ViT], [#subfigure("(d)") Swin],
     ),
     caption: [Results after the #nth(100) epoch]
-  )
-)
+  ) <fig:ce-cmap_train_results_100>
+]
+
+
+#let tab = [
+  #figure(
+    {
+      tablec(
+        columns: 8,
+        alignment: (x, y) => (left, center, center, center, center, center, center, center).at(x),
+        header: table.header(
+          [Model], [Epoch], [Class 0], [Class 1], [Class 2],
+          [Class 3], [Class 4], [mIoU $arrow.t$]
+        ),
+
+        [DeepLabV3+], [50],  [0.9701], [0.3214], [0.3078], [0.3216], [0.2143], [0.4271],
+        [DeepLabV3+], [100], [0.9637], [0.2919], [0.2532], [0.3107], [0.2173], [0.4074],
+
+        [U-Net], [50],       [0.9728], [0.3327], [0.2892], [0.3156], [0.1875], [0.4196],
+        [U-Net], [100],      [0.9650], [0.2984], [0.2593], [0.2663], [0.1762], [0.3930],
+
+        [ViT], [50],         [0.9218], [0.1472], [0.1361], [0.2001], [0.0890], [0.2988],
+        [ViT], [100],        [0.9185], [0.1442], [0.1502], [0.2162], [0.1016], [0.3061],
+
+        [Swin], [50],        [0.9323], [0.1824], [0.1533], [0.1579], [0.1348], [0.3122],
+        [Swin], [100],       [0.9194], [0.1757], [0.1413], [0.1796], [0.1386], [0.3109],
+
+        []
+      )
+    },
+    caption: [Per-class IoU and mean IoU for the same backbones trained with CE + cold map loss at 50 and 100 epochs.]
+  )<tab:ce-cmap_miou>
+]
+
+Interestingly, the cold map appear to introduce some level of disparity in the results, as shown in @tab:ce-cmap_miou. Particularly, the three main classes are far less balanced than either @tab:ce_miou or @tab:ce-cont_miou show. In the case of class 2, right-hand turns, the models seem to choose it way less often than the other classes. This is supported by @fig:ce-cmap_train_results_100#subfigure("a"), where the path going left is surrounded by pixels belonging to the class going right. These will in turn be used to calculate the IoU for the class going right, meaning they will be lower than they should. This is, however, still something that should be considered with this novel loss, as it is an artifact not present in the other losses.
+
+The model with the best performance is still DeepLabv3+, but it is not as dominant as it was with the CE loss alone. U-Net is very close behind, with ViT and Swin trailing further behind. DeepLab achieves a slightly higher mIoU compared to the other combined loss, in that it here achieves a mIoU of 0.427, compared to 0.424. This is a negligible difference, especially when the artifacts introduced visually create more obscure results.
+
+#tab
