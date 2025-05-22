@@ -119,13 +119,6 @@ At 300 epochs, the models have deteriorated a significant amount. DeepLab is cre
 
 === Training and Validation Graphs
 
-The training and validation graphs for the models trained with cross-entropy loss are shown in @fig:ce_graphs. The saw-tooth like pattern in the graphs is a result of the models being trained using the aforementioned cosine annealing learning rate scheduler. This spikes the learning rate of models at regular intervals. Most commonly, this would results in upward spikes in the graph indicating an increase in loss and downward spikes indicating a decrease in accuracy. The opposite behaviour is apparent in these graphs. 
-
-When a restart occurs from the scheduler, the models significantly improve their performance before sharply rising again. This is very much the opposite of the desired behaviour. However, this is also the expected behaviour of using a cosine annealing scheduler. Typically, this scheduler is employed to help a model escape a poor local minima. This appears to be the case here, but instead of then improving in performance, the models seem to fall into an even worse minima. This appears to be the case for all models, but the strength of the effect varies. The convolutional-based models do not seem to escape a minima that much, as the leap towards a lower loss is not that big and it almost immediately goes beyond what it was before. For the transformer-based models, the effect of escaping the local minima is much more pronounced. The downwards spike jump much farther down and need more time to go back up to the poor loss value. The opposite is here true for the accuracy graphs. 
-
-The restart causes a significant drop in accuracy, but the models quickly recover to the performance they had before the restart. In the case of the convolutional-based models, this is not the case, as the accuracy drops are far shallower. This difference in the saw-tooth pattern is an interesting note between the two types of models. The transformer-based models appear to be more sensitive to the learning rate changes than the convolutional-based models. This is likely due to the fact that the transformer-based models are more complex and have more parameters to learn, meaning they are more sensitive to changes in the learning rate.
-
-The accuracy graphs show the expected behaviour to a very slight extent; the accuracy decreases slightly when the learning rate is increased by the scheduler. All training graphs show very clear signs of overfitting very early in the training. After just a few epochs the loss starts to increase on the validation set, while the training loss continues to decrease. This is a very clear sign of overfitting, as is evident from the outputs of the models when an image from the training dataset is passed through. 
 
 #std-block(breakable: false)[
   #figure(
@@ -150,6 +143,13 @@ The accuracy graphs show the expected behaviour to a very slight extent; the acc
   ) <fig:ce_graphs>
 ]
 
+The training and validation graphs for the models trained with cross-entropy loss are shown in @fig:ce_graphs. The saw-tooth like pattern in the graphs is a result of the models being trained using the aforementioned cosine annealing learning rate scheduler. This spikes the learning rate of models at regular intervals. Most commonly, this would results in upward spikes in the graph indicating an increase in loss and downward spikes indicating a decrease in accuracy. The opposite behaviour is apparent in these graphs. 
+
+When a restart occurs from the scheduler, the models significantly improve their performance before sharply rising again. This is very much the opposite of the desired behaviour. However, this is also the expected behaviour of using a cosine annealing scheduler. Typically, this scheduler is employed to help a model escape a poor local minima. This appears to be the case here, but instead of then improving in performance, the models seem to fall into an even worse minima. This appears to be the case for all models, but the strength of the effect varies. The convolutional-based models do not seem to escape a minima that much, as the leap towards a lower loss is not that big and it almost immediately goes beyond what it was before. For the transformer-based models, the effect of escaping the local minima is much more pronounced. The downwards spike jump much farther down and need more time to go back up to the poor loss value. The opposite is here true for the accuracy graphs. 
+
+The restart causes a significant drop in accuracy, but the models quickly recover to the performance they had before the restart. In the case of the convolutional-based models, this is not the case, as the accuracy drops are far shallower. This difference in the saw-tooth pattern is an interesting note between the two types of models. The transformer-based models appear to be more sensitive to the learning rate changes than the convolutional-based models. This is likely due to the fact that the transformer-based models are more complex and have more parameters to learn, meaning they are more sensitive to changes in the learning rate.
+
+The accuracy graphs show the expected behaviour to a very slight extent; the accuracy decreases slightly when the learning rate is increased by the scheduler. All training graphs show very clear signs of overfitting very early in the training. After just a few epochs the loss starts to increase on the validation set, while the training loss continues to decrease. This is a very clear sign of overfitting, as is evident from the outputs of the models when an image from the training dataset is passed through. 
 
 === Test on Training Set
 
@@ -233,6 +233,6 @@ Generally, the results shown in #subfigure("Figure 27-29") shows promise in the 
     caption: [Per-class IoU and mean IoU for the four models trained with plain CE loss at 10, 100, and 300 epochs.]
   )<tab:ce_miou>
 ]
-#tab
 
 Supporting this observation is @tab:ce_miou, showcasing that the models are not performing well at all. The mIoU is very low, with the best performing model, DeepLab, achieving a mIoU of 0.45 after 300 epochs. The other models are not far behind with U-Net achieving a mIoU of 0.41, following a drop is ViT achieving a mIoU of 0.32, and Swin achieving a mIoU of 0.34. The per-class are also very poor, with DeepLab achieving a loss of around 0.34 for each of the directions through an intersection, with the layered class being the worst performing class. This also holds true for the other models, just with much lower values. This does seem to mark a positive trend, where the models understand that an even spread of the classes is expected. To help with the structure of the output, the next section will present the results of the models trained with CE and the continuity loss.
+#tab

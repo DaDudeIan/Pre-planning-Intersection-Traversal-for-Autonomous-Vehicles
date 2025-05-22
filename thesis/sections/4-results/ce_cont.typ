@@ -56,6 +56,8 @@ Before moving on to the novel cold map approach, the results of using the existi
 
 As presented in @c4:training-strategy, the training of these combined loss functions was done using a dynamic value for $alpha$ which is a term used to combine two loss function, with their contributions not excessing one in order to have stable training. The value of $alpha$ for this setup was with $alpha_"hi" =  0.99$, $alpha_"lo" = 0.5$, and $T_"warm" = 30$. Therefore, the results are only shown from the #nth(50) and #nth(100) epoch checkpoints, as the impact of the continuity loss is negligible until it passes the #nth(30) epoch. 
 
+At the #nth(50) epoch, the results only shown marginal improvement, most notably shown in the ViT outputs. This is expected, as the $alpha$ value is slowly shifting in favour of the continuity loss, meaning that the CE loss still holds a vast majority of the contributions to the weight updates. As this stage, however, it is not looking too promising, as the outputs from the DeepLab models shows various artifacts in the form of little flakes that seem to align themselves with the road markings at the immediate exit of the straight-ahead path. Otherwise its outputs are fairly consistent as it has already shown in the previous section. The U-Net outputs are also consistent with the previous section, as it still isn't too confident with slightly unclear roads, such as the right-hand turn in the top image, and the entry road in the bottom image. 
+
 #std-block(breakable: false)[
   #figure(
     grid(
@@ -70,7 +72,6 @@ As presented in @c4:training-strategy, the training of these combined loss funct
   ) <fig:res_ce-topo-e50>
 ]
 
-At the #nth(50) epoch, the results only shown marginal improvement, most notably shown in the ViT outputs. This is expected, as the $alpha$ value is slowly shifting in favour of the continuity loss, meaning that the CE loss still holds a vast majority of the contributions to the weight updates. As this stage, however, it is not looking too promising, as the outputs from the DeepLab models shows various artifacts in the form of little flakes that seem to align themselves with the road markings at the immediate exit of the straight-ahead path. Otherwise its outputs are fairly consistent as it has already shown in the previous section. The U-Net outputs are also consistent with the previous section, as it still isn't too confident with slightly unclear roads, such as the right-hand turn in the top image, and the entry road in the bottom image. 
 
 As have been pointed out already, the outputs from the ViT model are showing a lot of promise, as the output consists of just two major blobs of output in the top image, while the angled roads of the seconds still need some work. As it also showed with the CE loss, it is not good with using the `layered` class label, seemingly only applying it to the same internal patches each time. The Swin model is largely the same, as it appears to be better at outputting just one component, while also correctly identifying which class is to be used where.
 
@@ -98,6 +99,10 @@ The transformer models appear to have learnt a lot from the continuity loss, as 
 
 The training and validation graphs for the models trained with CE and continuity losses are shown in @fig:ce-topo_graphs. Once again, the saw-tooth pattern in the graphs are present, still due to the fact that the models are trained with a cosine annealing scheduler. The graphs do, however, appear to be more erratic than the ones from the CE loss. This holds particularly true for the accuracy graphs of the transformer-based models.
 
+The convolutional-based models show the same problematic behaviour in their loss graphs; the validation loss continues to increase significantly while the training loss is slowly plateauing, only being disturbed by the restarts of the scheduler. The accuracy graphs are also showing a similar pattern, but with only small perturbations happening at the restarts, after which they quickly settle again. Interestingly, the graphs for the training and validation accuracy are very similar in shape and reaction to the restarts. This suggests that the models are not benefiting that much from the topology loss. This is the opposite of what can be seen in the transformer models' graphs.
+
+The transformer models, however, show a very different behaviour. The training loss graphs show the same saw-tooth pattern as the convolutional models, but the validation loss graphs are much more erratic. First, however, it is worth nothing that the loss does not rise to what it was before the restart happens, but rather settles at a lower value. This is promising, as it shows that the model is learning something by escaping from the local minima it might have been stuck in and found another, better one to settle into. Their accuracy graphs are extremely erratic by comparison. 
+
 #std-block(breakable: false)[
   #figure(
     grid(
@@ -121,9 +126,9 @@ The training and validation graphs for the models trained with CE and continuity
   ) <fig:ce-topo_graphs>
 ]
 
-The convolutional-based models show the same problematic behaviour in their loss graphs; the validation loss continues to increase significantly while the training loss is slowly plateauing, only being disturbed by the restarts of the scheduler. The accuracy graphs are also showing a similar pattern, but with only small perturbations happening at the restarts, after which they quickly settle again. Interestingly, the graphs for the training and validation accuracy are very similar in shape and reaction to the restarts. This suggests that the models are not benefiting that much from the topology loss. This is the opposite of what can be seen in the transformer models' graphs.
 
-The transformer models, however, show a very different behaviour. The training loss graphs show the same saw-tooth pattern as the convolutional models, but the validation loss graphs are much more erratic. First, however, it is worth nothing that the loss does not rise to what it was before the restart happens, but rather settles at a lower value. This is promising, as it shows that the model is learning something by escaping from the local minima it might have been stuck in and found another, better one to settle into. Their accuracy graphs are extremely erratic by comparison. The training accuracy nicely follows the same pattern as the loss graphs, but the validation accuracy is all over the place. This hints at the fact that, the models may in reality not work particularly well with the introduced topology-based loss function, as the mean of spiky graphs appears to be fairly consistent, at around 92% for ViT and 93% for Swin, with both having massive fluctuations in both the positive and negative direction. This is very unlike the purely CE trained models, where the accuracy graphs are closely following the same pattern, for both the training and validation accuracy.
+
+The training accuracy nicely follows the same pattern as the loss graphs, but the validation accuracy is all over the place. This hints at the fact that, the models may in reality not work particularly well with the introduced topology-based loss function, as the mean of spiky graphs appears to be fairly consistent, at around 92% for ViT and 93% for Swin, with both having massive fluctuations in both the positive and negative direction. This is very unlike the purely CE trained models, where the accuracy graphs are closely following the same pattern, for both the training and validation accuracy.
 
 === Test on Training Set
 

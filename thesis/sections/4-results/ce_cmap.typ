@@ -125,6 +125,8 @@ The transformer-based models are much more affected by the restarts, but does sw
 
 Looking at the results of passing through images from the training set yields some interesting results, highlighting some rather undesired artifacts introduced by the cold map loss. This is particularly apparent with the DeepLab results. After 100 epochs, the model seems to pad the output with a lot of pixels of a seemingly random nature. The other models do not exhibit this behaviour, not even the other convolution-based model, U-Net. The transformer-based models simply generate very thick outputs that are accurately classified.
 
+Interestingly, the cold map appear to introduce some level of disparity in the results, as shown in @tab:ce-cmap_miou. Particularly, the three main classes are far less balanced than either @tab:ce_miou or @tab:ce-cont_miou show. In the case of class 2, right-hand turns, the models seem to choose it way less often than the other classes. This is supported by @fig:ce-cmap_train_results_100#subfigure("a"), where the path going left is surrounded by pixels belonging to the class going right. These will in turn be used to calculate the IoU for the class going right, meaning they will be lower than they should. This is, however, still something that should be considered with this novel loss, as it is an artifact not present in the other losses.
+
 #std-block(breakable: false,
   figure(
     grid(
@@ -182,7 +184,6 @@ Looking at the results of passing through images from the training set yields so
   )<tab:ce-cmap_miou>
 ]
 
-Interestingly, the cold map appear to introduce some level of disparity in the results, as shown in @tab:ce-cmap_miou. Particularly, the three main classes are far less balanced than either @tab:ce_miou or @tab:ce-cont_miou show. In the case of class 2, right-hand turns, the models seem to choose it way less often than the other classes. This is supported by @fig:ce-cmap_train_results_100#subfigure("a"), where the path going left is surrounded by pixels belonging to the class going right. These will in turn be used to calculate the IoU for the class going right, meaning they will be lower than they should. This is, however, still something that should be considered with this novel loss, as it is an artifact not present in the other losses.
 
 The model with the best performance is still DeepLabv3+, but it is not as dominant as it was with the CE loss alone. U-Net is very close behind, with ViT and Swin trailing further behind. DeepLab achieves a slightly higher mIoU compared to the other combined loss, in that it here achieves a mIoU of 0.427, compared to 0.424. This is a negligible difference, especially when the artifacts introduced visually create more obscure results.
 
