@@ -34,6 +34,14 @@ In this section...
 
 // if interesting results, look at the mainly cmap trained model (deeplab_cmap-ce opposed to ce-cmap)
 
+// Longer training test:
+// 1000 epochs
+// Overall mIoU: 0.4545
+// Per class mIoU: [0.9767, 0.3483, 0.3379, 0.3409, 0.2688]
+// 5000 epochs
+// Overall mIoU: 0.4501
+// Per class mIoU: [0.9758, 0.3485, 0.337, 0.3313, 0.258]
+
 == Ablation <c6:ablation>
 MAYBE, if time allows
 
