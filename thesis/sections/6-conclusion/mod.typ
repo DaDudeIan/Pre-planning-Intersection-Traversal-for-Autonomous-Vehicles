@@ -1,6 +1,4 @@
 #import "../../lib/mod.typ": *
 
-#pagebreak()
-
-= Conclusion <c7:conclusion>
+= Conclusion & Future Work <c7:conclusion>
 

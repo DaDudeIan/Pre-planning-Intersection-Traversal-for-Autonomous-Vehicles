@@ -113,12 +113,12 @@
   #set text(font: "Roboto Mono")
 
   #grid(
-    columns: (1fr, 1fr),
+    columns: (3fr, 1fr),
     align: (left + bottom, right + top),
-    text(it.body, size: 24pt, weight: "bold"),
+    text(it.body, size: 24pt, weight: "light"),
     if it.numbering != none {
       text(subdued, weight: 200, size: 100pt)[#counter(heading).get().at(0)]
-      v(1em)
+      v(0em)
     },
   )
   #v(-0.5em)

@@ -1,12 +1,14 @@
 #import "../../lib/mod.typ": *
 
-== mIoU
+== mIoU #checked
 
-Finally, this section will present all the mIoU values for the models shown hitherto. This will largely serve to answer #RQ(1). @tab:all_miou is a comparison of the per-class IoU and mean IoU for the four models. The table is sorted in a descending order of mIoU, with the best performing model at the top. This is to show which model performs the best, and to gain an overview understanding of the models' performance, especially in comparison to each other.
+Finally, this section will present all the mIoU values for the models shown hitherto. This will largely serve to answer #RQ(1). @tab:all_miou is a comparison of the per-class IoU and mean IoU for the four models. The table is sorted in descending order of mIoU, with the best performing model at the top. This is to show which model performs the best, and to gain an overview understanding of the models' performance, especially in comparison to each other.
 
 Concretely, the table reveals that the best performing model is the DeepLabV3+ with the CE loss function, trained for 300 epochs. This model achieved an mIoU of 0.45, which is significantly higher than the other models. Generally, the top is dominated by the DeepLabV3+ model, with the U-Net model performing slightly worse and even better in a few cases. The top 5 are all DeepLabV3+ models, largely consisting of the CE loss, with the appearance of both the combined loss at the third and fourth position. While not impressive in performance, this does show that the loss functions presented, are able to perform at the level of the well-established CE loss function. This is particularly true for the novel cold map loss. Unhappily, however, both of these are from the 50th epoch, where their influence is somewhat small. It is there, but seeing as how the 100th epoch of the same loss combinations are further down the list, it shows that the models are not able to learn from the loss functions when they are equally weighted.
 
 The entire top half of the table is occupied by the convolution-based models, with a significant drop in mIoU to the lower half, consisting only of the transformer-based models. The best performing transformer model is the Swin model, which is at the 15th position with an mIoU of 0.34. This is a significant drop from the top models, and it shows that the transformer models are not able to perform nearly as well as the convolution-based models. This is likely due to the fact that transformers in general require much more data than is provided in the dataset created in this project. Their visual results, however, do show some promise, as they are capable of learning the general structure of the roads and intersections, but need a lot more data to refine their outputs.
+
+In summary, the novel idea of combining the well-established CE loss function with two topology-based loss functions did not yield improved results. None of the models exceed an mIoU of 0.45, indicating that the models are not able to generalize well to the task at hand. Visually, however, many of the models are able to produce outputs that are somewhat usable. Their main downfall comes from not being able to draw fully connected paths and introducing seemingly random artifacts in the generated outputs. The next, penultimate, chapter will discuss the work produced in this thesis project, and the results presented in this section. 
 
 #let tab = [
   #figure(
@@ -56,5 +58,3 @@ The entire top half of the table is occupied by the convolution-based models, wi
 ]
 
 #tab
-
-In summary, the novel idea of combining the well-established CE loss function with two topology-based loss functions did not yield improved results. None of the models exceed an mIoU of 0.45, indicating that the models are not able to generalize well to the task at hand. Visually, however, many of the models are able to produce outputs that are somewhat usable. Their main downfall comes from not being able to draw fully connected paths and introducing seemingly random artifacts in the generated outputs. The next, penultimate, chapter will discuss the work produced in this thesis project, and the results presented in this section. 
