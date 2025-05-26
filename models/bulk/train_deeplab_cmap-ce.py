@@ -88,8 +88,8 @@ match model_name:
     
 # ====================== alpha ======================
 
-alpha_high = 0.9
-alpha_low = 0.2
+alpha_high = 0.95
+alpha_low = 0.8
 T_warm = 10
 
 # ====================== optimizer ======================

@@ -953,4 +953,9 @@ aim_proof:
     doi: https://doi.org/10.21949/1521653
   parent:
     type: periodical
+comp_power:
+  type: misc
+  author: NVIDIA
+  date: 2025
+  url: https://www.nvidia.com/en-eu/self-driving-cars/in-vehicle-computing/
 

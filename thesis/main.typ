@@ -139,6 +139,19 @@
   #v(0.15em)
 ]
 
+#let fig1 = image("figures/img/frontpage/fig1.png")
+#let fig2 = image("figures/img/frontpage/fig2.png")
+#let fig3 = image("figures/img/frontpage/fig3.png")
+#let fig4 = image("figures/img/frontpage/fig4.png")
+#let fig5 = image("figures/img/frontpage/fig5.png")
+#let fig6 = image("figures/img/frontpage/fig6.png")
+
+#let fig = grid(
+  columns: (1fr, 1fr, 1fr),
+  fig1, fig2, fig3,
+  fig4, fig5, fig6
+)
+
 #show: paper.with(
   paper-size: "a4",
   title: project-name,
@@ -153,7 +166,7 @@
         inset: 0pt,
         pad(
           rest: -1mm,
-          image("figures/img/pray4this.png")
+          fig //image("figures/img/pray4this.png")
         )
       )
     )
