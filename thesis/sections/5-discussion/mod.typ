@@ -185,17 +185,63 @@ Now, looking back at the results of the transformer-based models in @c5:results,
 
 == Broader Implementation Considerations <c6:implementation>
 
-- Skeletonization: employ post-processing to ensure paths are 1-pixel wide.
-- Language considerations: C/C++ and Fortran were considered for high-performance alternatives.
-- Model alternatives: Reinforcement Learning considered for dynamic decision-making tasks.
-- Inference environment:
-  - Average inference times (ms): [11.012, 4.124, 9.476, 36.292]
-  - Satellite request latency: \~250 ms
-  - Time from ignition to first usable frame (ms): [4163.134, 3987.752, 8540.016, 11106.948]
-  - Cloud deployment benefits: allows for persistent availability, reduced local hardware requirements, and lower latency on start-up.
-- #RQ(1): Covers inference times and implementation aspects (cloud vs. onboard), which ties into optimizing for efficiency.
+One of the main considerations made thus far with regard to the implementation of the proposed system, is the trade-off between cloud and onboard inference. This will also give some insight into #RQ(1), where the efficiency of the models is noted. There are two main differences between cloud and onboard inference, both with their up- and downsides. The main difference is cloud inference having access to much more powerful hardware, which allows for larger models to be used. This is particularly relevant for the transformer-based models, which tend to require more memory and computational power than convolutional models, especially when used as backbones to larger models. Cloud computing does come with its own set of challenges, however, such as the need for vehicles making requests to have a constant connection to the cloud, which may not always be available in all environments. 
+
+However, if the inference is handled on-board, then the vehicle still needs a stable enough connection to fetch satellite images, so this aspect of the considerations is not entirely relevant. The main difference is that the cloud can handle larger models, which may lead to better performance, but at the cost of increased latency. The satellite imagery fetching itself introduces a latency of around 250 ms, which can be added to the times seen in @tab:inference_times. This table shows the inference times of the four models when run on the same hardware, where the U-Net model has the lowest inference time at 4.12 ms, followed by ViT at 9.48 ms, DeepLabV3+ at 11.01 ms, and Swin at 36.29 ms. There are all very low times, and is likely to be even lower on the inference-optimized hardware used in AVs. However, as shown in the table as well, the time from ignition to the first usable frame is significantly higher. This time is measured to simulate the time it takes for the system to initialize, when a vehicle is started, to when the first usable frame is produced. These values do not take into account the time it takes for the satellite image to be fetched, nor the time it takes for the on-board system to actually power up. These values make a case for the use of cloud computing, where the system can be running continuously, allowing for a much lower latency when the vehicle is started. Furthermore, cloud computing saves a lot of resources on the vehicle itself, in that it only needs the vehicle to make API requests to the cloud. In conclusion, the choice between cloud and onboard inference depends on the specific use case and the available infrastructure. If low latency is a priority, then onboard inference may be the better option, but if the models are too large or complex to run efficiently on the vehicle's hardware, then cloud inference may be necessary.
+
+
+#let tab = [
+  #figure(
+    {
+      tablec(
+        columns: (auto, 1fr, 1fr, 1fr, 1fr),
+        alignment: (x, y) => (left, center, center, center, center).at(x),
+        header: table.header(
+          [], [DeepLabV3+], [U-Net], [ViT], [Swin]
+        ),
+
+        [Inference Time (ms)], [11.012], [4.124], [9.476], [36.292],
+        [Ignition to First Usable Frame (ms)], [4163.134], [3987.752], [8540.016], [11106.948],
+
+        []
+      )
+    },
+    caption: [The average inference times, both for a ready system and a newly ignited system, for the four models used in this project. These times are the average of 5 runs for each model.]
+  ) <tab:inference_times>
+]
+
+#tab
+
+Early in this project, reinforcement learning (RL) was considered as an alternative to the proposed method. The idea was to use an RL model which would be given a specific set of rules to follow, which it would then learn to follow by trial and error. This would allow the model to learn how to navigate intersections in a more dynamic way, as it would be able to adapt to different situations and learn from its mistakes. The paths it travels, or the pixels it traverses, would then be extracted and used as the generated path. Going from the employed supervised learning approach to an RL approach would require a significant paradigm shift, as the method for training the model is vastly different. Due to limitations in time and manpower, this approach was not pursued further, but it is still an interesting avenue for future work. 
+
+Some considerations towards employing some post-processing techniques were also made. First, is the idea of developing an algorithm that will bridge the gaps between any disconnected components in the generated paths. By doing this, the idea of training the models with loss functions that are not focused on the topology of the paths, may be more realistic, as the post-processing will ensure that the paths are connected. Second, is the idea of skeletonization. This is a technique that reduces the number of points in a line, making it more narrow and thus much more precise for a vehicle to follow. This may prove particularly useful in the case of the transformer-based models, which tend to produce wider paths than the convolutional models. 
+
+Finally, much of this project was made possible thanks to the PyTorch framework, which offered a lot of easy-to-use functionality for the implementation and training of the models. The framework greatly simplified the process of implementing not only the models, but also the topology-based loss functions, as all standard operations are automatically differentiable and can be used in the training process. Python is, however, notoriously slow despite its ease of use and popularity. Therefore, other languages were briefly considered for this project as well, and is definitely an avenue for future work. C/C++ were in the first consideration, as they are widely used languages and are extremely lightweight due to them being very low-level. Fortran was also considered, largely due to the fact that it seemed to gain a lot of attention at the NVIDIA GTC 2025 conference, highlighting how industry relevant it still is. As with C/C++, Fortran is also a low-level language, which means that it can be used to write highly efficient code. The focus on these languages at the conference also highlights the shift happening within the AI industry, where the focus is moving towards more efficient and lightweight implementations of AI models. 
+
+// - Skeletonization: employ post-processing to ensure paths are 1-pixel wide.
+// - Language considerations: C/C++ and Fortran were considered for high-performance alternatives.
+// - Model alternatives: Reinforcement Learning considered for dynamic decision-making tasks. #checked
+// - Inference environment: #checked
+//   - Average inference times (ms): [11.012, 4.124, 9.476, 36.292] #checked
+//   - Satellite request latency: \~250 ms #checked
+//   - Time from ignition to first usable frame (ms): [4163.134, 3987.752, 8540.016, 11106.948] #checked
+//   - Cloud deployment benefits: allows for persistent availability, reduced local hardware requirements, and lower latency on start-up. #checked
+// - #RQ(1): Covers inference times and implementation aspects (cloud vs. onboard), which ties into optimizing for efficiency. #checked
 
 == Domain Transfer and Industrial Relevance <c6:domain-transfer>
+
+The method developed in this project has primarily been designed for the use in AVs, specifically for the task of predicting paths through intersections based on satellite imagery. However, this specified task can be seen as a specific instance of a broader problem: predicting spatially viable paths from static images. This core concept has potential relevance in several other domains, which can be explored as speculative applications of the method. 
+
+In the context of warehouse robotics, the system could be adapted to predict efficient routes through dynamically configured storage layouts, such as floor plans or occupancy grids. This would allow for more efficient navigation of warehouse robots, which is particularly relevant in production logistics. The method could be retrained when the warehouse layout changes, assuming that overhead maps are available, which is realistic in many automated facilities. 
+
+In autonomous racing, the method could be used to predict aggressive yet feasible racing lines from track images or schematic representations. In the context of racing, intersections are not as relevant, but the method could still be used to predict various paths through corners and other track features, such as a more aggressive line or a safer, slower line. 
+
+The general AV case extends the method from intersections to broader environments, such as urban driving or off-road vehicles. Urban driving still benefits from map-based segmentation, as showcased in this thesis, while off-road vehicles may use satellite-style imagery or drone data. More advanced approaches to this method could even help automata navigate off-road environments, down to where they should place their wheels or feet, if the resolution is high enough. Extending this even further, the method could be used for end-to-end planning in unfamiliar environments with a simple drone taking pictures of the environment to cross, then pre-planning every step of the way. This further highlights the scalability and modularity of the method, as it can be integrated as a module for pre-planning in unfamiliar environments.
+
+Furthermore, it can be deployed in other scenarios where AVs are the prime actor. For example, underwater robots or deep-sea autonomous underwater vehicles (AUVs) could use sonar maps or pre-mapped seabeds to plan safe navigation paths. This is particularly interesting due to the absence of live perception in deep-sea environments, making inference on prior data a practical solution, akin to the cold maps used in this project. 
+
+In summary, this highlights how the method can be used in various domains and industries, from warehouse robotics to autonomous racing, general AV systems, and deep-sea automation. The core strength of the approach lies in its ability to operate on static imagery without requiring real-time sensor data, making it particularly valuable in environments where live perception is limited or unreliable. The modularity of the system also allows for domain-specific adaptations while maintaining the fundamental path prediction framework. However, successful domain transfer would likely require retraining on domain-specific datasets and potentially adjusting the model architecture to account for different spatial scales, image resolutions, and environmental constraints specific to each application domain.
+
 // Though the method was designed for autonomous vehicle intersection traversal, its core concept—predicting spatially viable paths from a static image—has potential relevance in several other domains.
 
 // In warehouse robotics, the system could be adapted to floor plans or occupancy grids, predicting efficient routes through dynamically configured storage layouts. Could be retrained when warehouse layout changes. Assumes overhead map availability, which is realistic in many automated facilities. Relevant due to strong ties between robotics and production logistics.
@@ -205,8 +251,6 @@ Now, looking back at the results of the transformer-based models in @c5:results,
 // The general AV case extends the method from intersections to broader environments. Urban driving still benefits from map-based segmentation, and off-road vehicles may use satellite-style imagery or drone data. Could be integrated as a module for pre-planning in unfamiliar environments or low-connectivity zones. Scalability, model modularity, and lack of runtime training are industrially appealing.
 
 // For underwater robots or deep-sea AUVs, sonar maps or pre-mapped seabeds can substitute for satellite imagery. Here, pre-trained models can help plan safe navigation paths, similar to how seabed features are navigated during pipeline inspections. Particularly interesting due to the absence of live perception in deep-sea environments, making inference-on-prior-data a practical solution.
-
-// Common theme: model’s modular design and inference-only requirement makes it attractive for embedded systems in production environments. Fits well into system architectures where retraining is costly or impractical. This modularity and reusability is often sought after in production engineering.
 
 
 == Robustness and Domain Generalization <c6:robustness>
