@@ -958,4 +958,33 @@ comp_power:
   author: NVIDIA
   date: 2025
   url: https://www.nvidia.com/en-eu/self-driving-cars/in-vehicle-computing/
+bev:
+  type: article
+  title: Combining OpenStreetMap with Satellite Imagery to Enhance Cross-View Geo-Localization
+  author:
+  - Hu, Yuekun
+  - Liu, Yingfan
+  - Hui, Bin
+  date: 2025
+  url: https://www.mdpi.com/1424-8220/25/1/44
+  serial-number:
+    doi: 10.3390/s25010044
+    issn: 1424-8220
+  parent:
+    type: periodical
+    title: Sensors
+    issue: 1
+    volume: 25
+season:
+  type: misc
+  title: Manipulating Attributes of Natural Scenes via Hallucination
+  author:
+  - Karacan, Levent
+  - Akata, Zeynep
+  - Erdem, Aykut
+  - Erdem, Erkut
+  date: 2019
+  url: https://arxiv.org/abs/1808.07413
+  serial-number:
+    arxiv: '1808.07413'
 
