@@ -1,6 +1,6 @@
 #import "../../lib/mod.typ": *
 
-== mIoU #checked
+== mIoU  
 
 Finally, this section will present all the mIoU values for the models shown hitherto. This will largely serve to answer #RQ(1). @tab:all_miou is a comparison of the per-class IoU and mean IoU for the four models. The table is sorted in descending order of mIoU, with the best performing model at the top. This is to show which model performs the best, and to gain an overview understanding of the models' performance, especially in comparison to each other.
 

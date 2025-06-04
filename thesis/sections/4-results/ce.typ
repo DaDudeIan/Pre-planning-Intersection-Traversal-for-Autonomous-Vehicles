@@ -66,7 +66,7 @@
 #let swin_ce_test_graph = image(base+"/swin/swin_ce_test_graph.png")
 #let swin_ce_train_graph = image(base+"/swin/swin_ce_train_graph.png")
 
-== Cross-Entropy Standalone #checked
+== Cross-Entropy Standalone  
 
 To create a baseline with which the topology-based loss functions can be compared, the first results to be presented are those from the models trained purely with the cross-entropy loss. This serves as a baseline since CE is a well-documented, well-tested loss function that will help highlight whether or not the topology-based loss function are necessary. Results from different stages of training are shown in #subfigure("Figure 28-30"), with outputs being generated from the models after the #nth(10), #nth(100), and #nth(300) epochs, respectively. 
 
@@ -77,13 +77,13 @@ To create a baseline with which the topology-based loss functions can be compare
       column-gutter: 0mm,
       row-gutter: 0mm,
       {deeplab_ce_e10_test1}, {unet_ce_e10_test1}, {vit_ce_e10_test1}, {swin_ce_e10_test1},
-      {deeplab_ce_e10_test2}, {unet_ce_e10_test2}, {vit_ce_e10_test2}, {swin_ce_e10_test2},
+      [#deeplab_ce_e10_test2 #place(center + horizon, dy: -8mm, dx: 1.6mm, ellipse(height: 1.5cm, width: 7mm, stroke: 1pt + blue))], {unet_ce_e10_test2}, {vit_ce_e10_test2}, {swin_ce_e10_test2},
       [#subfigure("(a)") DeepLabV3+], [#subfigure("(b)") U-Net], [#subfigure("(c)") ViT], [#subfigure("(d)") Swin],
     ),
     caption: [Results after the #nth(10) epoch. The convolution-based models are showing promising results and an understanding of the road structure, while the transformer-based models are struggling to create clear bound of their predictions.]
   )
 )
-The models achieve varying performance after just 10 epochs of training. DeepLab shows strong performance, with it clearly identifying the main structures in the images; it seems to already understand the rules of the road implied by the training data, in that it guides towards staying in the right-hand lane after performing a turn, using the correct turning lane in the top figure, and generally following the path encapsulated by the road markings. It does, however, struggle to mark the exact boundaries of the road, particularly the straight ahead path. Furthermore, it seems to understand the purpose of the layered #ball(color.rgb("#fcfea4")) class, in that the right lane, the one shared by going straight ahead and right, is coloured as such, while the left turning pixels are their own colour as it parts ways. U-Net is also showing promising signs of learning the structure of the road, but contains way more gaps and blotches compared it convolutional counterpart. The transformer-based models are not performing well at this stage. Both appear to be grasping the general structure of the road and assigning the correct labels to the road, but the labels are very incomplete and severely lack structure.
+The models achieve varying performance after just 10 epochs of training. DeepLab shows strong performance, with it clearly identifying the main structures in the images; it seems to already understand the rules of the road implied by the training data, in that it guides towards staying in the right-hand lane after performing a turn, using the correct turning lane in the top figure, and generally following the path encapsulated by the road markings. It does, however, struggle to mark the exact boundaries of the road, particularly the straight ahead path #ball(blue). Furthermore, it seems to understand the purpose of the layered #ball(color.rgb("#fcfea4")) class, in that the right lane, the one shared by going straight ahead and right, is coloured as such, while the left turning pixels are their own colour as it parts ways. U-Net is also showing promising signs of learning the structure of the road, but contains way more gaps and blotches compared it convolutional counterpart. The transformer-based models are not performing well at this stage. Both appear to be grasping the general structure of the road and assigning the correct labels to the road, but the labels are very incomplete and severely lack structure.
 
 #subfigure("Figure 29-30") shows a fairly big leap in training epochs. At this stage, the models have seen the training data for 100 and 300 epochs. The models have evolved both in terms of strengths and weaknesses. At 100 epochs, DeepLab is still the strongest model, but it has become severely uncertain of how to label a path to the end of the road. Its understanding of the structure of the intersection itself is fairly sharp, still showing clear signs of understanding the rules of the road. U-Net has improved close to the level of DeepLab, but still lacks the same level of detail. It is, however, much more certain about the path to the end of the road, as all images shows it identifying the pixels leading out of the satellite image. The transformer-based models, however, have hardly improved. ViT appears to be able to create a straight path through the test intersection, but struggles with identifying the road boundaries and creating connected components. Swin suffers from the same downfalls.
 
@@ -108,16 +108,16 @@ The models achieve varying performance after just 10 epochs of training. DeepLab
       column-gutter: 0mm,
       row-gutter: 0mm,
       {deeplab_ce_e300_test1}, {unet_ce_e300_test1}, {vit_ce_e300_test1}, {swin_ce_e300_test1},
-      {deeplab_ce_e300_test2}, {unet_ce_e300_test2}, {vit_ce_e300_test2}, {swin_ce_e300_test2},
+      {deeplab_ce_e300_test2}, {unet_ce_e300_test2}, [#vit_ce_e300_test2 #place(center + horizon, dy: -1.5mm, dx: 9mm, ellipse(height: 8mm, width: 9mm, stroke: 1pt + green)) #place(center + horizon, dy: -3mm, dx: 3mm, rect(height: 8mm, width: 5mm, stroke: 1pt + yellow))], {swin_ce_e300_test2},
       [#subfigure("(a)") DeepLabV3+], [#subfigure("(b)") U-Net], [#subfigure("(c)") ViT], [#subfigure("(d)") Swin],
     ),
     caption: [Results after the #nth(300) epoch. All models are outputting very poor predictions, highlighted by the separated components, thin lines, and seemingly random blotches.]
   )
 )
 
-At 300 epochs, the models have deteriorated a significant amount. DeepLab is creating more unconnected blotches and the paths it creates are very thin. A thin path is not necessarily a bad thing, but it clearly shows that it is extremely close to breaking the generated paths into more than one component. U-Net shows this even more, where the paths generated are very spread out along the road with many holes in between. The transformer-based models have also not improved further. Both models appear to suffer from the fact that they split the image into patches, with the border of these likely not training well on the data. This is particularly evident in the case of ViT, where the lower image of #subfigure("Figure 30c") shows an odd artefact in the middle of the right-hand side road. It is very jagged and does not fit the road at all. There also appears to be a chunk missing in the labels near the centre, hinting at the model learning to not output anything for those specific pixels. Swin is also showing this, but to a lesser extent, likely thanks to its shifting window approach. Its results are still very poor, however. The following graphs will shed some light on why this might be happening. 
+At 300 epochs, the models have deteriorated a significant amount. DeepLab is creating more unconnected blotches and the paths it creates are very thin. A thin path is not necessarily a bad thing, but it clearly shows that it is extremely close to breaking the generated paths into more than one component. U-Net shows this even more, where the paths generated are very spread out along the road with many holes in between. The transformer-based models have also not improved further. Both models appear to suffer from the fact that they split the image into patches, with the border of these likely not training well on the data. This is particularly evident in the case of ViT, where the lower image of #subfigure("Figure 30c") shows an odd artefact in the middle of the right-hand side road. It is very jagged and does not fit the road at all #ball(green). There also appears to be a chunk missing in the labels near the centre, hinting at the model learning to not output anything for those specific pixels #ball(yellow). Swin is also showing this, but to a lesser extent, likely thanks to its shifting window approach. Its results are still very poor, however. The following graphs will shed some light on why this might be happening. 
 
-=== Training and Validation Graphs #checked
+=== Training and Validation Graphs  
 
 
 #std-block(breakable: false)[
@@ -151,7 +151,7 @@ The restart causes a significant drop in accuracy, but the models quickly recove
 
 The accuracy graphs show the expected behaviour to a very slight extent; the accuracy decreases slightly when the learning rate is increased by the scheduler. All training graphs show very clear signs of overfitting very early in the training. After just a few epochs, the loss starts to increase on the validation set, while the training loss continues to decrease. This is a very clear sign of overfitting, as is evident from the outputs of the models when an image from the training dataset is passed through. 
 
-=== Test on Training Set #checked
+=== Test on Training Set  
 
 The input image to the models in this section comes from the training set. Again, the figures show the outputs of the models after the #nth(10), #nth(100), and #nth(300) epochs. The results are shown in #subfigure("Figure 32-34"). The models have been trained on this data, so it is expected that they perform well on it.
 

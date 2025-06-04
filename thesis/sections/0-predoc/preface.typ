@@ -1,5 +1,5 @@
 #import "../../lib/mod.typ": *
-= Preface <preface>
+= Preface   <preface>
 
 // Master Thesis
 // Computer Engineering
@@ -15,7 +15,7 @@
 
 // Dates
 // - Start: 27th of January 2025
-// - End: 5th of June 2025
+// - End: 4th of June 2025
 
 This master thesis is titled _"#project-name"_ and is devised by #a.ian. The author is a student at Aarhus University, Department of Electrical and Computer Engineering, enrolled in the Computer Engineering Master's programme. The author has completed a Bachelor's degree in Computer Engineering under the same conditions.
 

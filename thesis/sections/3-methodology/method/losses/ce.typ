@@ -1,8 +1,8 @@
 #import "../../../../lib/mod.typ": *
 
-=== Cross-Entropy Loss #checked <c4:cross-entropy>
+=== Cross-Entropy Loss   <c4:cross-entropy>
 
-Cross-Entropy loss is the main driver behind the models' ability to ascribe every pixel to exactly one semantic class---background, left, right, ahead, or layered. Whereas its binary counterpart BCE, explained in @c4:bce_loss, concerns itself with two mutually-exclusive classes, CE generalizes the idea to multiple classes. Formally, whereas BCE as $C in NN_2$, CE encompasses all classes $C in NN_(>2)$. Thus, CE suits the task of multi-class segmentation, where each pixel belongs to one of $C$ classes, perfectly. 
+Cross-Entropy loss is the main driver behind the models' ability to ascribe every pixel to exactly one semantic class---background, left, right, ahead, or layered. Whereas its binary counterpart BCE, explained in @c4:bce_loss, concerns itself with two mutually-exclusive classes, CE generalizes the idea to multiple classes. Formally, whereas BCE is $C in NN_2$, CE encompasses all classes $C in NN_(>2)$. Thus, CE suits the task of multi-class segmentation, where each pixel belongs to one of $C$ classes, perfectly. 
 
 CE measures the dissimilarity between the ground truth label distribution and the model's predicted label distribution. The loss is defined as the negative log-likelihood of the true class label given the predicted class probabilities. The definition of CE is as follows:
 
@@ -35,7 +35,7 @@ $
 $ <eq:loss_weights>
 where $f_c$ is the class frequency and $f_k$ is the number of pixels for each class. A naïve normalization such as $w_c = 1 slash f_c$ would inflate the smaller classes' weights by orders of magnitude and cause unstable training. Specifically, it may inflate gradients by as much as $f_max slash f_min approx 76$. Therefore, the implementation uses log-compressed inverse-frequency as shown. Equation @eq:loss_weights preserves the desired ordering of $w_c #h(0mm) arrow.t$ as $f_c #h(0mm) arrow.b$, i.e. the weights are inversely proportional to the class frequencies, but only grows $cal(O)(log f_c^(-1))$ instead of $cal(O)(f_c^(-1))$. This also caps the largest weight to $log(1+5) approx 1.79$ rather than 5, preventing exploding gradients.
 
-Finally, to update the weights during training, the gradient is found by differentiating @eq:ce_loss which gives
+Finally, to update the model weights during training, the gradient is found by differentiating @eq:ce_loss which gives
 $
     (partial cal(L)_"CE")/(partial z_(n,c)) = w_c (p_(n,c) - y_(n,c))
 $

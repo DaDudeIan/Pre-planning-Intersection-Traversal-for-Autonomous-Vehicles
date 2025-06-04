@@ -1,5 +1,5 @@
 #import "../../../lib/mod.typ": *
-== Dataset Creation #checked <c4:data>
+== Dataset Creation   <c4:data>
 
 The creation of a proper dataset is crucial for making sure the models learn the task desired for them to perform. The dataset will have to work hand-in-hand with the model architecture and the loss function to ensure that the model learns the task effectively. Many aspects are to be considered when creating a dataset for a task as specific as this project sets out to create:
 - It should be large enough to capture the complexity of the task. Size can be artificially increased through data augmentation.
@@ -9,11 +9,11 @@ The creation of a proper dataset is crucial for making sure the models learn the
 
 By "not too stringent to a singular path" is meant that the model should be able to generate paths that are not too far from the desired path, while also allowing the model to generalize well. 
 
-=== Cold maps #checked <c4:cold_maps>
+=== Cold maps   <c4:cold_maps>
 
-The deduced method for training the model, as detailed in @c4:loss, includes the use of a cold map. A cold map representation of the desired path was chosen for a small simplification in the loss function. It penalizes points that are further from the desired path, and does not do this for points that are on the path. Creating this cold map was done in several steps. First, a grid of the same size as the input image is created. The input image is the path drawn in white on a black background, as shown in centre @fig.dataset_example. This means that the only occupied pixels are those taken up by the possible paths. In this grid, the coordinates of the closest non-zero pixel is found by iterating over the entire input image containing the path. The complexity of this operation will be covered in the following sections. Next, the distance between the current pixel and the closest non-zero pixel is calculated. This distance is then compared to a threshold value to determine its value. If it is further away, the resulting penalty from the loss function should be higher. Different values for the threshold and the exponent of the distance calculation were tested to find the best combination. Lastly, the cold map is saved in a structured folder format for later use in training. Later, the created data is put through augmentation to inflate the size of the dataset and increase its diversity.
+The deduced method for training the model, as detailed in @c4:loss, includes the use of a cold map. A cold map representation of the desired path was chosen as a small simplification in the loss function. It penalizes points that are further from the desired path, and does not do this for points that are on the path. Creating this cold map was done in several steps. First, a grid of the same size as the input image is created. The input image is the path drawn in white on a black background, as shown in centre @fig.dataset_example. This means that the only occupied pixels are those taken up by the possible paths. In this grid, the coordinates of the closest non-zero pixel is found by iterating over the entire input image containing the path. The complexity of this operation will be covered in the following sections. Next, the distance between the current pixel and the closest non-zero pixel is calculated. This distance is then compared to a threshold value to determine its value. If it is further away, the resulting penalty from the loss function should be higher. Different values for the threshold and the exponent of the distance calculation were tested to find the best combination. Lastly, the cold map is saved in a structured folder format for later use in training. Later, the created data is put through augmentation to inflate the size of the dataset and increase its diversity.
 
-==== Finding the distance to the desired path #checked <c4:cold_maps.dist>
+==== Finding the distance to the desired path   <c4:cold_maps.dist>
 
 The algorithm for finding the distance to the closest point on the desired path is shown in @code.distance_grid. 
 
@@ -51,7 +51,7 @@ The algorithm in @code.distance_grid starts by creating an array of coordinates 
 
 The shown algorithm is not parallelized and has a complexity of $cal(O)(n^2)$, where $n$ is the size of the input image. This is due to the nested `for`-loops used in the algorithm. While not a great complexity, it is a vast improvement over its earlier iteration which was $cal(O)(n^4)$#footnote([The original implementation can be seen in `dataset/lib.py:process_rows` in the GitLab repository.]). The actual implementation of this algorithm is parallelized, but the non-parallelized form is shown here. The first iteration of the algorithm took 73 minutes to complete on a $400 times 400$ image, while the parallelized version took 8 minutes on an 8-core CPU. This non-parallelized version takes roughly 30 seconds to complete on the same image, with the parallelized version taking just a few seconds on a full $400 times 400$ image with very narrow paths. Further improvements are likely possible to be made both to the complexity of the implementation and parallelization could be distributed to a GPU or the cloud for even faster computation, but this remains future work.
 
-==== Creating the cold map #checked <c4:cold_maps.create>
+==== Creating the cold map   <c4:cold_maps.create>
 
 To start the creation of the cold map, a distance grid is created using Pythagoras' theorem between the coordinates of the point of the grid and the coordinates saved within, retrieved from the aforementioned `coords` variable. A masking grid is then created by comparing the distance grid to a threshold value. This results in each grid point being calculated using:
 
@@ -161,7 +161,7 @@ To figure out the optimal values for the threshold and exponent, a grid search w
 
 //#text("FIX: USED EXP=0.5, NOT 1.25", fill: red, weight: "black")
 
-While pretty, these cold maps can be difficult to understand. Therefore, @fig.dataset_3d shows the 3D plots of the generated cold maps with exponent values $e in {0.50,0.75,1.25}$. The 2D plots, particularly for an exponent like $e=0.5$, might initially suggest an extremely sharp penalization of distant points. However, the 3D plots provide crucial clarification: while points far from the true path are indeed effectively penalized with a steep gradient that correctly orients towards the path, the key benefit of $e=0.5$ emerges for points closer to the true trajectory. For these nearby points, the gradient becomes notably gentle, providing the desired leniency. This prevents minor, acceptable deviations from being harshly penalized and avoids overly aggressive corrections when a point is already close to the target. This behaviour — a strong corrective slope for distant points coupled with a forgiving gradient for proximate points — is precisely the desired characteristic for the loss function. Therefore, after careful analysis of the 3D plots, the exponent value $e=0.5$ was selected, along with a threshold of $t=10$, as the default for the function in @code.coldmap.
+While pretty, these cold maps can be difficult to understand. Therefore, @fig.dataset_3d shows the 3D plots of the generated cold maps with exponent values $e in {0.50,0.75,1.25}$. The 2D plots, particularly for an exponent like $e=0.5$, might initially suggest an extremely sharp penalization of distant points. However, the 3D plots provide crucial clarification: while points far from the true path are indeed effectively penalized with a steep gradient that correctly orients towards the path, the key benefit of $e=0.5$ emerges for points closer to the true trajectory. For these nearby points, the gradient becomes notably gentle, providing the desired leniency. This prevents minor, acceptable deviations from being harshly penalized and avoids overly aggressive corrections when a point is already close to the target. This behaviour—a strong corrective slope for distant points coupled with a forgiving gradient for proximate points—is precisely the desired characteristic for the loss function. Therefore, after careful analysis of the 3D plots, the exponent value $e=0.5$ was selected, along with a threshold of $t=10$, as the default for the function in @code.coldmap.
 
 #std-block(breakable: false)[
   #v(-1em)
@@ -205,7 +205,7 @@ caption: [Example of satellite image, next to the desired path through with. To 
 
 At this point, the dataset is still very small, consisting of only 112 intersections. This is hardly enough to train models of any complexity, as overfitting is very likely to occur. Therefore, the dataset underwent severe inflation in the form of data augmentation. The dataset was augmented in several ways, including colouration, distortion, cropping, and zooming, covered in detail in the following section.
 
-=== Data Augmentation #checked <c3:data_augmentation>
+=== Data Augmentation   <c3:data_augmentation>
 
 #let colouration(t, s) = box(text(t, fill: gradient.linear(angle: 0deg, (fuchsia, 0%), (red, 25%), (blue, 50%), (green, 75%), (yellow, 100%)), size: s))
 
@@ -290,7 +290,7 @@ The noise augmentation function generates random noise using a normal distributi
     inset: 0em,
     radius: 3pt,
   )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Noise augmentation]] \
-  The noise augmentation was done by generating random noise and adding it to the image. The noise was generated using a normal distribution with a mean of 0 and a standard deviation between 0.1 and 0.5. The noise was then added to the image and the resulting image was clamped to a value between 0 and 1. The resulting image was then converted back to a #acr("PNG") image for easier handling.
+  The noise augmentation was done by generating random noise and adding it to the image. The noise was generated using a normal distribution with a mean of 0 and a standard deviation between 0.1 and 0.5. The noise was then added to the image and the resulting image was clamped to a value between 0 and 1. 
 ]
 
 
@@ -301,7 +301,7 @@ The noise augmentation function generates random noise using a normal distributi
     inset: 0em,
     radius: 3pt,
   )[#text(white, size: 12pt, font: "JetBrainsMono NFM")[Blur augmentation]] \
-  The blur augmentation was done by applying a Gaussian blur to the image. Through testing, the kernel sizes of 5, 7, and 9 were chosen, as well as the sigma values of 1.5, 2, and 2.5. After randomly selecting the combination of kernel size and sigma, the image is converted to a tensor and the blur is applied. The resulting image is then converted back to a #acr("PNG") image for easier handling.
+  The blur augmentation was done by applying a Gaussian blur to the image. Through testing, the kernel sizes of 5, 7, and 9 were chosen, as well as the sigma values of 1.5, 2, and 2.5. After randomly selecting the combination of kernel size and sigma, the image is converted to a tensor and the blur is applied. 
 ]
 
 #grid(
@@ -309,7 +309,7 @@ The noise augmentation function generates random noise using a normal distributi
   hue_a, sat_a
 )
 
-Examples of the distortion augmentations can be seen in @fig:distortion. The image to the far left-hand side is the original image, the top row is the noise augmented images, and the bottom row is the blur augmented images. The noise augmented images show the image with added noise, making certain features difficult to see and the image more obscured. The blur augmented images show the image with a Gaussian blur applied, making the image more obscured and less sharp. Seeing these examples, it is clear to see that, again, a large amount of diversity has been introduced to the dataset. The introduction of noise and blur further help the model generalize better by focusing on structural features rather than specific details. This addition to the dataset broadens the ability of the models and teaches them to perform better on suboptimal images.
+Examples of the distortion augmentations can be seen in @fig:distortion. The image to the far left-hand side is the original image, the top row is the noise augmented images, and the bottom row is the blur augmented images. The noise augmented images show the image with added noise, making certain features difficult to see and the image more obscured. The blur augmented images show the image with a Gaussian blur applied, making the image more obscured and less sharp. Seeing these examples, it is clear to see that, again, a large amount of diversity has been introduced to the dataset. 
 
 
 #let sat_image = { image("../../../figures/img/dataset_example/augmentation/sat_image.png") }
@@ -334,6 +334,7 @@ Examples of the distortion augmentations can be seen in @fig:distortion. The ima
 caption: [Example of the distortion augmentations. The far left image is the original image, the top row is the noise augmented images, and the bottom row is the blur augmented images.]
 ) <fig:distortion>
 ]
+The introduction of noise and blur further help the model generalize better by focusing on structural features rather than specific details. This addition to the dataset broadens the ability of the models and teaches them to perform better on suboptimal images.
 
 
 
@@ -397,7 +398,7 @@ All in all, these augmentations were selected to expand the dataset by introduci
 Other augmentation techniques were considered for this project. Rotation, for example, was considered to further increase the diversity of the dataset by introducing variations in orientation, which could help the model learn to recognize paths from different angles. However, early on in this project, it was decided that the entry for each path should be at the bottom of the satellite image. Thus, rotation the images could have undesired consequences for the models' ability to generalize with this constraint. Flipping was also considered, but was ultimately left out, as it was deemed to have too little of a potential impact since many intersections already go in all directions. Translation was also considered, but was left out, as it would require the paths to be redrawn as they would no longer reach the edges of the image, which was a factor this entire set out to combat. Finally, a very common augmentation used in segmentation, is the act of using cutmix and its constituent parts, namely cutout and mixup. These were, however, also left out, as it is assumed that the satellite images do not contain holes or other artefacts that would be introduced by these augmentations. Furthermore, cutmix might disrupt the spatial features understood by the model. These may be introduced in future work, as they may ultimately increase the robustness of the models in environments that have blocking features.
 
 
-=== Dataset Structure #checked <c3:dataset_structure>
+=== Dataset Structure   <c3:dataset_structure>
 
 //#text("UPDATE TO INCLUDE CLASS_LABELS", fill: red, weight: "black")
 
@@ -439,7 +440,7 @@ This `train`/`test` split in the dataset is created in the folder structure inst
 
 Each `intersection_XXX` folder contains a satellite image saved as a #acr("PNG"). The ground truth class labels are also saved along with the corresponding cold map. Accompanying these, is the `paths` folder, which contains a folder for each path through the intersection. Each path folder contains the path line image, currently saved as a #acr("PNG") as well, a #acr("JSON") file containing the entry and exit points of the path in relation to the image, not the global coordinates, and the corresponding cold map saved as a `.npy` file.
 
-==== Dataset class #checked <c3:dataset_structure:dataset_class>
+==== Dataset class   <c3:dataset_structure:dataset_class>
 
 //#text("UPDATE ALL TO REFLECT LATEST CHANGES. MAYBE ALSO DIFFERENT TYPES.", fill: red, weight: "semibold")
 

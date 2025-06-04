@@ -196,7 +196,7 @@
     #counter(page).update(resume-page + 2)
     #set page(numbering: "i")
     #pagebreak(weak: true)
-    #start-appendix(show-toc: true)
+    //#start-appendix(show-toc: true)
 
     #show heading : it => text(
       black,
@@ -222,8 +222,8 @@
       #v(0.15em)
     ]
 
-    #set heading(numbering: "A.1:", supplement: "Appendix")
-    #include "sections/appendix.typ"
+    // #set heading(numbering: "A.1:", supplement: "Appendix")
+    // #include "sections/appendix.typ"
   ]
 )
 
@@ -272,8 +272,8 @@
 #toc-printer(target: heading.where(numbering: main-numbering))
 #v(1em)
 #toc-printer(target: heading.where(numbering: none).after(<contents-1>).before(<references>))
-#v(1em)
-#toc-printer(target: heading.where(numbering: none).after(<appendix>))
+// #v(1em)
+// #toc-printer(target: heading.where(numbering: none).after(<appendix>))
 
 // #stats()
 

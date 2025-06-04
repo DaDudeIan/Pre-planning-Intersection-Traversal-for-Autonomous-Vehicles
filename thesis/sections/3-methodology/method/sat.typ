@@ -1,5 +1,5 @@
 #import "../../../lib/mod.typ": *
-== Satellite Imagery #checked <c4:sat>
+== Satellite Imagery   <c4:sat>
 
 //#text("ADD BIT ABOUT ZOOM LEVEL. INCLUDE COMPARISON IMAGES", fill: red, weight: "bold")
 
@@ -7,7 +7,7 @@ Satellite imagery is a key component of this thesis project. The imagery will be
 
 This project utilizes Google Maps Static #acr("API") as provided by Google Cloud Platform. The #acr("API") allows for the retrieval of static map images at a given resolution and zoom level. This #acr("API") was chosen due to its ease of use, the quality of the retrieved images, and the fact that it is free to use for a limited number of requests. The #acr("API") is used to retrieve satellite imagery of a given location.
 
-=== Image Acquisition #checked <c4:sat.acq>
+=== Image Acquisition   <c4:sat.acq>
 
 Google Maps Static #acr("API") can retrieve images by forming requests with specific parameters that define the center, zoom level, size, and additional options for the map. For this project, images of type `satellite` are used, as they provide the highest level of detail for each retrieved image. Other types like `roadmap` or `terrain` do not provide enough detail to create a path that would realistically help navigate any kind of intersection as things like line markings are abstracted away.
 
@@ -20,7 +20,7 @@ To request an image, a URL is generated dynamically for the #acr("API"), incorpo
 - `signature`: Secret signing signature given by Google Cloud Platform through their interface.
 Furthermore, the #acr("API") allows for markers to be placed on the map, which can be used to highlight specific points of interest. This is, however, not relevant to this project.
 
-==== URL Signing #checked <c4:sat.acq.url>
+==== URL Signing   <c4:sat.acq.url>
 
 While requests to the #acr("API") can be made using only the API key, the usage is severely limited without URL signing. URL signing is a security measure that ensures that requests to the #acr("API") are made by the intended user. The signature is generated using the API key and a secret key provided by Google Cloud Platform. The URL signing algorithm is shown in @alg.url_signing and is provided by Google @url_sign.
 
@@ -47,7 +47,7 @@ While requests to the #acr("API") can be made using only the API key, the usage 
 
 As input is the URL with filled parameters and the secret key. The algorithm generates a signature using the HMAC-SHA1 algorithm with the secret key and the URL to be signed. The signature is then base64 encoded and appended to the URL as a query parameter. The signed URL can then be used to make requests to the #acr("API").
 
-=== Implementation #checked <c4:sat.impl>
+=== Implementation   <c4:sat.impl>
 
 // detail both retrieval and signing
 

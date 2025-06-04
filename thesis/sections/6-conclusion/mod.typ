@@ -4,7 +4,7 @@
 // + Is it possible to design a loss function that effectively captures the similarity between generated and desired paths for autonomous vehicles without forcing exact matches?
 // + Is it possible to create a dataset that allows for the training of a model, such that the data is not too stringent to a singular path?
 
-= Conclusion & Future Work #checked <c7:conclusion>
+= Conclusion & Future Work <c7:conclusion>
 
 This thesis addressed the significant challenge autonomous vehicles face in navigating intersections by proposing a system to pre-plan traversal paths using deep learning models trained on satellite imagery. Three focused research questions, #RQn(1) to #RQn(3), were posed around model efficiency, loss-function design and dataset tolerance, all aimed at generating robust, topology-correct paths from overhead imagery.
 

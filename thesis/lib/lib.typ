@@ -282,7 +282,7 @@
 
 #let important-datetimes = (project: (
   start: datetime(day: 27, month: 01, year: 2025),
-  end: datetime(day: 05, month: 06, year: 2025),
+  end: datetime(day: 04, month: 06, year: 2025),
 ))
 
 #let plural(word, n) = if n <= 1 {

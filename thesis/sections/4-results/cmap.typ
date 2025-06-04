@@ -50,7 +50,7 @@
 #let swin_cmap_test_graph = image(base+"/swin/swin_cmap_test_graph.png")
 #let swin_cmap_train_graph = image(base+"/swin/swin_cmap_train_graph.png")
 
-== Cold Map Standalone #checked
+== Cold Map Standalone  
 
 This section will serve as a proof-of-concept for the structural prior method presented, called cold map loss. The results shown will be from models that have been trained using the cold map loss defined in @c4:cold_loss. The results will be shown for the first 10 epochs and the 50th epoch. The classes shown using the colours of the previous sections serve no purpose in these outputs. The cold map loss does not deal with classifying pixels, but purely the structure of the output. Classification of pixels is a crucial part of the task at hand, as it is critical information for an AV to have when approaching an intersection. Therefore, this section will merely show the loss in a proof-of-concept context.
 
@@ -88,7 +88,7 @@ Already after 10 epochs, the convolutional models are able to produce a reasonab
 
 The transformer-based models do also appear to not be particularly happy with this loss function. ViT is generally able to learn the structure of the road, having only a few blotches off of the road after 50 epochs. It does, however, not appear to be motivated by the loss to create a map that is coherent across the entire image, failing to follow the road in any meaningful way. The splits in the generated blobs, do not seem to follow any apparent structure or pattern, meaning that the network does not understand the underlying structure of roads that are not perfectly perpendicular. Swin does initially show some promise with this loss, as the more simple intersection is selected with very high precision after 10 epochs. This does not improve after the 50th epoch. Like the ViT, it does not seem to be able to learn the structure of a road, as it doesn't highlight the parts of the road that are similarly coloured to some of the surroundings.
 
-=== Training and Validation Graphs #checked
+=== Training and Validation Graphs  
 
 Compared to the purely CE-trained models, the graphs for these models are significantly different. The losses plateau after just a few epochs, with only marginal improvements after 50 epochs. This implies that the core structure of the road is learned very quickly. Furthermore, it implies that the models quickly converge on the structural features defined by the cold maps from the dataset.
 

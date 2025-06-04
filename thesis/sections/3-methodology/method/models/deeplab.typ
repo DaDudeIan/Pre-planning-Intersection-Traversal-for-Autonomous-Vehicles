@@ -1,5 +1,5 @@
 #import "../../../../lib/mod.typ": *
-=== DeepLabV3+ #checked <c4:deeplab>
+=== DeepLabV3+   <c4:deeplab>
 
 #let convolution_colour = rgb("7EA6E0")
 #let Down_colour = rgb("FF3333")
@@ -13,9 +13,7 @@
 
 The DeepLab family of models is a series of models designed for semantic segmentation tasks by Google. The original DeepLab model was introduced in 2016 and has since evolved into several versions, with DeepLabV3+ being the latest iteration. 
 
-DeepLab, contextually DeepLabV1, was the first model of the family to be released in 2016 @deeplabv1. It introduced several innovations, chief amongst which was the idea of using atrous convolution, also known as dilated convolution. Shown in @fig:atrous_conv, atrous convolution is a method where holes are introduced in the convolutional kernels. This allows each pixel in the resulting feature map to capture a wider context, without having to using massive kernels. Formally, this technique allows for the extraction of multi-scale features without losing resolution, making it particularly effective for semantic segmentation tasks. Furthermore, the model, and its successor, used a fully connected conditional random field (CRF). This is a post-processing step used to refine the pixel-level labellings produced by the network. It operates by defining an energy function that includes costs for assigning labels to individual pixels, called unary potentials, and costs based on the label assignments of all possible pairs of pixels, called pairwise potentials. The successor, DeepLabV2, also used this post-processing step, but not in later versions. 
-
-DeepLabV2, utilized the concept of #acr("ASPP"), which employs multiple parallel atrous convolutions with different rates to capture features at various scales. The "pyramid" part of its name comes from the fact that it uses multiple atrous convolutions with different rates, effectively creating a pyramid of features at different scales. The introduction of this technique can be compared to the popularization of skip connection's usage in U-Net, garnering over 25,000 citations.
+DeepLab, contextually DeepLabV1, was the first model of the family to be released in 2016 @deeplabv1. It introduced several innovations, chief amongst which was the idea of using atrous convolution, also known as dilated convolution. Shown in @fig:atrous_conv, atrous convolution is a method where holes are introduced in the convolutional kernels. This allows each pixel in the resulting feature map to capture a wider context, without having to use massive kernels. Formally, this technique allows for the extraction of multi-scale features without losing resolution, making it particularly effective for semantic segmentation tasks. Furthermore, the model, and its successor, used a fully connected conditional random field (CRF). This is a post-processing step used to refine the pixel-level labellings produced by the network. It operates by defining an energy function that includes costs for assigning labels to individual pixels, called unary potentials, and costs based on the label assignments of all possible pairs of pixels, called pairwise potentials. The successor, DeepLabV2, also used this post-processing step, but not in later versions. 
 
 #let fig1 = { image("../../../../figures/img/models/deeplab/atrous.png") }
 #let my_brace = [#v(-12pt)$underbrace(#box(width: 100%))$]
@@ -32,6 +30,9 @@ DeepLabV2, utilized the concept of #acr("ASPP"), which employs multiple parallel
   caption: [Atrous Convolution.]
 ) <fig:atrous_conv>
 ]
+
+DeepLabV2, utilized the concept of #acr("ASPP"), which employs multiple parallel atrous convolutions with different rates to capture features at various scales. The "pyramid" part of its name comes from the fact that it uses multiple atrous convolutions with different rates, effectively creating a pyramid of features at different scales. The introduction of this technique can be compared to the popularization of skip connection's usage in U-Net, garnering over 25,000 citations.
+
 // Fig. 4: Atrous Spatial Pyramid Pooling (ASPP). To classify the center pixel (orange), ASPP exploits multi-scale features by employing multiple parallel filters with different rates. 
 
 DeepLabV3 was released in 2017 @deeplabv3, introducing an enhanced ASPP module, image pooling, and batch normalization. The ASPP module was improved by adding image pooling, which allows the model to capture global context information. This is done by applying a global average pooling operation to the feature map. Finally, DeepLabV3+ was released in 2018 @deeplabv3plus, which turned the DeepLab architecture into an encoder-decoder structure. This was done by adding a decoder module to the DeepLabV3 architecture. So, the encoder part #ball(encoder_colour) of the models is the same as the DeepLabV3 model, which consists of a backbone network, in this project MobileNetV3 @mobilenetv3, and the ASPP module. The top half of @fig:deeplabv3 shows the encoder part of the model. Five features maps are concatenated in the encoder. First, a simple 1x1 convolution #ball(convolution_colour) is applied. Second, atrous convolution is used to create 3 different feature maps #ball(aspp_colour), each with a different dilation rate. Finally, an image pooling #ball(imgpooling_colour) feature map is concatenated to capture global context. 

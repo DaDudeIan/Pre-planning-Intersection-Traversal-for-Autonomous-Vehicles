@@ -1,6 +1,7 @@
 #import "../../../../lib/mod.typ": *
 
-=== Continuity Loss #checked <c4:topology_loss>
+#v(-1em)
+=== Continuity Loss   <c4:topology_loss>
 
 // @topo1 also highlights the use of BCE in combination with a topology loss.
 // Mention TopoLoss from TopoNets, but that the smoothing is not what is needed here.
@@ -8,11 +9,11 @@
 
 // As the previous sections have highlighted, there is a dire need for a topology-based loss function. The cold map loss and the BCE loss are both excellent at penalizing paths that are far from the true path, but they do not penalize breaks in the path or ensure that the predicted path is continuous. This is where the topology loss comes in. The topology loss function will revolve around getting the output from the model to be a singular, continuous components, meaning it does not contain breaks or holes. Formally, this is done by aiming for specific Betti number values, ensuring that the predicted path has a single connected component and no loops. The details of this approach are discussed in the following sections.
 
-The second of the topology based loss functions is the continuity loss function. The continuity loss function will revolve around getting the output from the model to be a singular, continuous component, meaning it does not contain breaks or holes. Formally, this is done by aiming for specific Betti number values, ensuring that the predicted path has a single connected component and no loops. The details of this approach are discussed in the following sections.
+The second of the topology-based loss functions is the continuity loss function. The continuity loss function will revolve around getting the output from the model to be a singular, continuous component, meaning it does not contain breaks or holes. Formally, this is done by aiming for specific Betti number values, ensuring that the predicted path has a single connected component and no loops. The details of this approach are discussed in the following sections.
 
-Considerations of using existing topology existing methods. Dep #etal @topoloss introduced TopoNets and TopoLoss. This loss function revolves around penalizing jagged paths and encouraging smooth, brain-like topographic organization within neural networks by reshaping weight matrices into two-dimensional cortical sheets and maximizing the cosine similarity between these sheets and their blurred versions. Cortical sheets are two-dimensional grids formed by reshaping neural network weight matrices to emulate the brain's spatial organization of neurons, enabling topographic processing. While initially interesting in the context of this project, simple testing showed that the values returned from this loss, did not give a proper presentation of the path's topology, outside of its smoothness. And while smoothness is a part of the topology, this will largely be handled by the #acr("CE") loss.
+Considerations of using existing topology existing methods were again made. Dep #etal @topoloss introduced TopoNets and TopoLoss. This loss function revolves around penalizing jagged paths and encouraging smooth, brain-like topographic organization within neural networks by reshaping weight matrices into two-dimensional cortical sheets and maximizing the cosine similarity between these sheets and their blurred versions. Cortical sheets are two-dimensional grids formed by reshaping neural network weight matrices to emulate the brain's spatial organization of neurons, enabling topographic processing. While initially interesting in the context of this project, simple testing showed that the values returned from this loss, did not give a proper presentation of the path's topology, outside of its smoothness. And while smoothness is a part of the topology, this will largely be handled by the #acr("CE") loss.
 
-This section will present the topology-based loss function designed for this project, with a focus on ensuring that the predicted path is continuous and does not contain any breaks or holes. This is a crucial aspect of the task at hand, as the goal is to create a path that a vehicle can follow. Breaks in a path would be unrealistic for a grounded vehicle to follow. As a starting point, it is important to understand the concept of Betti numbers:
+This section will present the topology-based loss function implemented for this project, with a focus on ensuring that the predicted path is continuous and does not contain any breaks or holes. This is a crucial aspect of the task at hand, as the goal is to create a path that a vehicle can follow. Breaks in a path would be unrealistic for a grounded vehicle to follow. As a starting point, it is important to understand the concept of Betti numbers:
 
 #std-block(breakable: true)[
   #box(
@@ -53,7 +54,7 @@ This birth and death of features is recorded in what is known as a persistence d
     fig1, fig2, fig3,
     //fig4, fig5, fig6
     ),
-    caption: [The top row shows a connected path along with its persistence barcode and persistence diagram, while the bottom row shows a disconnected path. The number of lines in the barcode, stems from the fact that the images are rather large in size and thus the number of built spaces are many.]
+    caption: [The figure shows a connected path along with its persistence barcode and persistence diagram. The number of lines in the barcode, stems from the fact that the images are rather large in size and thus the number of built spaces are many.]
   ) <fig:persistent_homology>
 ]
 

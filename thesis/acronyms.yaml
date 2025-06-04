@@ -1,23 +1,7 @@
-- acronym: DOF
-  definition: Degrees of Freedom
-- acronym: RMSE
-  definition: Root Mean Squared Error
 - acronym: CPU
   definition: Central Processing Unit
-- acronym: ID
-  definition: Identifier
 - acronym: YAML
   definition: YAML Ain't Markup Language
-- acronym: UI
-  definition: User Interface
-- acronym: GUI
-  definition: Graphical User Interface
-- acronym: UX
-  definition: User Experience
-- acronym: RNG
-  definition: Random Number Generator
-- acronym: PRNG
-  definition: Pseudo-Random Number Generator
 - acronym: JSON
   definition: JavaScript Object Notation
 - acronym: PNG
@@ -25,10 +9,6 @@
 - acronym: API
   definition: Application Programming Interface
   plural: Application Programming Interfaces
-- acronym: PNG
-  definition: Portable Network Graphics
-- acronym: TOML
-  definition: Tom's Obvious Minimal Language
 - acronym: CNN
   definition: Convolutional Neural Network
   plural: Convolutional Neural Networks
@@ -37,8 +17,6 @@
 - acronym: MLP
   definition: Multilayer Perceptron
   plural: Multilayer Perceptrons
-- acronym: ROS2
-  definition: Robot Operating System 2
 - acronym: AV
   definition: Autonomous Vehicle
   plural: Autonomous Vehicles
@@ -92,3 +70,31 @@
   definition: Atrous Spatial Pyramid Pooling
 - acronym: PH
   definition: Persistent Homology
+- acronym: ADS
+  definition: Automated Driving System
+- acronym: DDT
+  definition: Dynamic Driving Task
+- acronym: LKA
+  definition: Lane Keeping Assistance
+- acronym: ACC
+  definition: Adaptive Cruise Control
+- acronym: ODD
+  definition: Operational Design Domain
+- acronym: PID
+  definition: Proportional-Integral-Derivative
+- acronym: MPC
+  definition: Model Predictive Control
+- acronym: MSE
+  definition: Mean Squared Error
+- acronym: SGD
+  definition: Stochastic Gradient Descent
+- acronym: LRN
+  definition: Local Response Normalization
+- acronym: NLP
+  definition: Natural Language Processing
+- acronym: RNN
+  definition: Recurrent Neural Network
+- acronym: GPT
+  definition: Generative Pre-trained Transformer
+- acronym: VTL
+  definition: Virtual Traffic Lights

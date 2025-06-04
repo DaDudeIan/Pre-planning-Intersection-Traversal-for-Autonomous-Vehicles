@@ -1,5 +1,5 @@
 #import "../../../../lib/mod.typ": *
-=== U-Net #checked <c4:unet>
+=== U-Net   <c4:unet>
 
 #let DoubleConv_colour = rgb("7EA6E0")
 #let Down_colour = rgb("FF3333")
@@ -114,12 +114,15 @@
 //   [#b1 #v(-2.5mm) #b4], [#b2 #v(-2.5mm) #b3]
 // )
 
-The U-Net architecture was released in a landmark paper 2015, having since garnered over 100,000 citations. U-Net gets its very literal name from its architecture, which resembles a wide letter U. The U-Net architecture is classed as a #acr("FCN"), which is a type of network that is particularly effective for image segmentation tasks. 
+The U-Net architecture was released in a landmark paper in 2015, having since garnered over 100,000 citations. U-Net gets its very literal name from its architecture, which resembles a wide letter U. The U-Net architecture is classed as a #acr("FCN"), which is a type of network that is particularly effective for image segmentation tasks. 
 
 The architecture consists of two main parts: the encoder and the decoder. Referring to @fig:unet, the encoder part of the network is the left-hand side portion down to the bottleneck, with the decoder being the following layers. First, the encoder increases the number of channels while decreasing the spatial dimensions of the input image. This is done in layers. The first layer is a double convolutional layer #ball(DoubleConv_colour), which consists of two convolutional layers, each followed by a batch normalization and ReLU activation. This is followed by a max pooling layer #ball(Down_colour), which reduces the spatial dimensions of the image. The second layer is another double convolutional layer #ball(DoubleConv_colour), which again increases the number of channels while decreasing the spatial dimensions. This process continues until the bottleneck is reached.
 
 The decoder then reverses this process. After the bottleneck, the decoder begins with an upsampling layer #ball(Up_colour), which increases the spatial dimensions of the image again. This is followed by a concatenation with the corresponding encoder layer, which allows the model to retain spatial information lost during the downsampling process. Skip connections are commonly used in various architectures, as they help to retain spatial information. Following the concatenation, another double convolutional layer #ball(DoubleConv_colour) is applied, which reduces the number of channels. This process continues until the final output layer is reached. In the final layer, a double convolution is initially applied after the concatenation, followed by a final convolutional layer #ball(OutConv_colour). This final convolutional layer reduces the number of channels to the number of classes in the segmentation task. The final output is a segmentation map, which indicates the predicted class for each pixel in the input image.
 
+This architecture significantly advanced the field of image segmentation. One of its key innovations is its extensive use of skip connections, which directly fuse the contextual information from the encoder with the spatial detail from the decoder. This mechanism helps the model recover fine-grained spatial features that are often lost during the downsampling process. Additionally, U-Net employs double convolutional layers rather than single convolutions. This structure allows the model to extract more complex and abstract features from the input data. The architecture is also fully convolutional, meaning it avoids fully connected layers altogether. As a result, U-Net can be applied to images of varying sizes without needing architectural modifications, making it highly versatile across different datasets and tasks.
+
+U-Net was originally introduced to address the challenge of limited labelled data in the medical imaging field, where precise segmentation is critical and annotated samples are scarce. However, its effectiveness has extended far beyond this initial scope. It has inspired a wide range of variants, including U-Net++, Attention U-Net, ResUNet, and Mobile U-Net, each adapted for specific applications or resource constraints.
 #let fig1 = { image("../../../../figures/img/models/unet/unet.png") }
 
 #std-block(breakable: false)[
@@ -127,10 +130,6 @@ The decoder then reverses this process. After the bottleneck, the decoder begins
   caption: [U-Net Architecture.]
   ) <fig:unet>
 ]
-
-This architecture significantly advanced the field of image segmentation. One of its key innovations is its extensive use of skip connections, which directly fuse the contextual information from the encoder with the spatial detail from the decoder. This mechanism helps the model recover fine-grained spatial features that are often lost during the downsampling process. Additionally, U-Net employs double convolutional layers rather than single convolutions. This structure allows the model to extract more complex and abstract features from the input data. The architecture is also fully convolutional, meaning it avoids fully connected layers altogether. As a result, U-Net can be applied to images of varying sizes without needing architectural modifications, making it highly versatile across different datasets and tasks.
-
-U-Net was originally introduced to address the challenge of limited labelled data in the medical imaging field, where precise segmentation is critical and annotated samples are scarce. However, its effectiveness has extended far beyond this initial scope. It has inspired a wide range of variants, including U-Net++, Attention U-Net, ResUNet, and Mobile U-Net, each adapted for specific applications or resource constraints.
 
 Despite its strengths, U-Net is not without limitations. It can be memory-intensive and computationally demanding, particularly due to the skip connections. These connections require storing high-resolution feature maps from earlier layers in memory, which increases the model's footprint and can limit scalability. Nevertheless, U-Net's widespread success, ability to generalize well on small datasets, and strong performance in segmentation tasks make it an ideal candidate for this project.
 

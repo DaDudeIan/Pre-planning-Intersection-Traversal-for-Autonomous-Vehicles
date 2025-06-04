@@ -1,7 +1,7 @@
 #import "../../lib/mod.typ": *
 
 // https://www.scribbr.com/research-process/problem-statement/
-== Problem Statement #checked <c1s1_1:problem-statement>
+== Problem Statement   <c1s1_1:problem-statement>
 
 // Importance of the problem / Contextualize
 Advancements in #acr("AV") technologies have been at the forefront of tech innovations in the #nths(21) century. A key challenge in the development of fully autonomous vehicles, is their ability to handle intersections. Intersections pose a wide variety of challenges to #acrpl("AV"): from those posed by complex structures, to those posed by the unpredictability of human drivers, to faded lines that make it difficult for the on-board computer vision system to clearly identify lanes or paths. All of these hinder #acrpl("AV") from reaching their full potential and being able to navigate intersections safely and efficiently.

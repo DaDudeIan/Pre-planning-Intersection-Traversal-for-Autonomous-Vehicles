@@ -50,7 +50,7 @@
 #let swin_ce-cmap_test_graph = image(base+"/swin/swin_ce-cmap_test_graph.png")
 #let swin_ce-cmap_train_graph = image(base+"/swin/swin_ce-cmap_train_graph.png")
 
-== Cross-Entropy + Cold Map #checked
+== Cross-Entropy + Cold Map  
 
 This section will present the results achieved by combining the CE loss with the novel cold map loss. Following the general success of the convolution-based models of understanding the shape and structure of intersections, the results here should show how this great understanding of intersection layout combines with the classification capabilities of the CE loss. Like the other combined training method, here the values of $alpha$ are set to $alpha_"hi" =  0.9$, $alpha_"lo" = 0.5$, and $T_"warm" = 10$. This lower value for $T_"warm"$ is to allow for the cold map loss to take effect sooner in the training process. It also means that the split between CE and the cold map loss will be slightly more gradual than the other combined training method. 
 
@@ -61,7 +61,7 @@ This section will present the results achieved by combining the CE loss with the
       column-gutter: 0mm,
       row-gutter: 0mm,
       {deeplab_ce-cmap_e50_test1}, {unet_ce-cmap_e50_test1}, {vit_ce-cmap_e50_test1}, {swin_ce-cmap_e50_test1},
-      {deeplab_ce-cmap_e50_test2}, {unet_ce-cmap_e50_test2}, {vit_ce-cmap_e50_test2}, {swin_ce-cmap_e50_test2},
+      {deeplab_ce-cmap_e50_test2}, {unet_ce-cmap_e50_test2}, [#vit_ce-cmap_e50_test2 #place(center + horizon, dy: -4.4mm, dx: -7.6mm, ellipse(height: 5mm, width: 5mm, stroke: 1pt + blue))], {swin_ce-cmap_e50_test2},
       [#subfigure("(a)") DeepLabV3+], [#subfigure("(b)") U-Net], [#subfigure("(c)") ViT], [#subfigure("(d)") Swin],
     ),
     caption: [Results after the #nth(50) epoch. These results are very much like those of the CE standalone, as the cold map loss has hardly had the change to take effect. The transformer models seem particularly dislike the cold map loss, as their outputs have degraded from the baseline.]
@@ -70,7 +70,7 @@ This section will present the results achieved by combining the CE loss with the
 
 After just 50 epochs, there are clear trends emerging in the results. It very quickly becomes apparent which sets of models like and dislike the novel loss. The convolution-based models, DeepLabV3+ and U-Net, seem able to take advantage of the cold map loss, as they generally seem to have a better understanding of generating paths that goes out to the edges. Their results are, however, still very unclear. DeepLab is not very confident at marking the path for the roads, and U-Net is not very good at making connected components.
 
-The transformer-based models, ViT and Swin, seem to be struggling with the cold map loss at this early stage. Their results are very sporadic and disconnected. ViT has extremely lumpy and inconsistent results, particularly in the lower of the output images, where it generally seems to just try and mark some pixels in the general direction the road is going, without any regard for the connectivity of what it generates. Furthermore, it seems to struggle significantly with even identifying the road, as many of the bumps in its prediction leave the road and there is even a completely detached blob of predicted pixels on top of a house. Swin is showing its own set of problems. Its prediction is way more conservative than ViT, meaning it hardly marks any pixels as being part of the road. 
+The transformer-based models, ViT and Swin, seem to be struggling with the cold map loss at this early stage. Their results are very sporadic and disconnected. ViT has extremely lumpy and inconsistent results, particularly in the lower of the output images, where it generally seems to just try and mark some pixels in the general direction the road is going, without any regard for the connectivity of what it generates. Furthermore, it seems to struggle significantly with even identifying the road, as many of the bumps in its prediction leave the road and there is even a completely detached blob of predicted pixels on top of a house #ball(blue). Swin is showing its own set of problems. Its prediction is way more conservative than ViT, meaning it hardly marks any pixels as being part of the road. 
 
 #std-block(breakable: false,
   figure(
@@ -79,18 +79,18 @@ The transformer-based models, ViT and Swin, seem to be struggling with the cold 
       column-gutter: 0mm,
       row-gutter: 0mm,
       {deeplab_ce-cmap_e100_test1}, {unet_ce-cmap_e100_test1}, {vit_ce-cmap_e100_test1}, {swin_ce-cmap_e100_test1},
-      {deeplab_ce-cmap_e100_test2}, {unet_ce-cmap_e100_test2}, {vit_ce-cmap_e100_test2}, {swin_ce-cmap_e100_test2},
+      {deeplab_ce-cmap_e100_test2}, {unet_ce-cmap_e100_test2}, [#vit_ce-cmap_e100_test2 #place(center + horizon, dy: -4.4mm, dx: -7.6mm, ellipse(height: 5mm, width: 5mm, stroke: 1pt + blue))], {swin_ce-cmap_e100_test2},
       [#subfigure("(a)") DeepLabV3+], [#subfigure("(b)") U-Net], [#subfigure("(c)") ViT], [#subfigure("(d)") Swin],
     ),
     caption: [Results after the #nth(100) epoch. The artifacts from the cold map standalone loss become apparent in DeepLab's outputs, and the transformer models are more likely to generate seemingly random blotches.]
   )
 )
 
-This hardly improves for the transformer-based models after 100 epochs. ViT is still very disconnected and lumpy, hardly generating comprehensive results, particularly in the lower image. The random blob on the house is still present, hinting at the model hardly being able to be taught from the cold map loss. Swin is still very conservative, still not confident in marking road pixels, but also having ballooned the outputs from the #nth(50) epoch results. It is now marking a lot more pixels as being part of the road, but this largely seems to be done randomly. Generally for these two models, the cold map loss hardly seems to teach them anything about the road structure, as the results are only marginally better than the CE loss alone in that the results are not just thin lines contained to specific internal patches.
+This hardly improves for the transformer-based models after 100 epochs. ViT is still very disconnected and lumpy, hardly generating comprehensive results, particularly in the lower image. The random blob on the house is still present #ball(blue), hinting at the model hardly being able to be taught from the cold map loss. Swin is still very conservative, still not confident in marking road pixels, but also having ballooned the outputs from the #nth(50) epoch results. It is now marking a lot more pixels as being part of the road, but this largely seems to be done randomly. Generally for these two models, the cold map loss hardly seems to teach them anything about the road structure, as the results are only marginally better than the CE loss alone in that the results are not just thin lines contained to specific internal patches.
 
 Generally for all models, however, seem to be the fact that the mistakes they make earlier in training process are kept as the training progresses and shifts more to rely on the cold map loss. DeepLab shows this by not improving the right turn in the top image; it still consists of a really thin line that seems low in confidence. In the lower image, it also surrounds the left turn pixels with wrongly classified pixels, which started out as a thin underline to the prediction, but is now very dominant with some wrongly classified pixels appearing on top of the path. U-Net is also showing some these persistent problems. The odd gap in the left turn in the top image is still present, despite the fact that the gap is smaller.
 
-=== Training and Validation Graphs #checked
+=== Training and Validation Graphs  
 
 
 #std-block(breakable: false,
@@ -122,7 +122,7 @@ Once again, the two sets of models show very different sets of graphs. The convo
 
 The transformer-based models are much more affected by the restarts, but swiftly plateaus again. When the restarts happen, both models show a decrease in validation loss and an increase in training loss. This is the same behaviour as when they were trained on CE loss alone. An interesting difference between the two models is that ViT seem to perform significantly worse on the validation set, where Swin achieves almost the same accuracy on both sets, even having both training and validation accuracy decrease when the restarts happen. 
 
-=== Test on Training Set #checked
+=== Test on Training Set  
 
 Looking at the results of passing through images from the training set yields some interesting results, highlighting some rather undesired artifacts introduced by the cold map loss. This is particularly apparent with the DeepLab results. After 100 epochs, the model seems to pad the output with a lot of pixels of a seemingly random nature. The other models do not exhibit this behaviour, not even the other convolution-based model, U-Net. The transformer-based models simply generate very thick outputs that are accurately classified.
 

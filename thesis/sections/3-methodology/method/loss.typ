@@ -1,6 +1,6 @@
 #import "../../../lib/mod.typ": *
 
-== Loss Function Design #checked <c4:loss>
+== Loss Function Design   <c4:loss>
 
 // Bare bones loss function: dot product
 // 

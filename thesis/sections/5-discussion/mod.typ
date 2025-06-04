@@ -4,14 +4,14 @@
 // + Is it possible to design a loss function that effectively captures the similarity between generated and desired paths for autonomous vehicles without forcing exact matches?
 // + Is it possible to create a dataset that allows for the training of a model, such that the data is not too stringent to a singular path?
 
-= Discussion #checked <c6:Discussion>
+= Discussion   <c6:Discussion>
 
 This section presents the discussion of the results, methods, and broader implications of the work carried out in this thesis. It begins with the integration of the proposed system into real-world infrastructure, including its compatibility with V2X communication, considerations related to ISO 26262 compliance, and how it should actually work with current systems active in vehicles. Following this, the notable shortcomings of the project are outlined, including performance limitations, data dependencies, and the limited improvements observed with topological loss functions. After this, several technical insights are discussed, such as the behaviour of transformer-based models, the relationship between loss and accuracy, and the outcomes of extended training runs. The next section covers implementation-related considerations, such as the trade-offs between cloud and onboard inference, inference times, and post-processing strategies. Then the potential domain transfer and industrial relevance of this technology will be discussed. Generalization and robustness are then explored, with a focus on seasonal changes and the inductive biases of different model architectures. Finally, the chapter concludes with a discussion of the societal and ethical aspects associated with deploying such a system, including privacy, legality, and the potential impact on traffic and the environment.
 
 
-== Integration with existing systems #checked <c6:integration>
+== Integration with existing systems   <c6:integration>
 
-The system proposed in this thesis is designed to be an integrated component of a vehicle's navigation and path planning system, particularly when operating in a self-driving mode. It is intended to work alongside existing vehicles systems, such as V2X communication and other autonomous driving technologies, to enhance the vehicle's ability to navigate complex intersections safely and efficiently. The fact that this system works purely through the use of machine learning models, means that it should not be the main source of driving instructions for AVs, but rather as a supplementary tool that works where other V2X systems are not available.
+The system proposed in this thesis is designed to be an integrated component of a vehicle's navigation and path-planning system, particularly when operating in a self-driving mode. It is intended to work alongside existing vehicles systems, such as V2X communication and other autonomous driving technologies, to enhance the vehicle's ability to navigate complex intersections safely and efficiently. The fact that this system works purely through the use of machine learning models, means that it should not be the main source of driving instructions for AVs, but rather as a supplementary tool that works where other V2X systems are not available.
 
 V2X has great potential to enhance the effectiveness of AVs by providing real-time information about traffic conditions, road hazards, and other vehicles' intentions. Furthermore, expanding it to handle the task of AIM systems, means that AVs can rely on it even further. However, as discussed, there are severe limitations tied to the use of V2X, such as the need for a robust and reliable communication infrastructure, which may not always be available in all environments. Therefore, the system proposed is meant to be a fallback solution that can operate independently of V2X communication when necessary. With further adjustments, it could even be integrated into existing V2X systems, allowing for a more seamless and efficient operation in environments where V2X is available.
 
@@ -45,11 +45,11 @@ The final consideration for the integration of this system into existing vehicle
 
 #tab
 
-// - Integration with V2X: rely on V2X communication when available; otherwise, fall back to the onboard model. #checked 
+// - Integration with V2X: rely on V2X communication when available; otherwise, fall back to the onboard model.  
 // - Memory footprint: on-board memory is not a concern, as models are designed for inference and are lightweight.
-// - GPS limitations: GPS alone does not provide sufficient information for precise path planning. #checked
-// - Rotation estimation from GPS: determine vehicle orientation using the vector between the current position and the intersection center. #checked
-// - Compliance with ISO 26262: implement a hand-over strategy that aligns with functional safety standards. #checked
+// - GPS limitations: GPS alone does not provide sufficient information for precise path planning. 
+// - Rotation estimation from GPS: determine vehicle orientation using the vector between the current position and the intersection center. 
+// - Compliance with ISO 26262: implement a hand-over strategy that aligns with functional safety standards. 
 
 // rely on v2x when available, otherwise this method
 // On-board memory footprint of each model (hardly a problem as models do not require training. Computers optimized for inference.)
@@ -63,7 +63,7 @@ The final consideration for the integration of this system into existing vehicle
 // 
 // Hand-over strategy in compliance with IDO 26262
 
-== Project Limitations and Challenges #checked <c6:shortcomings>
+== Project Limitations and Challenges   <c6:shortcomings>
 
 As it has been pointed out extensively throughout this thesis, there are several limitations and challenges encountered in this project. Chief amongst these is the limitation of the hardware on which these models were trained and tested. The greatest limiting factor was the GPU memory, which restricted the batch size and model size that could be used. This limitation is particularly relevant for transformer-based models, which tend to require more memory than convolutional models and large batch sizes to achieve optimal performance. This is shown in @tab:memory-footprint, where both transformer-based models require more than twice the memory of the convolutional models. 
 
@@ -103,7 +103,7 @@ The results achieved in this project do well to showcase the developed method's 
 // Class imbalance. Justify use of CE and BCE. Discuss focal and Dice loss.
 
 
-== Technical Observations and Training Insights #checked <c6:technical-insights>
+== Technical Observations and Training Insights   <c6:technical-insights>
 
 An immediate and interesting observation can be made from the mIoU table in @tab:all_miou: the greatest performing model is DeepLabV3+ with just Cross-Entropy loss and at 300 epochs, the highest number of epochs used in this project. Firstly, the CE standalone loss was the only loss to be trained for more than 100 epochs. This was done due to the fact that the implementation of the loss comes as a part of PyTorch, which meant that it was easy to implement and use, as well as being extremely fast compared to the other losses. The continuity loss utilized the Gudhi library, which is a C++ library for topological data analysis, meaning it only runs on the CPU, instead of the GPU. When purely on the GPU, all PyTorch operations have their CUDA equivalents, allowing for extremely efficient use of the GPU's many cores. This is not the case for the Gudhi library, which means that the continuity loss is significantly slower than the CE loss, and therefore it was only trained for 100 epochs, still taking more than 5 times as long to train as the CE loss for 300 epochs.
 
@@ -132,7 +132,7 @@ With the best model being the one that is trained the longest, it is clear that 
 
 #tab
 
-Another test was conducted to see if the results would improve if the combination of the CE and cold map losses was swapped around, such that cold map was the main driver for the starting phase of training and slowly changing to CE. The dynamic values for $alpha$ were set to $alpha_"hi" = 0.9$, $alpha_"lo" = 0.5$, and $T_"warm" = 10$. So CE would have some influence in the beginning, which would increase as training progressed. This results of this are shown in @fig:cmap-ce. At the 10th epoch, the results do look very promising, as they look just like the cold map standalone results, but with the paths being correctly labelled. It does, however, still show signs of the artifacts introduced by the cold map loss earlier, in that it continues to pad certain paths will unrelated pixels. This is particularly seen in the bottom images of @fig:cmap-ce#subfigure("a-d") where the blob of incorrectly labelled pixels are persistent across all epochs. This blob is non-existent in the top images, showing that the method works, but also shows potentially worrying artifacts produced in certain scenarios.
+Another test was conducted to see if the results would improve if the combination of the CE and cold map losses was swapped around, such that cold map was the main driver for the starting phase of training and slowly changing to CE. The dynamic values for $alpha$ were set to $alpha_"hi" = 0.9$, $alpha_"lo" = 0.5$, and $T_"warm" = 10$. So CE would have some influence in the beginning, which would increase as training progressed. This results of this are shown in @fig:cmap-ce. At the 10th epoch, the results do look very promising, as they look just like the cold map standalone results, but with the paths being correctly labelled. It does, however, still show signs of the artifacts introduced by the cold map loss earlier, in that it continues to pad certain paths will unrelated pixels. This is particularly seen in the bottom images of @fig:cmap-ce#subfigure("a-d") where the blob of incorrectly labelled pixels are persistent across all epochs #ball(blue). This blob is non-existent in the top images, showing that the method works, but also shows potentially worrying artifacts produced in certain scenarios.
 
 #let base = "../../figures/img/discussion/"
 
@@ -156,7 +156,7 @@ Another test was conducted to see if the results would improve if the combinatio
     stack(
       grid(columns: (1fr, 1fr, 1fr, 1fr), column-gutter: 0mm,
         cmap-ce_e10_test1, cmap-ce_e20_test1, cmap-ce_e50_test1, cmap-ce_e100_test1,
-        cmap-ce_e10_test2, cmap-ce_e20_test2, cmap-ce_e50_test2, cmap-ce_e100_test2,
+        [#cmap-ce_e10_test2 #place(center + horizon, dy: 4.8mm, dx: -9.5mm, rotate(60deg, ellipse(height: 10mm, width: 5mm, stroke: 1pt + blue)))], [#cmap-ce_e20_test2 #place(center + horizon, dy: 5mm, dx: -10.5mm, rotate(63deg, ellipse(height: 12mm, width: 5mm, stroke: 1pt + blue)))], [#cmap-ce_e50_test2], [#cmap-ce_e100_test2],
         [#subfigure("(a)") 10th epoch.], [#subfigure("(b)") 20th epoch.],
         [#subfigure("(c)") 50th epoch.], [#subfigure("(d)") 100th epoch.]
       ), [#v(0.5em)],
@@ -175,21 +175,21 @@ Before looking at the transformer models' behaviour, a brief note on the apparen
 
 Now, looking back at the results of the transformer-based models in @c5:results, it is clear that they do not perform as well as the convolution-based models. This is particularly evident in the mIoU values, where the transformer models have a significantly lower mIoU than the convolution-based models. However, their training did appear to run smoothly with just the CE loss, but saw a significantly more unstable training process when combined with the topology-based losses. This is very likely due to the fact that transformers process the input data through their self-attention mechanisms, which can dilute, or even completely ignore, the spatial relationships between pixels in the input image. Therefore, introducing a loss focused on the topology, i.e. spatial relations in the image, can lead to the model not being able to learn the desired features effectively. This incompatibility may result in the topology losses doing seemingly random changes to the transformers' weights, ultimately leading the models to perform worse than if they had been trained without. This does provide insight into answering #RQ(1), in that it shows that the convolution-based models play more nicely with the topology-based loss functions, and given a task where the topology is important, such as path planning, convolution-based models are likely to perform better than transformer-based models.
 
-// - Longer training results: #checked
+// - Longer training results: 
 //   - 1000 epochs: Overall mIoU = 0.4545, Per-class mIoU = [0.9767, 0.3483, 0.3379, 0.3409, 0.2688]
 //   - 5000 epochs: Overall mIoU = 0.4501, Per-class mIoU = [0.9758, 0.3485, 0.337, 0.3313, 0.258]
-// - Training dynamics: examine the results of models trained with cmap first (DeepLab cmap→ce). #checked
-// - Transformer sensitivity: explore why ViT and Swin architectures perform poorly with continuity-based losses. #checked
-// - Loss vs. accuracy divergence: explain why a rising loss function can still coexist with decent accuracy. #checked
-// - #RQ(1): The comparison between transformer models (ViT, Swin) and convolutional models (U-Net, DeepLab) in terms of their compatibility with continuity loss functions provides direct insight into architectural trade-offs in accuracy and optimization. #checked
-// - #RQ(2): Provides further insight into why certain loss functions (e.g., continuity loss with transformer architectures) may not yield expected gains, supporting the case for loss function refinement. #checked
+// - Training dynamics: examine the results of models trained with cmap first (DeepLab cmap→ce). 
+// - Transformer sensitivity: explore why ViT and Swin architectures perform poorly with continuity-based losses. 
+// - Loss vs. accuracy divergence: explain why a rising loss function can still coexist with decent accuracy. 
+// - #RQ(1): The comparison between transformer models (ViT, Swin) and convolutional models (U-Net, DeepLab) in terms of their compatibility with continuity loss functions provides direct insight into architectural trade-offs in accuracy and optimization. 
+// - #RQ(2): Provides further insight into why certain loss functions (e.g., continuity loss with transformer architectures) may not yield expected gains, supporting the case for loss function refinement. 
 
 
-== Broader Implementation Considerations #checked <c6:implementation>
+== Broader Implementation Considerations   <c6:implementation>
 
-One of the main considerations made thus far with regard to the implementation of the proposed system, is the trade-off between cloud and onboard inference. This will also give some insight into #RQ(1), where the efficiency of the models is noted. There are two main differences between cloud and on-board inference, both with their up- and downsides. The main difference is cloud inference having access to much more powerful hardware, which allows for larger models to be used. This is particularly relevant for the transformer-based models, which tend to require more memory and computational power than convolutional models, especially when used as backbones to larger models. Cloud computing does come with its own set of challenges, however, such as the need for vehicles making requests to have a constant connection to the cloud, which may not always be available in all environments. 
+One of the main considerations made thus far with regard to the implementation of the proposed system, is the trade-off between cloud and on-board inference. This will also give some insight into #RQ(1), where the efficiency of the models is noted. There are two main differences between cloud and on-board inference, both with their up- and downsides. The main difference is cloud inference having access to much more powerful hardware, which allows for larger models to be used. This is particularly relevant for the transformer-based models, which tend to require more memory and computational power than convolutional models, especially when used as backbones to larger models. Cloud computing does come with its own set of challenges, however, such as the need for vehicles making requests to have a constant connection to the cloud, which may not always be available in all environments. 
 
-However, if the inference is handled on-board, then the vehicle still needs a stable enough connection to fetch satellite images, so this aspect of the considerations is not entirely relevant. The main difference is that the cloud can handle larger models, which may lead to better performance, but at the cost of increased latency. The satellite imagery fetching itself introduces a latency of around 250 ms, which can be added to the times seen in @tab:inference_times. This table shows the inference times of the four models when run on the same hardware, where the U-Net model has the lowest inference time at 4.12 ms, followed by ViT at 9.48 ms, DeepLabV3+ at 11.01 ms, and Swin at 36.29 ms. These are all very low times, and are likely to be even lower on the inference-optimized hardware used in AVs. However, as shown in the table as well, the time from ignition to the first usable frame is significantly higher. This time is measured to simulate the time it takes for the system to initialize, when a vehicle is started, to when the first usable frame is produced. These values do not take into account the time it takes for the satellite image to be fetched, nor the time it takes for the on-board system to actually power up. These values make a case for the use of cloud computing, where the system can be running continuously, allowing for a much lower latency when the vehicle is started. Furthermore, cloud computing saves a lot of resources on the vehicle itself, in that it only needs the vehicle to make API requests to the cloud. In conclusion, the choice between cloud and onboard inference depends on the specific use case and the available infrastructure. If low latency is a priority, then onboard inference may be the better option, but if the models are too large or complex to run efficiently on the vehicle's hardware, then cloud inference may be necessary.
+However, if the inference is handled on-board, then the vehicle still needs a stable enough connection to fetch satellite images, so this aspect of the considerations is not entirely relevant. The main difference is that the cloud can handle larger models, which may lead to better performance, but at the cost of increased latency. The satellite imagery fetching itself introduces a latency of around 250 ms, which can be added to the times seen in @tab:inference_times. This table shows the inference times of the four models when run on the same hardware, where the U-Net model has the lowest inference time at 4.12 ms, followed by ViT at 9.48 ms, DeepLabV3+ at 11.01 ms, and Swin at 36.29 ms. These are all very low times, and are likely to be even lower on the inference-optimized hardware used in AVs. However, as shown in the table as well, the time from ignition to the first usable frame is significantly higher. This time is measured to simulate the time it takes for the system to initialize, when a vehicle is started, to when the first usable frame is produced. These values do not take into account the time it takes for the satellite image to be fetched, nor the time it takes for the on-board system to actually power up. These values make a case for the use of cloud computing, where the system can be running continuously, allowing for a much lower latency when the vehicle is started. Furthermore, cloud computing saves a lot of resources on the vehicle itself, in that it only needs the vehicle to make API requests to the cloud. In conclusion, the choice between cloud and onboard inference depends on the specific use case and the available infrastructure. If low latency is a priority, then on-board inference may be the better option, but if the models are too large or complex to run efficiently on the vehicle's hardware, then cloud inference may be necessary.
 
 
 #let tab = [
@@ -222,15 +222,15 @@ Finally, much of this project was made possible thanks to the PyTorch framework,
 
 // - Skeletonization: employ post-processing to ensure paths are 1-pixel wide.
 // - Language considerations: C/C++ and Fortran were considered for high-performance alternatives.
-// - Model alternatives: Reinforcement Learning considered for dynamic decision-making tasks. #checked
-// - Inference environment: #checked
-//   - Average inference times (ms): [11.012, 4.124, 9.476, 36.292] #checked
-//   - Satellite request latency: \~250 ms #checked
-//   - Time from ignition to first usable frame (ms): [4163.134, 3987.752, 8540.016, 11106.948] #checked
-//   - Cloud deployment benefits: allows for persistent availability, reduced local hardware requirements, and lower latency on start-up. #checked
-// - #RQ(1): Covers inference times and implementation aspects (cloud vs. onboard), which ties into optimizing for efficiency. #checked
+// - Model alternatives: Reinforcement Learning considered for dynamic decision-making tasks. 
+// - Inference environment: 
+//   - Average inference times (ms): [11.012, 4.124, 9.476, 36.292] 
+//   - Satellite request latency: \~250 ms 
+//   - Time from ignition to first usable frame (ms): [4163.134, 3987.752, 8540.016, 11106.948] 
+//   - Cloud deployment benefits: allows for persistent availability, reduced local hardware requirements, and lower latency on start-up. 
+// - #RQ(1): Covers inference times and implementation aspects (cloud vs. onboard), which ties into optimizing for efficiency. 
 
-== Domain Transfer and Industrial Relevance #checked <c6:domain-transfer>
+== Domain Transfer and Industrial Relevance   <c6:domain-transfer>
 
 The method developed in this project has primarily been designed for the use in AVs, specifically for the task of predicting paths through intersections based on satellite imagery. However, this specified task can be seen as a specific instance of a broader problem: predicting spatially viable paths from static images. This core concept has potential relevance in several other domains, which can be explored as speculative applications of the method. 
 
@@ -255,7 +255,7 @@ In summary, this highlights how the method can be used in various domains and in
 // For underwater robots or deep-sea AUVs, sonar maps or pre-mapped seabeds can substitute for satellite imagery. Here, pre-trained models can help plan safe navigation paths, similar to how seabed features are navigated during pipeline inspections. Particularly interesting due to the absence of live perception in deep-sea environments, making inference-on-prior-data a practical solution.
 
 
-== Robustness and Domain Generalization #checked <c6:robustness>
+== Robustness and Domain Generalization   <c6:robustness>
 
 One thing to consider before expanding the method to other domains is the goal of achieving great domain generalization. In this project, this goal has been partially achieved, as the method is able to create fairly precise predictions of paths through intersections, depending on the model used. A greater level of generalization is still needed, however, as the models are still heavily overfitting to the training data, as shown in the results chapter. This also gives some insight into #RQ(3), which asks whether it is possible to create a dataset that allows for the training of a model, such that the data is not too stringent to a singular path. While this is partly achieved in that the models can generate paths in any image given, the current dataset does not allow for the models to gain a general domain understanding.
 
@@ -267,14 +267,14 @@ Once models are created that are good enough to create clearly defined paths thr
 
 
 
-// - Domain extension: speculative applicability to warehouse robots, autonomous racing, general AV systems, and deep-sea automation. #checked
-// - Seasonal robustness: markings may disappear in snow; suggest periodic retraining or season-specific model variants. #checked
+// - Domain extension: speculative applicability to warehouse robots, autonomous racing, general AV systems, and deep-sea automation. 
+// - Seasonal robustness: markings may disappear in snow; suggest periodic retraining or season-specific model variants. 
 // - #RQ(2): Touches on the structural priors of models, which relate to how well loss functions can exploit or align with model inductive biases.
 //   - Structural priors in transformers: investigate how ViT and Swin handle (or fail to handle) spatial and structural assumptions. (As noted, they struggle with topology losses as they dilute spatial relationships.)
-// - #RQ(3): Includes thoughts on domain generalization, speculative applications, and the challenges of applying a model trained on limited data to broader settings—all of which hinge on the flexibility of the dataset. #checked
+// - #RQ(3): Includes thoughts on domain generalization, speculative applications, and the challenges of applying a model trained on limited data to broader settings—all of which hinge on the flexibility of the dataset. 
 
 
-== Societal and Ethical Considerations #checked <c6:societal>
+== Societal and Ethical Considerations   <c6:societal>
 
 Finally, if the proposed system is to be deployed in real-world scenarios, it is important to consider the societal and ethical implications of such a system. In general, it is believed that the system can have an overall positive impact on many aspects of society, both for pedestrians, drivers, and manufacturers. For manufacturers, the system can help improve the performance of their vehicles, as the system can help them navigate intersections more efficiently. This will allow them to keep pushing for higher levels of autonomy, as they can use the system to keep improving their vehicles' capabilities.
 

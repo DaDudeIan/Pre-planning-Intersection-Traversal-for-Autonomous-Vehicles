@@ -1,12 +1,12 @@
 #import "../../../../lib/mod.typ": *
 
-=== Cold Map Loss #checked <c4:cold_loss>
+=== Cold Map Loss   <c4:cold_loss>
 
 The cold map loss is a novel loss function designed to enforce topological constraints on the predicted path. It is based on the idea of using a cold map, which is a grid of the same size as the input image, where the intensity of each cell is a value derived from the distance to the nearest path pixel. Before covering them and their creation, the BCE loss function is presented, as it is closely related the CE loss but for binary classification tasks, such as when looking at the structure of the predicted path.
 
-==== Binary Cross-Entropy Loss #checked <c4:bce_loss>
+==== Binary Cross-Entropy Loss   <c4:bce_loss>
 
-The #acr("BCE") loss is a commonly used loss function for binary segmentation tasks, which is relevant for the task at hand due to the pixel-subset nature of the problem, i.e. pixels can be either zero or non-zero. Furthermore, it is well-versed in handling heavily imbalanced data, which is the case when dealing with classification tasks where one class is much more prevalent than the other, like path and non-path pixels in an image. These properties make it ideal for this problem, as the background pixels are much more prevalent than the path pixels. The implementation is using the definition from PyTorch #footnote([Full implementation details can be found in the official documentation: https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html]), which is defined as follows:
+The #acr("BCE") loss is a commonly used loss function for binary segmentation tasks, which is relevant for the task at hand due to the pixel-subset nature of the problem, i.e. path pixels can be either zero or non-zero. Furthermore, it is well-versed in handling heavily imbalanced data, which is the case when dealing with classification tasks where one class is much more prevalent than the other, like path and non-path pixels in an image. These properties make it ideal for this problem, as the background pixels are much more prevalent than the path pixels. The implementation is using the definition from PyTorch #footnote([Full implementation details can be found in the official documentation: https://pytorch.org/docs/stable/generated/torch.nn.BCELoss.html]), which is defined as follows:
 
 
 $
@@ -73,13 +73,13 @@ This value represents the dissimilarity between the predicted probability of $0.
 
 // Examples of the `mean`-based BCE loss is shown in @fig:bce_loss_comp, showing various interesting aspects of the loss function. (b) shows an expectedly high loss value, as the path is far from the true path. This matches the case for the cold map loss. (a), (c), and (d) show very similar loss values, despite being vastly different, both in terms of closeness to the path, but also where they are going to and from, further highlighting the need for a topology-based loss. Even their sum counterparts show very similar values. Interestingly, the losses seen in (f) and (h) are very different, when the cold map based loss showed them as being equal. This shows that BCE is more sensitive to the topology of the path, but as (g) shows, it still gives a very low loss value when a path has branches. All of this shows that some topology analysis is needed for the loss function to capture realistic paths.
 
-Other considerations for handling imbalanced data include methods like Dice @dice_loss similarity coefficient and Focal loss @focal_loss, which can also be effective in certain contexts. The Dice similarity coefficient is a measure of overlap between two samples, and is particularly useful when dealing with imbalanced data. The Focal loss is designed to address the class imbalance problem by focusing on hard examples that are misclassified. These methods can be used in conjunction with the BCE loss to improve the model's performance, especially when dealing with heavily imbalanced datasets. But for the purposes of this project, the BCE loss is expected to be sufficient.
+As mentioned to potentially replace CE, other considerations for handling imbalanced data include methods like Dice @dice_loss similarity coefficient and Focal loss @focal_loss, which can also be effective in certain contexts. The Dice similarity coefficient is a measure of overlap between two samples, and is useful when dealing with imbalanced data if tuned properly. The Focal loss is designed to address the class imbalance problem by focusing on hard examples that are misclassified. These methods can be used in conjunction with the BCE loss to improve the model's performance, especially when dealing with heavily imbalanced datasets. But for the purposes of this project, the BCE loss is expected to be sufficient.
 
-==== Cold Maps #checked
+==== Cold Maps  
 
 //#text("REMEMBER: Cold and heat map used to penalize false positives and false negatives, respectively. Comment on trivial optimum (optimizer just driving everything to 0.", fill: red)
 
-The cold map loss is the first of two loss functions that will improve topological soundness within the output from the models. This involves using the predicted path generated by the model, and comparing it to the cold map from the dataset. The creation of the cold maps are detailed in @c4:cold_maps. Briefly, the cold maps are grids of the same size as the input image, where the intensity of each cell is a value derived from the distance to the nearest path pixel magnified beyond some threshold. 
+The cold map loss is the first of two loss functions that will improve topological soundness within the output from the models. This method involves using the predicted path generated by the model, and comparing it to the cold map from the dataset. The creation of the cold maps are detailed in @c4:cold_maps. Briefly, the cold maps are grids of the same size as the input image, where the intensity of each cell is a value derived from the distance to the nearest path pixel magnified beyond some threshold. 
 
 The main idea behind the cold map loss is to introduce spatial penalty that increases as the distance from the true path increases. Though it is similar to #acr("BCE"), it differs in some key aspects. It is not pixel-wise, but rather a global loss that is calculated over the entire image. This means that slight deviations from the true path are penalized less than those with a larger discrepancy; BCE simply checks for classes. This property of the loss function is a desirable trait for path-planning tasks, as minor offsets from the true path are less critical than larger ones. This loss function is defined as follows:
 
@@ -104,6 +104,8 @@ $
 
 where $alpha = 1$ and $beta = 0.5$ because it should reward true positives more than anything else. This, along with the output logits from the model, is passed to the BCE loss function, which will then calculate the loss as a weighted sum of the individual losses. Examples of this loss function in action is shown in @fig:cmap_loss_comp.  
 
+Despite the fact that the loss value for @fig:cmap_loss_comp#subfigure("a") is seemingly high, it is actually a good path. This might seem like an error in the loss function, but the loss value itself is not of the highest importance. The most important part is the fact that the optimizer is able to drive the model to a point where it can output a path that is close to the true path, i.e. lower the loss value as much as possible. As this cold map based loss function is a novel approach, it should be compared to related loss functions that aim to achieve the same goal. Therefore, the following section will present work already done in this area, concerning itself with a more algebraic approach to the topology problem.
+
 #let fig1 = image("../../../../figures/img/loss_example/cmap_test_1_13.png")
 #let fig2 = image("../../../../figures/img/loss_example/cmap_test_2_57.png")
 #let fig3 = image("../../../../figures/img/loss_example/cmap_test_2_61.png")
@@ -119,5 +121,3 @@ where $alpha = 1$ and $beta = 0.5$ because it should reward true positives more 
     caption: [Paths drawn on top of a cold map with their associated loss.]
 ) <fig:cmap_loss_comp>
 ]
-
-Despite the fact that the loss value for @fig:cmap_loss_comp#subfigure("a") is seemingly high, it is actually a good path. This might seem like an error in the loss function, but the loss value itself is not of the highest importance. The most important part is the fact that the optimizer is able to drive the model to a point where it can output a path that is close to the true path, i.e. lower the loss value as much as possible. As this cold map based loss function is a novel approach, it should be compared to related loss functions that aim to achieve the same goal. Therefore, the following section will present work already done in this area, concerning itself with a more algebraic approach to the topology problem.

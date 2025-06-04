@@ -1,19 +1,19 @@
 #import "../../lib/mod.typ": *
 
-= Related Work #checked <c3:related-work>
+= Related Work   <c3:related-work>
 // works that already utilize satellite imagery i.e. works that use sat images for autonomous navigation
 
-This brief chapter will present the work in areas most closely related to the work presented in this thesis, namely path-planning and intersection management. Path-planning has been a long-standing area of research in the field of robotics and autonomous navigation, with many algorithms and techniques developed over the years. Intersection management is a more recent area of research that focuses on the challenges of managing multiple vehicles at intersections, particularly in urban environments. 
+This brief section will present the work in areas most closely related to the work presented in this thesis, namely path-planning and intersection management. Path-planning has been a long-standing area of research in the field of robotics and autonomous navigation, with many algorithms and techniques developed over the years. Intersection management is a more recent area of research that focuses on the challenges of managing multiple vehicles at intersections, particularly in urban environments. 
 
 
-== Path-planning #checked <c3s3.1:path-planning>
+== Path-planning   <c3s3.1:path-planning>
 // Traditional: A*, RRT*, Dijkstra, D*
 // DL for trajectory prediction, imitation learning
 // Map-based vs sensor-based
 
 Path-planning is the task of having a certain amount of knowledge about the environment and finding a path from a starting point to a goal. This task is one of the most fundamental tasks in the field of robotics and autonomous navigation, and has thus a long history of improvement and evolution. 
 
-One of the first algorithms to be used for path-planning is the Dijkstra algorithm from 1959 @dijkstra1959-cg, which is a graph search algorithm that finds the shortest path between nodes in a graph. The A\* algorithm is another popular algorithm from 1968 that is used for path-planning, and is a combination of Dijkstra's algorithm and a heuristic function that estimates the cost of the cheapest path from a node to the goal node @a-star. Some years later, the D\* algorithm was introduced in 1994, which is an incremental search algorithm that finds the shortest path between nodes in a graph, and is an improvement over the A\* algorithm @d-star. D\* has since become a very popular algorithm for path-planning in robotics, with improved alternatives like Focused D\* the year after @focused-d-star and D\* Lite from 2005 @d-star-lite proving use in real-world applications.
+One of the first algorithms to be used for path-planning is Dijkstra's algorithm from 1959 @dijkstra1959-cg, which is a graph search algorithm that finds the shortest path between nodes in a graph. The A\* algorithm is another popular algorithm from 1968 that is used for path-planning, and is a combination of Dijkstra's algorithm and a heuristic function that estimates the cost of the cheapest path from a node to the goal node @a-star. Some years later, the D\* algorithm was introduced in 1994, which is an incremental search algorithm that finds the shortest path between nodes in a graph, and is an improvement over the A\* algorithm @d-star. D\* has since become a very popular algorithm for path-planning in robotics, with improved alternatives like Focused D\* the year after @focused-d-star and D\* Lite from 2005 @d-star-lite proving use in real-world applications.
 
 The concept of #acrpl("APF") was introduced in 1986 @apf. It assumes some repulsive field around obstacles to avoid and a pulling force towards the goal, resulting in autonomous robots navigating towards the goal while avoiding obstacles. This method is particularly effective in dynamic environments, where the obstacles are moving. It is, however, very prone to local minima and situations where it might get trapped @apf-boo, significantly reducing its effectiveness in complex environments, such as a tight hallway where the robot might fit, but the calculated repulsive force is too great or if it encounters a dead-end or U-shaped obstacle, leading it to loop infinitely. Combined with other global path-planning algorithms, it has shown considerable success, especially in the field of swarm robotics @apf-swarm1@apf-swarm2. 
 
@@ -26,7 +26,7 @@ Other areas of research in path-planning include #acrpl("GA") and #acr("FL"). #a
 In summary, the evolution of path-planning---from early graph search methods like Dijkstra and A\* to more adaptive techniques such as D\*, RRT, and learning-based models---illustrates a steady push toward efficiency and robustness. Approaches like #acrpl("APF"), #acrpl("GA"), and #acr("FL") add further flexibility, each with its own trade-offs. Together, these methods highlight the ongoing effort to balance computational efficiency with real-world challenges.
 
 
-== Intersection Management #checked <c3s3.2:intersection-management>
+== Intersection Management  <c3s3.2:intersection-management>
 // AIM, V2X
 // Multi-agent RL, Cooperative learning
 // Simulation (sim-to-real)
@@ -40,8 +40,8 @@ Managing AVs at intersections is a key challenge for improving traffic flow and 
 
 AIM is an example of a centralized #acr("V2I") system and it has a variety of variants. Many works seek to optimize the scheduling beyond the simple first-come-first-served approach. As noted by Karthikeyan #etal @aim_rl, improvements have been attempted by using global optimization or heuristics to minimize overall delay or to prioritize certain traffic stream. Themselves use a #acr("RL") approach, where deep RL is applied to the controller so it can learn an optimal policy for ordering vehicles through intersections, rather than using fixed rules. 
 
-Alternate research has explored decentralized approaches to intersection management, where vehicles communicate with each other to negotiate their paths. This approach is often referred to as #acr("V2V") communication. Virtual Traffic Lights (VTL) is a system where vehicles approaching an intersection use V2V communication to dynamically decide who has right-of-way without any physical traffic lights being present. Typically in the VTL protocol, the vehicles themselves find a passing order by electing a leader or agreeing on a passing order. Research has shown this approach improve the effectiveness of intersections @vtl.
+Alternate research has explored decentralized approaches to intersection management, where vehicles communicate with each other to negotiate their paths. This approach is often referred to as #acr("V2V") communication. #acr("VTL") is a system where vehicles approaching an intersection use V2V communication to dynamically decide who has right-of-way without any physical traffic lights being present. Typically in the VTL protocol, the vehicles themselves find a passing order by electing a leader or agreeing on a passing order. Research has shown this approach improve the effectiveness of intersections @vtl.
 
 Beyond these hitherto theoretical systems, researches at specific companies are starting their own real-world implementation of these technologies. Modern V2X communication standards allow vehicle to transmit their own state and receive infrastructure signals in real time. This allows for both vehicles and the infrastructure to react to each other. For instance, if many vehicles are approaching an intersection, the infrastructure can send a signal to all vehicles to slow down and wait for a green light or even change the light to green earlier to let the mass of vehicles through. Concretely, a proof-of-concept system @aim_proof that optimized traffic light timing, lane usage, and AV acceleration yielded increased throughput and reduced fuel consumption.
 
-In summary, intersection management and path-planning need to go hand-in-hand for AVs to achieve their full potential. This work presents a method that helps both areas. The following chapter will present said work done in this thesis, presenting a method that will help AVs improve their own intersection path-planning abilities.
+In summary, intersection management and path-planning need to go hand-in-hand for AVs to achieve their full potential. This work presents a method that helps both areas. The following section will present said work done in this thesis, presenting a method that will help AVs improve their own intersection path-planning abilities.

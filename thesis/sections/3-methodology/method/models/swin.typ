@@ -1,7 +1,5 @@
 #import "../../../../lib/mod.typ": *
-=== Swin Transformer #checked <c4:swin>
-
-#v(-1mm)
+=== Swin Transformer   <c4:swin>
 
 #let patch_colour = rgb("2226FF")
 #let window_colour = rgb("B85450")
