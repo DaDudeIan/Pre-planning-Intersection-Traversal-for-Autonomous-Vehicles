@@ -78,15 +78,15 @@ class ViT(nn.Module):
         # Process the input, but don't use self.vit._process_input directly
         # because we need to handle the class token explicitly
         
-        # 1. Extract patches
+        # Extract patches
         x = self.vit.conv_proj(x)  # [B, hidden_dim, grid_size, grid_size]
         x = x.flatten(2).transpose(1, 2)  # [B, num_patches, hidden_dim]
         
-        # 2. Add class token
+        # Add class token
         cls_token = self.vit.class_token.expand(B, -1, -1)  # [B, 1, hidden_dim]
         x = torch.cat((cls_token, x), dim=1)  # [B, num_patches+1, hidden_dim]
         
-        # 3. Add position embeddings
+        # Add position embeddings
         x = x + self.vit.encoder.pos_embedding
         
         # Now run through encoder

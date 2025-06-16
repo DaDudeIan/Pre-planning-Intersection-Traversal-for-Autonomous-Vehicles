@@ -19,7 +19,6 @@ class TopologyLoss(nn.Module):
         if smooth_sigma:
             self.register_buffer("gk", self._gauss(smooth_sigma))
 
-    # ---------------------------------------------------------------- utils
     @staticmethod
     def _gauss(s, k=None):
         if k is None:
@@ -34,7 +33,6 @@ class TopologyLoss(nn.Module):
         r, c = np.divmod(idxF, H)
         return torch.as_tensor(r + c*H, dtype=torch.long)
 
-    # -------------------------------------------------------------- Gudhi call
     @torch.no_grad()
     def _bars(self, img):
         cc = gudhi.CubicalComplex(top_dimensional_cells=img.cpu().numpy())
@@ -44,7 +42,6 @@ class TopologyLoss(nn.Module):
         h1 = pairs[1] if len(pairs)>1 else np.empty((0,2), int)
         return h0, h1           # births/deaths as flat indices (F-order)
 
-    # ---------------------------------------------------------------- forward
     def forward(self, logits):
         assert logits.shape[-2:] == (self.H, self.W), "wrong spatial size"
         probs  = F.softmax(logits, dim=1)

@@ -155,40 +155,6 @@ class IntersectionDatasetClasses(Dataset):
         if self.path_transform:
             class_labels = self.path_transform(class_labels)
             class_labels_cmap = self.path_transform(class_labels_cmap)
-            
-        # # Store paths for each satellite image
-        # paths_data = []
-        # paths_dir = os.path.join(intersection_dir, 'paths')
-        # if os.path.exists(paths_dir):
-        #     path_folders = [
-        #         os.path.join(paths_dir, f) 
-        #         for f in os.listdir(paths_dir) 
-        #         if os.path.isdir(os.path.join(paths_dir, f))
-        #     ]
-            
-        #     for path_folder in path_folders:
-        #         # Path line image
-        #         path_line_path = os.path.join(path_folder, 'path_line.png')
-        #         path_line_img = Image.open(path_line_path).convert('RGB')
-                
-        #         if self.path_transform:
-        #             path_line_img = self.path_transform(path_line_img)
-                    
-        #         # E/E json file
-        #         json_path = os.path.join(path_folder, 'path_line_ee.json')
-        #         with open(json_path) as f:
-        #             ee_data = json.load(f)
-                    
-        #         # Load cold map npy
-        #         cold_map_path = os.path.join(path_folder, 'cold_map.npy')
-        #         cold_map = np.load(cold_map_path)
-                
-        #         # save data
-        #         paths_data.append({
-        #             'path_line': path_line_img,
-        #             'ee_data': ee_data,
-        #             'cold_map': cold_map
-        #         })
                
         # return sample 
         sample = {
@@ -201,16 +167,9 @@ class IntersectionDatasetClasses(Dataset):
                     
                 
 def custom_collate_fn(batch):
-    """
-    Custom collate function that handles the variable-length 'paths' list.
-    For the satellite images, we stack them into a tensor.
-    For the 'paths' field, we simply collect them into a list.
-    """
     satellite_batch = torch.stack([item["satellite"] for item in batch])
     class_labels_batch = torch.stack([item["class_labels"] for item in batch])
     class_labels_cmap_batch = torch.stack([item["class_labels_cmap"] for item in batch])
-    # Keep 'paths' as a list of lists (variable-length) without stacking.
-    #paths_batch = [item["paths"] for item in batch]
     
     return {
         "satellite": satellite_batch,
